@@ -343,6 +343,118 @@
   .option-card-goals .label { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
   .option-card-goals .sub { font-size: 12px; opacity: 0.75; }
 
+  /* STUDY PROGRESS CARD */
+  .option-card-progress {
+    width: 100%;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 24px 22px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: inherit;
+    box-shadow: 0 8px 28px rgba(16,185,129,0.35);
+    transition: all 0.2s;
+    margin-bottom: 14px;
+  }
+  .option-card-progress:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(16,185,129,0.45); }
+  .option-card-progress .label { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .option-card-progress .sub { font-size: 12px; opacity: 0.75; }
+
+  /* STUDY PROGRESS PAGE */
+  #step-progress .inner {
+    max-width: 700px;
+    margin: 40px auto 0;
+    padding: 0 16px 40px;
+  }
+  .progress-header {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    color: #fff;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 28px rgba(16,185,129,0.3);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .progress-header h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+  .progress-header p  { font-size: 13px; opacity: 0.75; }
+  .progress-type-row {
+    display: flex; gap: 10px; margin-bottom: 24px;
+  }
+  .btn-prog-type {
+    padding: 8px 18px; border-radius: 99px;
+    border: 2px solid var(--border);
+    background: var(--surface); color: var(--muted);
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: all 0.18s;
+  }
+  .btn-prog-type.active {
+    background: #10b981; border-color: #10b981;
+    color: #fff; box-shadow: 0 2px 8px rgba(16,185,129,0.3);
+  }
+  .btn-prog-type:hover:not(.active) { border-color: #10b981; color: #059669; }
+  .week-block {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s;
+  }
+  .week-block:hover { box-shadow: 0 4px 20px rgba(16,185,129,0.12); }
+  .week-title {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border-bottom: 1.5px solid #a7f3d0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .week-title-left { display: flex; align-items: center; gap: 10px; }
+  .week-num { font-size: 15px; font-weight: 800; color: #065f46; }
+  .week-dates { font-size: 12px; color: #059669; font-weight: 600; }
+  .week-badge {
+    font-size: 11px; font-weight: 700;
+    background: #10b981; color: #fff;
+    padding: 3px 10px; border-radius: 99px;
+  }
+  .week-badge.empty { background: #e5e7eb; color: #9ca3af; }
+  .week-chevron { font-size: 14px; color: #059669; transition: transform 0.2s; }
+  .week-block.open .week-chevron { transform: rotate(90deg); }
+  .week-items {
+    display: none;
+    padding: 14px 20px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .week-block.open .week-items { display: flex; }
+  .week-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 14px;
+    background: #f0fdf4;
+    border: 1px solid #d1fae5;
+    border-radius: 10px;
+    animation: fadeUp 0.2s ease;
+  }
+  .week-item-bullet {
+    font-size: 13px; font-weight: 800;
+    color: #059669; min-width: 22px;
+    flex-shrink: 0; padding-top: 1px;
+  }
+  .week-item-date {
+    font-size: 11px; font-weight: 700;
+    color: #6ee7b7; background: #065f46;
+    padding: 2px 8px; border-radius: 99px;
+    flex-shrink: 0; white-space: nowrap;
+  }
+  .week-item-text { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
+  .week-empty {
+    padding: 20px; text-align: center;
+    color: #9ca3af; font-size: 13px; font-weight: 600;
+  }
+
   /* MONTHLY GOALS PAGE */
   #step-goals .inner {
     max-width: 680px;
@@ -685,6 +797,30 @@
   }
   textarea:focus { border-color: var(--primary); background: #f5f7ff; }
   textarea::placeholder { color: #c4b5fd; font-style: italic; }
+  textarea:disabled { background: #f0fdf4; color: var(--muted); cursor: not-allowed; border-color: transparent; }
+
+  .slot-done { background: #f0fdf4; }
+  .slot-done textarea { text-decoration: line-through; color: #6ee7b7; }
+  .slot-check-row {
+    padding: 6px 10px 8px;
+    display: flex; align-items: center;
+  }
+  .slot-checkbox-label {
+    display: flex; align-items: center; gap: 7px;
+    cursor: pointer; font-size: 12px;
+    font-weight: 700; color: var(--muted);
+    text-transform: none; letter-spacing: 0;
+    user-select: none;
+  }
+  .slot-checkbox {
+    width: 16px; height: 16px;
+    accent-color: var(--success);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .slot-checkbox:checked + .slot-check-text {
+    color: var(--success);
+  }
   .table-footer {
     padding: 20px 28px;
     background: #f5f7ff;
@@ -1012,6 +1148,70 @@
   }
   .btn-slot-remove:hover { background: var(--danger); color: #fff; }
   .btn-slot-remove:disabled { background: #f3f4f6; color: #d1d5db; cursor: not-allowed; }
+
+  /* COMPLETED TODAY SECTION */
+  .completed-section {
+    padding: 24px 28px;
+    border-top: 2px dashed #c7d2fe;
+    background: linear-gradient(135deg, #fafbff, #f5f7ff);
+  }
+  .completed-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .completed-title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 16px; font-weight: 800; color: var(--primary-dark);
+  }
+  .completed-count {
+    font-size: 12px; font-weight: 700;
+    background: var(--primary-light); color: var(--primary);
+    padding: 4px 12px; border-radius: 99px;
+  }
+  .completed-add-row {
+    display: flex; gap: 10px; margin-bottom: 16px;
+  }
+  .completed-add-row input {
+    flex: 1; padding: 12px 16px;
+    border: 2px solid #c7d2fe; border-radius: 12px;
+    font-family: inherit; font-size: 14px; color: var(--text);
+    background: #fff; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .completed-add-row input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+  }
+  .btn-completed-add {
+    padding: 12px 18px;
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: #fff; border: none; border-radius: 12px;
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+  }
+  .btn-completed-add:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(16,185,129,0.4); }
+  .completed-list { display: flex; flex-direction: column; gap: 8px; }
+  .completed-item {
+    display: flex; align-items: center; gap: 12px;
+    background: #fff; border: 1px solid #d1fae5;
+    border-left: 4px solid var(--success);
+    border-radius: 12px; padding: 12px 16px;
+    animation: fadeUp 0.25s ease; transition: all 0.18s;
+  }
+  .completed-item:hover { box-shadow: 0 3px 12px rgba(16,185,129,0.15); transform: translateX(2px); }
+  .completed-check { font-size: 16px; flex-shrink: 0; }
+  .completed-text { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); }
+  .completed-del {
+    background: none; border: none; color: #d1d5db;
+    font-size: 16px; cursor: pointer; padding: 3px 5px;
+    border-radius: 6px; transition: all 0.15s;
+  }
+  .completed-del:hover { color: var(--danger); background: #fee2e2; }
+  .completed-empty {
+    text-align: center; padding: 20px 0;
+    color: #a5b4fc; font-size: 13px; font-weight: 600;
+  }
 </style>
 </head>
 <body>
@@ -1103,6 +1303,13 @@
         </div>
         <span style="font-size:22px;">›</span>
       </button>
+      <button class="option-card-progress" onclick="openStudyProgress()">
+        <div>
+          <div class="label">📖 Study Progress</div>
+          <div class="sub">Week-wise completed studies log</div>
+        </div>
+        <span style="font-size:22px;">›</span>
+      </button>
     </div>
   </div>
 
@@ -1162,6 +1369,23 @@
             <button class="btn-slot-add" id="btnAddSlot" onclick="addSlot()" title="Add slot">+ Add Slot</button>
           </div>
         </div>
+
+        <!-- COMPLETED TODAY SECTION -->
+        <div class="completed-section">
+          <div class="completed-header">
+            <div class="completed-title">
+              <span>✅</span>
+              <span>Completed Today</span>
+            </div>
+            <span class="completed-count" id="completedCount">0 items</span>
+          </div>
+          <div class="completed-add-row">
+            <input type="text" id="completedInput" placeholder="What did you finish today? e.g. Chapter 3 of Math..." onkeydown="if(event.key==='Enter') addCompletedItem()" />
+            <button class="btn-completed-add" onclick="addCompletedItem()">+ Add</button>
+          </div>
+          <div class="completed-list" id="completedList"></div>
+        </div>
+
         <div class="table-footer">
           <p id="tableNote">* Data is unique to this specific date</p>
           <button class="btn-save" onclick="savePlan()">
@@ -1219,6 +1443,24 @@
       </div>
       <div class="goals-list" id="goalsList"></div>
       <button class="goals-save-btn" onclick="saveGoals()">✅ Save Goals</button>
+    </div>
+  </div>
+  <!-- STEP: STUDY PROGRESS -->
+  <div class="step" id="step-progress">
+    <div class="inner">
+      <button class="back-btn" onclick="goTo('options')">← Back to Options</button>
+      <div class="progress-header">
+        <div>
+          <h2>📖 Study Progress</h2>
+          <p id="progressMonthLabel"></p>
+        </div>
+        <span style="font-size:36px;">📖</span>
+      </div>
+      <div class="progress-type-row">
+        <button class="btn-prog-type active" id="btnProgBullet" onclick="setProgressType('bullet')">• Bullet</button>
+        <button class="btn-prog-type" id="btnProgNumber" onclick="setProgressType('number')">1. Numbered</button>
+      </div>
+      <div id="weekBlocks"></div>
     </div>
   </div>
 </main>
@@ -1302,13 +1544,15 @@
   const LS_DATA     = 'sp_tableData';
   const LS_SAVED    = 'sp_savedDates';
   const LS_CUSTOM_ACT  = 'sp_customActivities';
-  const LS_HIDDEN_ACT  = 'sp_hiddenActivities'; // { "March-10": ["actName",...] }
+  const LS_HIDDEN_ACT  = 'sp_hiddenActivities';
+  const LS_ACT_ORDER   = 'sp_activityOrder'; // { "March-10": ["Studies","Religion",...] }
 
   const savedProfile   = JSON.parse(localStorage.getItem(LS_PROFILE)  || 'null');
   const savedTableData = JSON.parse(localStorage.getItem(LS_DATA)     || '{}');
   const savedDatesSet  = JSON.parse(localStorage.getItem(LS_SAVED)    || '[]');
   const savedCustomAct = JSON.parse(localStorage.getItem(LS_CUSTOM_ACT) || '{}');
   const savedHiddenAct = JSON.parse(localStorage.getItem(LS_HIDDEN_ACT) || '{}');
+  const savedActOrder  = JSON.parse(localStorage.getItem(LS_ACT_ORDER)  || '{}');
 
   const DEFAULT_ACTIVITIES = [
     { id: 1, name: 'Studies',  icon: '📚' },
@@ -1325,7 +1569,8 @@
     tableData:  savedTableData,
     savedDates: new Set(savedDatesSet),
     customActivities: savedCustomAct,
-    hiddenActivities: savedHiddenAct  // { "March-10": ["Sport",...] }
+    hiddenActivities: savedHiddenAct,
+    activityOrder:    savedActOrder   // { "March-10": ["Studies","Religion",...] }
   };
 
   // ─── Persist helpers ─────────────────────
@@ -1346,8 +1591,11 @@
   function persistHiddenActivities() {
     localStorage.setItem(LS_HIDDEN_ACT, JSON.stringify(state.hiddenActivities));
   }
+  function persistActivityOrder() {
+    localStorage.setItem(LS_ACT_ORDER, JSON.stringify(state.activityOrder));
+  }
 
-  // Build activity list for current date: defaults + month-wide + date-specific, minus hidden
+  // Build activity list for current date: defaults + month-wide + date-specific, minus hidden, sorted by saved order
   function getActivitiesForCurrentDate() {
     const m = state.selectedMonth?.name;
     const d = state.selectedDay;
@@ -1364,7 +1612,18 @@
         extras.push(a);
       }
     });
-    return [...DEFAULT_ACTIVITIES, ...extras];
+    const all = [...DEFAULT_ACTIVITIES, ...extras];
+
+    // Apply saved order if exists
+    const savedOrder = state.activityOrder[dateKey];
+    if (savedOrder && savedOrder.length) {
+      const map = Object.fromEntries(all.map(a => [a.name, a]));
+      const ordered = savedOrder.filter(n => map[n]).map(n => map[n]);
+      // Add any new activities not in saved order yet
+      all.forEach(a => { if (!savedOrder.includes(a.name)) ordered.push(a); });
+      return ordered;
+    }
+    return all;
   }
 
   // ─── Check if a date has been explicitly saved ───
@@ -1607,6 +1866,10 @@
         const arr = getActivitiesForCurrentDate();
         const moved = arr.splice(dragSrcIdx, 1)[0];
         arr.splice(idx, 0, moved);
+        // Save new order
+        const dateKey = `${state.selectedMonth.name}-${state.selectedDay}`;
+        state.activityOrder[dateKey] = arr.map(a => a.name);
+        persistActivityOrder();
         dragSrcIdx = null;
         renderActivityList();
       });
@@ -1720,10 +1983,10 @@
     document.getElementById('tableDate').textContent  = `${m.name} ${d}, ${currentYear}`;
     document.getElementById('tableClass').textContent = state.class;
     document.getElementById('tableNote').textContent  = `* Data is unique to ${m.name} ${d}`;
-    // Load saved slot count for this date or default to 3
     const slotKey = `slotCount-${m.name}-${d}`;
     state.slotCount = parseInt(localStorage.getItem(slotKey) || '3');
     renderStudyTable();
+    renderCompletedList();
     goTo('table');
   }
 
@@ -1746,11 +2009,22 @@
       const tr = document.createElement('tr');
       let html = `<td class="subject-cell"><span class="subject-pill">${sub}</span></td>`;
       for (let slot = 1; slot <= state.slotCount; slot++) {
-        const key = `${m.name}-${d}-${sub}-${slot}`;
-        const val = (state.tableData[key] || '').replace(/</g,'&lt;');
-        html += `<td class="slot-cell">
+        const key     = `${m.name}-${d}-${sub}-${slot}`;
+        const checkKey = `${key}-done`;
+        const val     = (state.tableData[key] || '').replace(/</g,'&lt;');
+        const isDone  = state.tableData[checkKey] === 'true';
+        html += `<td class="slot-cell ${isDone ? 'slot-done' : ''}">
           <textarea placeholder="Write notes for ${sub}..."
-            oninput="saveCell('${key}', this.value)">${val}</textarea>
+            oninput="saveCell('${key}', this.value)"
+            ${isDone ? 'disabled' : ''}>${val}</textarea>
+          <div class="slot-check-row">
+            <label class="slot-checkbox-label">
+              <input type="checkbox" class="slot-checkbox"
+                ${isDone ? 'checked' : ''}
+                onchange="toggleSlotDone('${key}', this.checked)" />
+              <span class="slot-check-text">${isDone ? 'Done ✓' : 'Mark as done'}</span>
+            </label>
+          </div>
         </td>`;
       }
       tr.innerHTML = html;
@@ -1777,7 +2051,101 @@
 
   function saveCell(key, value) {
     state.tableData[key] = value;
-    persistTableData();   // auto-save every keystroke to localStorage
+    persistTableData();
+  }
+
+  function toggleSlotDone(key, isDone) {
+    const checkKey = `${key}-done`;
+    state.tableData[checkKey] = String(isDone);
+    persistTableData();
+
+    const text = (state.tableData[key] || '').trim();
+
+    if (isDone && text) {
+      // Add to Completed Today
+      const compKey = getCompletedKey();
+      if (!state.completedData[compKey]) state.completedData[compKey] = [];
+      // Use "Subject – Slot text" as label, avoid duplicates
+      const label = text;
+      if (!state.completedData[compKey].includes(label)) {
+        state.completedData[compKey].push(label);
+        persistCompletedData();
+        renderCompletedList();
+        showToast(`✅ Added to Completed Today!`);
+      }
+    } else if (!isDone && text) {
+      // Remove from Completed Today
+      const compKey = getCompletedKey();
+      if (state.completedData[compKey]) {
+        state.completedData[compKey] = state.completedData[compKey].filter(i => i !== text);
+        persistCompletedData();
+        renderCompletedList();
+      }
+    }
+
+    // Re-render table to update disabled state and styling
+    renderStudyTable();
+  }
+
+  // ─────────────────────────────────────────
+  //  COMPLETED TODAY
+  // ─────────────────────────────────────────
+  const LS_COMPLETED = 'sp_completedData';
+  const savedCompletedData = JSON.parse(localStorage.getItem(LS_COMPLETED) || '{}');
+  state.completedData = savedCompletedData; // { "March-10": ["item1", "item2",...] }
+
+  function persistCompletedData() {
+    localStorage.setItem(LS_COMPLETED, JSON.stringify(state.completedData));
+  }
+
+  function getCompletedKey() {
+    return `${state.selectedMonth.name}-${state.selectedDay}`;
+  }
+
+  function renderCompletedList() {
+    const key   = getCompletedKey();
+    const items = state.completedData[key] || [];
+    const list  = document.getElementById('completedList');
+    list.innerHTML = '';
+
+    document.getElementById('completedCount').textContent =
+      items.length === 0 ? '0 items' : `${items.length} item${items.length > 1 ? 's' : ''}`;
+
+    if (items.length === 0) {
+      list.innerHTML = `<div class="completed-empty">Nothing logged yet — add what you finished today! 📚</div>`;
+      return;
+    }
+
+    items.forEach((text, idx) => {
+      const div = document.createElement('div');
+      div.className = 'completed-item';
+      div.innerHTML = `
+        <span class="completed-check">✅</span>
+        <span class="completed-text">${text}</span>
+        <button class="completed-del" onclick="deleteCompleted(${idx})" title="Remove">✕</button>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function addCompletedItem() {
+    const input = document.getElementById('completedInput');
+    const text  = input.value.trim();
+    if (!text) return;
+    const key = getCompletedKey();
+    if (!state.completedData[key]) state.completedData[key] = [];
+    state.completedData[key].push(text);
+    persistCompletedData();
+    input.value = '';
+    renderCompletedList();
+    input.focus();
+  }
+
+  function deleteCompleted(idx) {
+    const key = getCompletedKey();
+    state.completedData[key].splice(idx, 1);
+    persistCompletedData();
+    renderCompletedList();
   }
 
   // ─────────────────────────────────────────
@@ -1969,6 +2337,92 @@
     persistGoalsData();
     showToast(`✅ Goals for ${state.selectedMonth.name} saved!`);
     setTimeout(() => goTo('options'), 1200);
+  }
+
+  // ─────────────────────────────────────────
+  //  STUDY PROGRESS
+  // ─────────────────────────────────────────
+  state.progressType = 'bullet';
+
+  function openStudyProgress() {
+    const m = state.selectedMonth;
+    document.getElementById('progressMonthLabel').textContent = `${m.name} ${currentYear} — Week-wise completed studies`;
+    state.progressType = 'bullet';
+    document.getElementById('btnProgBullet').classList.add('active');
+    document.getElementById('btnProgNumber').classList.remove('active');
+    renderWeekBlocks();
+    goTo('progress');
+  }
+
+  function setProgressType(type) {
+    state.progressType = type;
+    document.getElementById('btnProgBullet').classList.toggle('active', type === 'bullet');
+    document.getElementById('btnProgNumber').classList.toggle('active', type === 'number');
+    renderWeekBlocks();
+  }
+
+  function renderWeekBlocks() {
+    const m   = state.selectedMonth;
+    const container = document.getElementById('weekBlocks');
+    container.innerHTML = '';
+
+    // Build 4 weeks (week 4 goes to end of month)
+    const weeks = [
+      { num: 1, start: 1,  end: 7  },
+      { num: 2, start: 8,  end: 14 },
+      { num: 3, start: 15, end: 21 },
+      { num: 4, start: 22, end: m.days }
+    ];
+
+    weeks.forEach((wk, wkIdx) => {
+      // Gather all completed items for days in this week
+      const allItems = [];
+      for (let day = wk.start; day <= wk.end; day++) {
+        const key   = `${m.name}-${day}`;
+        const items = (state.completedData || {})[key] || [];
+        items.forEach(text => allItems.push({ day, text }));
+      }
+
+      const block = document.createElement('div');
+      block.className = 'week-block' + (wkIdx === 0 ? ' open' : '');
+
+      const dateRangeText = `${m.name} ${wk.start} – ${m.name} ${wk.end}`;
+      const countText = allItems.length ? `${allItems.length} completed` : 'No entries';
+
+      block.innerHTML = `
+        <div class="week-title" onclick="this.parentElement.classList.toggle('open')">
+          <div class="week-title-left">
+            <span class="week-num">Week ${wk.num}</span>
+            <span class="week-dates">${dateRangeText}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="week-badge ${allItems.length ? '' : 'empty'}">${countText}</span>
+            <span class="week-chevron">›</span>
+          </div>
+        </div>
+        <div class="week-items" id="weekItems-${wk.num}"></div>
+      `;
+      container.appendChild(block);
+
+      // Fill items
+      const itemsDiv = block.querySelector(`#weekItems-${wk.num}`);
+      if (allItems.length === 0) {
+        itemsDiv.innerHTML = `<div class="week-empty">Nothing completed in this week yet.</div>`;
+      } else {
+        let counter = 1;
+        allItems.forEach(({ day, text }) => {
+          const bullet = state.progressType === 'number' ? `${counter++}.` : '•';
+          const item = document.createElement('div');
+          item.className = 'week-item';
+          item.innerHTML = `
+            <span class="week-item-bullet">${bullet}</span>
+            <span class="week-item-date">${m.name.slice(0,3)} ${day}</span>
+            <span class="week-item-text">${text}</span>
+          `;
+          itemsDiv.appendChild(item);
+        });
+      }
+    });
   }
 
   function savePlan() {
