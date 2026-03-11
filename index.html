@@ -94,6 +94,63 @@
     transition: opacity 0.3s;
   }
   .nav-user.visible { opacity: 1; }
+  .btn-nav-sync {
+    background: var(--primary-light);
+    border: 1.5px solid rgba(99,102,241,0.25);
+    color: var(--primary);
+    border-radius: 99px;
+    padding: 6px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    letter-spacing: 0.04em;
+  }
+  .btn-nav-sync:hover { background: var(--primary); color: #fff; }
+
+  /* SYNC MODAL */
+  .sync-tabs {
+    display: flex; gap: 0;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .sync-tab {
+    flex: 1; padding: 10px;
+    background: var(--bg); border: none;
+    font-family: inherit; font-size: 13px;
+    font-weight: 700; color: var(--muted);
+    cursor: pointer; transition: all 0.18s;
+  }
+  .sync-tab.active { background: var(--primary); color: #fff; }
+  .sync-panel { display: none; }
+  .sync-panel.active { display: block; }
+  .sync-code-box {
+    width: 100%;
+    min-height: 100px;
+    max-height: 160px;
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-family: monospace;
+    font-size: 12px;
+    resize: none;
+    background: #f9fafb;
+    color: var(--text);
+    outline: none;
+    word-break: break-all;
+    margin-bottom: 12px;
+  }
+  .sync-code-box:focus { border-color: var(--primary); }
+  .sync-info {
+    font-size: 12px; color: var(--muted);
+    background: #f0f2ff; border-radius: 10px;
+    padding: 10px 14px; margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  .sync-info strong { color: var(--primary); }
 
   /* MAIN */
   main { position: relative; z-index: 1; padding-bottom: 60px; }
@@ -1221,8 +1278,11 @@
     <div class="nav-icon">📚</div>
     <span class="nav-title">Study Partner</span>
   </div>
-  <div class="nav-user" id="navUser">
-    👤 <span id="navUserName"></span>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="nav-user" id="navUser">
+      👤 <span id="navUserName"></span>
+    </div>
+    <button class="btn-nav-sync" onclick="openSyncModal()" title="Export / Import Data">⇅ Sync</button>
   </div>
 </nav>
 
@@ -1467,6 +1527,47 @@
 
 <!-- TOAST -->
 <div class="toast" id="toast">✅ Plan saved successfully!</div>
+
+<!-- MODAL: Sync / Export / Import -->
+<div class="modal-overlay" id="syncModal">
+  <div class="modal" style="max-width:420px;">
+    <h3>⇅ Sync Data</h3>
+    <div class="sync-tabs">
+      <button class="sync-tab active" id="tabExport" onclick="switchSyncTab('export')">📤 Export</button>
+      <button class="sync-tab" id="tabImport" onclick="switchSyncTab('import')">📥 Import</button>
+    </div>
+
+    <!-- EXPORT PANEL -->
+    <div class="sync-panel active" id="panelExport">
+      <div class="sync-info">
+        <strong>How to sync:</strong><br>
+        1. Click "Generate Code" below<br>
+        2. Copy the code and save it (WhatsApp, Notes, etc.)<br>
+        3. On your other device, paste it in the Import tab
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:12px;" onclick="generateExportCode()">
+        🔄 Generate Code
+      </button>
+      <textarea class="sync-code-box" id="exportCodeBox" placeholder="Your export code will appear here..." readonly></textarea>
+      <button class="btn" id="btnCopyCode" style="width:100%;justify-content:center;background:#f0fdf4;color:#059669;font-weight:700;border:none;border-radius:12px;padding:12px;cursor:pointer;font-family:inherit;font-size:14px;" onclick="copyExportCode()" disabled>
+        📋 Copy Code
+      </button>
+    </div>
+
+    <!-- IMPORT PANEL -->
+    <div class="sync-panel" id="panelImport">
+      <div class="sync-info">
+        <strong>⚠️ Warning:</strong> Importing will <strong>replace</strong> all current data on this device. Make sure to export first if needed!
+      </div>
+      <textarea class="sync-code-box" id="importCodeBox" placeholder="Paste your export code here..."></textarea>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="importData()">
+        📥 Import & Apply
+      </button>
+    </div>
+
+    <button class="btn" style="background:#f3f4f6;color:#374151;width:100%;justify-content:center;margin-top:10px;" onclick="closeSyncModal()">Close</button>
+  </div>
+</div>
 
 <!-- MODAL: Add Activity -->
 <div class="modal-overlay" id="addModal">
@@ -2444,6 +2545,88 @@
   //  TOAST
   // ─────────────────────────────────────────
   let toastTimer;
+  // ─────────────────────────────────────────
+  //  SYNC — EXPORT / IMPORT
+  // ─────────────────────────────────────────
+  function openSyncModal() {
+    switchSyncTab('export');
+    document.getElementById('exportCodeBox').value = '';
+    document.getElementById('importCodeBox').value = '';
+    document.getElementById('btnCopyCode').disabled = true;
+    document.getElementById('syncModal').classList.add('open');
+  }
+  function closeSyncModal() {
+    document.getElementById('syncModal').classList.remove('open');
+  }
+  function switchSyncTab(tab) {
+    document.getElementById('panelExport').classList.toggle('active', tab === 'export');
+    document.getElementById('panelImport').classList.toggle('active', tab === 'import');
+    document.getElementById('tabExport').classList.toggle('active', tab === 'export');
+    document.getElementById('tabImport').classList.toggle('active', tab === 'import');
+  }
+
+  function getAllData() {
+    // Collect every localStorage key belonging to this app
+    const data = {};
+    const prefix = ['sp_', 'slotCount-'];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (prefix.some(p => k.startsWith(p))) {
+        data[k] = localStorage.getItem(k);
+      }
+    }
+    return data;
+  }
+
+  function generateExportCode() {
+    const data = getAllData();
+    const json = JSON.stringify(data);
+    // Base64 encode so it's a single copyable string
+    const code = btoa(unescape(encodeURIComponent(json)));
+    document.getElementById('exportCodeBox').value = code;
+    document.getElementById('btnCopyCode').disabled = false;
+    showToast('✅ Code generated! Now copy it.');
+  }
+
+  function copyExportCode() {
+    const box = document.getElementById('exportCodeBox');
+    navigator.clipboard.writeText(box.value).then(() => {
+      showToast('📋 Code copied to clipboard!');
+    }).catch(() => {
+      box.select();
+      document.execCommand('copy');
+      showToast('📋 Code copied!');
+    });
+  }
+
+  function importData() {
+    const code = document.getElementById('importCodeBox').value.trim();
+    if (!code) { showToast('⚠️ Please paste a code first!', '#ef4444'); return; }
+    try {
+      const json = decodeURIComponent(escape(atob(code)));
+      const data = JSON.parse(json);
+      // Clear existing app data
+      const prefix = ['sp_', 'slotCount-'];
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (prefix.some(p => k.startsWith(p))) keysToRemove.push(k);
+      }
+      keysToRemove.forEach(k => localStorage.removeItem(k));
+      // Write imported data
+      Object.entries(data).forEach(([k, v]) => localStorage.setItem(k, v));
+      showToast('✅ Data imported! Reloading...');
+      closeSyncModal();
+      setTimeout(() => location.reload(), 1500);
+    } catch (e) {
+      showToast('❌ Invalid code! Please check and try again.', '#ef4444');
+    }
+  }
+
+  document.getElementById('syncModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('syncModal')) closeSyncModal();
+  });
+
   function showToast(msg, bg = '') {
     const t = document.getElementById('toast');
     t.textContent = msg;
