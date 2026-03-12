@@ -681,6 +681,18 @@
     transition: all 0.18s;
   }
   .btn-open:hover { background: var(--primary); color: #fff; }
+  .btn-clear-date {
+    background: #fee2e2;
+    color: var(--danger);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.18s;
+    flex-shrink: 0;
+  }
+  .btn-clear-date:hover { background: var(--danger); color: #fff; }
 
   /* DAY ITEMS */
   #step-day-items .inner {
@@ -1898,7 +1910,10 @@
             ${isPast ? '📌 Past · ' : ''}Plan for ${m.name} ${day}, ${currentYear}
           </div>
         </div>
-        <button class="btn-open" onclick="openDay(${day})">Open</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn-open" onclick="openDay(${day})">Open</button>
+          <button class="btn-clear-date" onclick="clearDateData(${day}, event)" title="Clear all data for this date">🗑️</button>
+        </div>
       `;
       list.appendChild(row);
     });
@@ -1910,6 +1925,55 @@
     document.getElementById('dayTitle').textContent = `${m.name} ${day}`;
     renderActivityList();
     goTo('day-items');
+  }
+
+  function clearDateData(day, event) {
+    event.stopPropagation();
+    const m = state.selectedMonth.name;
+    const dateKey = `${m}-${day}`;
+
+    // 1. Remove from savedDates
+    state.savedDates.delete(dateKey);
+    persistSavedDates();
+
+    // 2. Remove tableData keys for this date (all subjects, all slots, all checkboxes)
+    Object.keys(state.tableData).forEach(k => {
+      if (k.startsWith(`${m}-${day}-`)) delete state.tableData[k];
+    });
+    persistTableData();
+
+    // 3. Remove completedData for this date
+    if (state.completedData) {
+      delete state.completedData[dateKey];
+      persistCompletedData();
+    }
+
+    // 4. Remove todoData for this date
+    if (state.todoData) {
+      Object.keys(state.todoData).forEach(k => {
+        if (k.startsWith(dateKey + '-')) delete state.todoData[k];
+      });
+      persistTodoData();
+    }
+
+    // 5. Remove slot count for this date
+    localStorage.removeItem(`slotCount-${m}-${day}`);
+
+    // 6. Remove activity order for this date
+    if (state.activityOrder) {
+      delete state.activityOrder[dateKey];
+      persistActivityOrder();
+    }
+
+    // 7. Remove hidden activities for this date
+    if (state.hiddenActivities) {
+      delete state.hiddenActivities[dateKey];
+      persistHiddenActivities();
+    }
+
+    showToast(`🗑️ ${m} ${day}-এর সব data মুছে গেছে`);
+    renderDateList();
+    renderMonthGrid();
   }
 
   // ─────────────────────────────────────────
