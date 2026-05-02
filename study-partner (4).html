@@ -1,0 +1,3077 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Study Partner</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f0f2ff;
+    --surface: #ffffff;
+    --primary: #4f46e5;
+    --primary-dark: #3730a3;
+    --primary-light: #e0e7ff;
+    --accent: #f59e0b;
+    --text: #1e1b4b;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --success: #10b981;
+    --danger: #ef4444;
+    --radius: 18px;
+    --shadow: 0 4px 24px rgba(79,70,229,0.10);
+    --shadow-lg: 0 8px 40px rgba(79,70,229,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Sora', 'Noto Sans Bengali', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -200px; left: -200px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(79,70,229,0.06);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .nav-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(79,70,229,0.3);
+    font-size: 20px;
+  }
+  .nav-title {
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary-dark);
+  }
+  .nav-user {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--primary-light);
+    border: 1px solid rgba(99,102,241,0.2);
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .nav-user.visible { opacity: 1; }
+  .btn-nav-sync {
+    background: var(--primary-light);
+    border: 1.5px solid rgba(99,102,241,0.25);
+    color: var(--primary);
+    border-radius: 99px;
+    padding: 6px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    letter-spacing: 0.04em;
+  }
+  .btn-nav-sync:hover { background: var(--primary); color: #fff; }
+
+  /* SYNC MODAL */
+  .sync-tabs {
+    display: flex; gap: 0;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .sync-tab {
+    flex: 1; padding: 10px;
+    background: var(--bg); border: none;
+    font-family: inherit; font-size: 13px;
+    font-weight: 700; color: var(--muted);
+    cursor: pointer; transition: all 0.18s;
+  }
+  .sync-tab.active { background: var(--primary); color: #fff; }
+  .sync-panel { display: none; }
+  .sync-panel.active { display: block; }
+  .sync-code-box {
+    width: 100%;
+    min-height: 100px;
+    max-height: 160px;
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-family: monospace;
+    font-size: 12px;
+    resize: none;
+    background: #f9fafb;
+    color: var(--text);
+    outline: none;
+    word-break: break-all;
+    margin-bottom: 12px;
+  }
+  .sync-code-box:focus { border-color: var(--primary); }
+  .sync-info {
+    font-size: 12px; color: var(--muted);
+    background: #f0f2ff; border-radius: 10px;
+    padding: 10px 14px; margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  .sync-info strong { color: var(--primary); }
+
+  /* MAIN */
+  main { position: relative; z-index: 1; padding-bottom: 60px; }
+
+  /* STEPS */
+  .step { display: none; animation: fadeUp 0.35s ease; }
+  .step.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(229,231,235,0.8);
+    padding: 32px;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 28px;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(79,70,229,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,70,229,0.4); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--primary);
+    font-size: 14px;
+    padding: 8px 4px;
+  }
+  .btn-ghost:hover { text-decoration: underline; }
+  .btn-outline {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    color: var(--muted);
+    cursor: not-allowed;
+  }
+
+  /* INPUTS */
+  input[type=text] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input[type=text]:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+  }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* SUBJECT CHIPS */
+  .chip {
+    padding: 8px 18px;
+    border-radius: 99px;
+    border: 2px solid var(--border);
+    background: var(--bg);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .chip:hover { border-color: var(--primary); color: var(--primary); }
+  .chip.selected {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.25);
+  }
+
+  /* ONBOARDING */
+  #step-onboarding .inner {
+    max-width: 480px;
+    margin: 48px auto 0;
+    padding: 0 16px;
+  }
+  .onboarding-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .onboarding-header .emoji {
+    font-size: 56px;
+    display: block;
+    margin-bottom: 16px;
+    animation: bounce 1.5s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .onboarding-header h2 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 6px;
+  }
+  .onboarding-header p { color: var(--muted); font-size: 14px; }
+  .form-group { margin-bottom: 20px; }
+
+  .level-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .level-card {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; padding: 14px 8px;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg);
+    font-family: inherit;
+    color: var(--muted); cursor: pointer;
+    transition: all 0.18s;
+    font-size: 22px;
+  }
+  .level-card span { font-size: 12px; font-weight: 700; }
+  .level-card:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+  .level-card.selected { border-color: var(--primary); background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(79,70,229,0.35); }
+
+  /* MONTH GRID */
+  #step-calendar .inner {
+    max-width: 860px;
+    margin: 40px auto 0;
+    padding: 0 16px;
+  }
+  .welcome-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 36px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    color: #fff;
+    box-shadow: var(--shadow-lg);
+  }
+  .welcome-bar h1 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+  .welcome-bar p { opacity: 0.75; font-size: 14px; }
+  .year-badge {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 8px 16px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .month-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+  }
+  .month-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.22s;
+    box-shadow: var(--shadow);
+  }
+  .month-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  .month-card .month-icon { font-size: 32px; margin-bottom: 10px; }
+  .month-card span { font-weight: 700; font-size: 16px; color: var(--text); }
+
+  /* OPTIONS */
+  #step-options .inner {
+    max-width: 440px;
+    margin: 48px auto 0;
+    padding: 0 16px;
+  }
+  .options-header {
+    margin-bottom: 28px;
+  }
+  .options-header h2 { font-size: 26px; font-weight: 800; }
+  .options-header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .option-card-primary {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary), #6366f1);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 24px 22px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: inherit;
+    box-shadow: 0 8px 28px rgba(79,70,229,0.35);
+    transition: all 0.2s;
+    margin-bottom: 14px;
+  }
+  .option-card-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(79,70,229,0.45); }
+  .option-card-primary .label { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .option-card-primary .sub { font-size: 12px; opacity: 0.75; }
+  .option-card-disabled {
+    width: 100%;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: not-allowed;
+    font-family: inherit;
+  }
+  .option-card-disabled .label { font-size: 16px; font-weight: 700; color: var(--muted); }
+  .option-card-disabled .sub { font-size: 12px; color: #d1d5db; margin-top: 2px; }
+
+  /* GOALS CARD */
+  .option-card-goals {
+    width: 100%;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 24px 22px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: inherit;
+    box-shadow: 0 8px 28px rgba(245,158,11,0.35);
+    transition: all 0.2s;
+    margin-bottom: 14px;
+  }
+  .option-card-goals:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(245,158,11,0.45); }
+  .option-card-goals .label { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .option-card-goals .sub { font-size: 12px; opacity: 0.75; }
+
+  /* STUDY PROGRESS CARD */
+  .option-card-progress {
+    width: 100%;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 24px 22px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: inherit;
+    box-shadow: 0 8px 28px rgba(16,185,129,0.35);
+    transition: all 0.2s;
+    margin-bottom: 14px;
+  }
+  .option-card-progress:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(16,185,129,0.45); }
+  .option-card-progress .label { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .option-card-progress .sub { font-size: 12px; opacity: 0.75; }
+
+  /* STUDY PROGRESS PAGE */
+  #step-progress .inner {
+    max-width: 700px;
+    margin: 40px auto 0;
+    padding: 0 16px 40px;
+  }
+  .progress-header {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    color: #fff;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 28px rgba(16,185,129,0.3);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .progress-header h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+  .progress-header p  { font-size: 13px; opacity: 0.75; }
+  .progress-type-row {
+    display: flex; gap: 10px; margin-bottom: 24px;
+  }
+  .btn-prog-type {
+    padding: 8px 18px; border-radius: 99px;
+    border: 2px solid var(--border);
+    background: var(--surface); color: var(--muted);
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: all 0.18s;
+  }
+  .btn-prog-type.active {
+    background: #10b981; border-color: #10b981;
+    color: #fff; box-shadow: 0 2px 8px rgba(16,185,129,0.3);
+  }
+  .btn-prog-type:hover:not(.active) { border-color: #10b981; color: #059669; }
+  .week-block {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s;
+  }
+  .week-block:hover { box-shadow: 0 4px 20px rgba(16,185,129,0.12); }
+  .week-title {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border-bottom: 1.5px solid #a7f3d0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .week-title-left { display: flex; align-items: center; gap: 10px; }
+  .week-num { font-size: 15px; font-weight: 800; color: #065f46; }
+  .week-dates { font-size: 12px; color: #059669; font-weight: 600; }
+  .week-badge {
+    font-size: 11px; font-weight: 700;
+    background: #10b981; color: #fff;
+    padding: 3px 10px; border-radius: 99px;
+  }
+  .week-badge.empty { background: #e5e7eb; color: #9ca3af; }
+  .week-chevron { font-size: 14px; color: #059669; transition: transform 0.2s; }
+  .week-block.open .week-chevron { transform: rotate(90deg); }
+  .week-items {
+    display: none;
+    padding: 14px 20px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .week-block.open .week-items { display: flex; }
+  .week-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 14px;
+    background: #f0fdf4;
+    border: 1px solid #d1fae5;
+    border-radius: 10px;
+    animation: fadeUp 0.2s ease;
+  }
+  .week-item-bullet {
+    font-size: 13px; font-weight: 800;
+    color: #059669; min-width: 22px;
+    flex-shrink: 0; padding-top: 1px;
+  }
+  .week-item-date {
+    font-size: 11px; font-weight: 700;
+    color: #6ee7b7; background: #065f46;
+    padding: 2px 8px; border-radius: 99px;
+    flex-shrink: 0; white-space: nowrap;
+  }
+  .week-item-text { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
+  .week-empty {
+    padding: 20px; text-align: center;
+    color: #9ca3af; font-size: 13px; font-weight: 600;
+  }
+
+  /* MONTHLY GOALS PAGE */
+  #step-goals .inner {
+    max-width: 680px;
+    margin: 40px auto 0;
+    padding: 0 16px;
+  }
+  .goals-header {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    color: #fff;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 28px rgba(245,158,11,0.3);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .goals-header h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+  .goals-header p  { font-size: 13px; opacity: 0.75; }
+  .goals-type-row {
+    display: flex; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .btn-list-type {
+    padding: 8px 18px;
+    border-radius: 99px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .btn-list-type.active {
+    background: #f59e0b;
+    border-color: #f59e0b;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(245,158,11,0.3);
+  }
+  .btn-list-type:hover:not(.active) { border-color: #f59e0b; color: #d97706; }
+  .goals-add-row {
+    display: flex; gap: 10px;
+    margin-bottom: 20px;
+  }
+  .goals-add-row input {
+    flex: 1;
+    padding: 13px 16px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .goals-add-row input:focus {
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245,158,11,0.12);
+  }
+  .btn-goals-add {
+    padding: 13px 20px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(245,158,11,0.3);
+  }
+  .btn-goals-add:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(245,158,11,0.4); }
+  .goals-list { display: flex; flex-direction: column; gap: 10px; }
+  .goal-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: all 0.2s;
+    animation: fadeUp 0.25s ease;
+  }
+  .goal-item:hover { border-color: #f59e0b; box-shadow: 0 4px 16px rgba(245,158,11,0.15); }
+  .goal-bullet {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #d97706;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .goal-text {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .goal-delete {
+    background: none; border: none;
+    color: #d1d5db; font-size: 18px;
+    cursor: pointer; padding: 4px;
+    border-radius: 6px; transition: all 0.15s; line-height: 1;
+  }
+  .goal-delete:hover { color: var(--danger); background: #fee2e2; }
+  .goals-empty {
+    text-align: center; padding: 48px 0;
+    color: var(--muted); font-size: 14px;
+  }
+  .goals-empty .icon { font-size: 40px; display: block; margin-bottom: 12px; }
+  .goals-save-btn {
+    width: 100%; margin-top: 24px; padding: 15px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff; border: none; border-radius: var(--radius);
+    font-family: inherit; font-size: 15px; font-weight: 800;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(245,158,11,0.35);
+    transition: all 0.2s; letter-spacing: 0.04em;
+  }
+  .goals-save-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(245,158,11,0.45); }
+
+  /* DATE VIEW */
+  #step-weekly .inner {
+    max-width: 700px;
+    margin: 40px auto 0;
+    padding: 0 16px;
+  }
+  .date-list { display: flex; flex-direction: column; gap: 10px; }
+  .date-row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: all 0.18s;
+  }
+  .date-row:hover { border-color: var(--primary); box-shadow: var(--shadow); transform: translateX(2px); }
+  .date-badge {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 12px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 1;
+    box-shadow: 0 4px 10px rgba(79,70,229,0.3);
+  }
+  .date-badge .month-abbr { font-size: 9px; font-weight: 600; opacity: 0.8; margin-top: 2px; letter-spacing: 0.05em; }
+  .date-info { flex: 1; margin-left: 14px; }
+  .date-info .title { font-weight: 700; font-size: 15px; }
+  .date-info .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .btn-open {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .btn-open:hover { background: var(--primary); color: #fff; }
+  .btn-clear-date {
+    background: #fee2e2;
+    color: var(--danger);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.18s;
+    flex-shrink: 0;
+  }
+  .btn-clear-date:hover { background: var(--danger); color: #fff; }
+
+  /* DAY ITEMS */
+  #step-day-items .inner {
+    max-width: 440px;
+    margin: 48px auto 0;
+    padding: 0 16px;
+  }
+  .day-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .day-header h2 { font-size: 26px; font-weight: 800; }
+  .day-header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .btn-add {
+    width: 40px; height: 40px;
+    background: #d1fae5;
+    color: #059669;
+    border: none;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.18s;
+    flex-shrink: 0;
+  }
+  .btn-add:hover { background: #059669; color: #fff; }
+  .activity-list { display: flex; flex-direction: column; gap: 12px; }
+  .activity-card {
+    width: 100%;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .activity-card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+  .activity-card .left { display: flex; align-items: center; gap: 14px; }
+  .drag-handle {
+    color: #d1d5db;
+    font-size: 18px;
+    cursor: grab;
+    padding: 4px 6px 4px 0;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: color 0.15s;
+  }
+  .drag-handle:active { cursor: grabbing; }
+  .activity-card:hover .drag-handle { color: var(--primary); }
+  .btn-act-delete {
+    background: none;
+    border: none;
+    color: #d1d5db;
+    font-size: 14px;
+    cursor: pointer;
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .btn-act-delete:hover { color: var(--danger); background: #fee2e2; }
+  .activity-card.dragging {
+    opacity: 0.4;
+    border-color: var(--primary);
+    transform: scale(0.98);
+  }
+  .activity-card.drag-over {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  .activity-icon {
+    width: 42px; height: 42px;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .activity-card .name { font-weight: 700; font-size: 15px; color: var(--text); }
+  .arrow { color: #d1d5db; font-size: 18px; }
+
+  /* STUDY TABLE */
+  #step-table .inner {
+    max-width: 960px;
+    margin: 32px auto 0;
+    padding: 0 16px;
+  }
+  .table-wrapper {
+    background: var(--surface);
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .table-header {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    padding: 24px 28px;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    color: #fff;
+  }
+  .table-header h2 { font-size: 22px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+  .table-header p { font-size: 13px; opacity: 0.7; margin-top: 4px; }
+  .class-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .study-table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 540px; }
+  thead tr { background: #eef2ff; border-bottom: 2px solid #c7d2fe; }
+  th {
+    padding: 16px 14px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    border-right: 1px solid #c7d2fe;
+  }
+  th:last-child { border-right: none; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f5f7ff; }
+  td { border-right: 1px solid var(--border); vertical-align: top; }
+  td:last-child { border-right: none; }
+  td.subject-cell {
+    padding: 0;
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--text);
+    background: #f9fafb;
+    text-align: center;
+    vertical-align: middle;
+    border-right: 2px solid var(--border);
+    min-width: 110px;
+  }
+  .subject-pill {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+  td.slot-cell { padding: 6px; }
+  textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px 12px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    line-height: 1.5;
+  }
+  textarea:focus { border-color: var(--primary); background: #f5f7ff; }
+  textarea::placeholder { color: #c4b5fd; font-style: italic; }
+  textarea:disabled { background: #f0fdf4; color: var(--muted); cursor: not-allowed; border-color: transparent; }
+
+  .slot-done { background: #f0fdf4; }
+  .slot-done textarea { text-decoration: line-through; color: #6ee7b7; }
+  .course-title-input {
+    width: 100%; padding: 8px 10px;
+    border: 2px solid #e0e7ff; border-radius: 8px;
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    color: var(--primary-dark); background: #f5f7ff;
+    outline: none; transition: border-color 0.18s;
+  }
+  .course-title-input:focus { border-color: var(--primary); background: #fff; }
+  .slot-check-row {
+    padding: 6px 10px 8px;
+    display: flex; align-items: center;
+  }
+  .slot-checkbox-label {
+    display: flex; align-items: center; gap: 7px;
+    cursor: pointer; font-size: 12px;
+    font-weight: 700; color: var(--muted);
+    text-transform: none; letter-spacing: 0;
+    user-select: none;
+  }
+  .slot-checkbox {
+    width: 16px; height: 16px;
+    accent-color: var(--success);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .slot-checkbox:checked + .slot-check-text {
+    color: var(--success);
+  }
+  .table-footer {
+    padding: 20px 28px;
+    background: #f5f7ff;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .table-footer p { font-size: 12px; color: var(--muted); }
+  .btn-save {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(79,70,229,0.35);
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-save:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(79,70,229,0.45); }
+  .btn-save:active { transform: scale(0.98); }
+
+  /* BACK BTN */
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 20px;
+    padding: 0;
+    transition: opacity 0.15s;
+  }
+  .back-btn:hover { opacity: 0.7; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 99px;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: 0 8px 28px rgba(16,185,129,0.35);
+    z-index: 999;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(30,27,75,0.35);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 32px;
+    width: 90%;
+    max-width: 380px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+  .modal input { margin-bottom: 16px; }
+  .modal-btns { display: flex; gap: 10px; }
+  .modal-scope-btns {
+    display: flex; gap: 10px; margin-bottom: 4px;
+  }
+  .btn-scope {
+    flex: 1;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 10px;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: center;
+    transition: all 0.18s;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .btn-scope:hover { border-color: var(--primary); background: var(--primary-light); }
+  .btn-scope .scope-icon { font-size: 22px; }
+  .btn-scope .scope-label { font-size: 13px; font-weight: 700; color: var(--text); }
+  .btn-scope .scope-sub { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .btn-scope-danger:hover { border-color: var(--danger); background: #fee2e2; }
+  .btn-scope-danger:hover .scope-label { color: var(--danger); }
+
+  /* MONTH TAGS */
+  .month-tag {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 99px;
+    margin-top: 4px; letter-spacing: 0.04em;
+  }
+  .current-tag  { background: #dcfce7; color: #16a34a; }
+  .past-tag     { background: #fef9c3; color: #b45309; }
+  .saved-count  { background: var(--primary-light); color: var(--primary); }
+  .month-card.past-month    { border-color: #fde68a; background: #fffbeb; }
+  .month-card.current-month { border-color: #86efac; background: #f0fdf4; }
+
+  /* DATE ROW VARIANTS */
+  .date-row-past  { background: #fffbeb; border-color: #fde68a; }
+  .date-row-today { background: #f0fdf4; border-color: #86efac; }
+  .today-badge    { background: linear-gradient(135deg, #16a34a, #15803d) !important; }
+
+  /* INLINE TAGS */
+  .tag {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 99px;
+    margin-left: 6px; vertical-align: middle;
+  }
+  .today-tag { background: #dcfce7; color: #15803d; }
+  .saved-tag { background: #d1fae5; color: #065f46; }
+  .draft-tag { background: #fef3c7; color: #92400e; }
+
+  @media (max-width: 600px) {
+    .welcome-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .table-footer { flex-direction: column; align-items: stretch; }
+    .btn-save { justify-content: center; }
+  }
+
+  /* TO-DO LIST PAGE */
+  #step-todo .inner {
+    max-width: 560px;
+    margin: 40px auto 0;
+    padding: 0 16px;
+  }
+  .todo-header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    color: #fff;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-lg);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .todo-header h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+  .todo-header p  { font-size: 13px; opacity: 0.75; }
+  .todo-add-row {
+    display: flex; gap: 10px;
+    margin-bottom: 20px;
+  }
+  .todo-add-row input {
+    flex: 1;
+    padding: 13px 16px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .todo-add-row input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+  }
+  .btn-todo-add {
+    padding: 13px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(79,70,229,0.3);
+  }
+  .btn-todo-add:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(79,70,229,0.4); }
+  .todo-list { display: flex; flex-direction: column; gap: 10px; }
+  .todo-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: all 0.2s;
+    animation: fadeUp 0.25s ease;
+  }
+  .todo-item:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+  .todo-item.done { background: #f0fdf4; border-color: #86efac; }
+  .todo-item.done .todo-text { text-decoration: line-through; color: var(--muted); }
+  .todo-checkbox {
+    width: 22px; height: 22px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.18s;
+    background: var(--bg);
+    font-size: 13px;
+  }
+  .todo-checkbox:hover { border-color: var(--primary); }
+  .todo-item.done .todo-checkbox {
+    background: var(--success);
+    border-color: var(--success);
+    color: #fff;
+  }
+  .todo-text {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+  .todo-delete {
+    background: none;
+    border: none;
+    color: #d1d5db;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.15s;
+    line-height: 1;
+  }
+  .todo-delete:hover { color: var(--danger); background: #fee2e2; }
+  .todo-empty {
+    text-align: center;
+    padding: 48px 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .todo-empty .icon { font-size: 40px; display: block; margin-bottom: 12px; }
+  .todo-stats {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .todo-progress {
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .todo-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+  .todo-save-btn {
+    width: 100%;
+    margin-top: 24px;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(79,70,229,0.35);
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .slot-controls {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 28px;
+    background: #f0f2ff;
+    border-top: 1px solid #c7d2fe;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  #slotCountLabel {
+    font-size: 13px; font-weight: 700;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 5px 14px;
+    border-radius: 99px;
+  }
+  .btn-slot-add, .btn-slot-remove {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .btn-slot-add {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(79,70,229,0.3);
+  }
+  .btn-slot-add:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(79,70,229,0.4); }
+  .btn-slot-add:disabled { background: #d1d5db; color: #9ca3af; cursor: not-allowed; box-shadow: none; transform: none; }
+  .btn-slot-remove {
+    background: #fee2e2;
+    color: var(--danger);
+  }
+  .btn-slot-remove:hover { background: var(--danger); color: #fff; }
+  .btn-slot-remove:disabled { background: #f3f4f6; color: #d1d5db; cursor: not-allowed; }
+
+  /* COMPLETED TODAY SECTION */
+  .completed-section {
+    padding: 24px 28px;
+    border-top: 2px dashed #c7d2fe;
+    background: linear-gradient(135deg, #fafbff, #f5f7ff);
+  }
+  .completed-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .completed-title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 16px; font-weight: 800; color: var(--primary-dark);
+  }
+  .completed-count {
+    font-size: 12px; font-weight: 700;
+    background: var(--primary-light); color: var(--primary);
+    padding: 4px 12px; border-radius: 99px;
+  }
+  .completed-add-row {
+    display: flex; gap: 10px; margin-bottom: 16px;
+  }
+  .completed-add-row input {
+    flex: 1; padding: 12px 16px;
+    border: 2px solid #c7d2fe; border-radius: 12px;
+    font-family: inherit; font-size: 14px; color: var(--text);
+    background: #fff; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .completed-add-row input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+  }
+  .btn-completed-add {
+    padding: 12px 18px;
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: #fff; border: none; border-radius: 12px;
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+  }
+  .btn-completed-add:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(16,185,129,0.4); }
+  .completed-list { display: flex; flex-direction: column; gap: 8px; }
+  .completed-item {
+    display: flex; align-items: center; gap: 12px;
+    background: #fff; border: 1px solid #d1fae5;
+    border-left: 4px solid var(--success);
+    border-radius: 12px; padding: 12px 16px;
+    animation: fadeUp 0.25s ease; transition: all 0.18s;
+  }
+  .completed-item:hover { box-shadow: 0 3px 12px rgba(16,185,129,0.15); transform: translateX(2px); }
+  .completed-check { font-size: 16px; flex-shrink: 0; }
+  .completed-text { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); }
+  .completed-del {
+    background: none; border: none; color: #d1d5db;
+    font-size: 16px; cursor: pointer; padding: 3px 5px;
+    border-radius: 6px; transition: all 0.15s;
+  }
+  .completed-del:hover { color: var(--danger); background: #fee2e2; }
+  .completed-empty {
+    text-align: center; padding: 20px 0;
+    color: #a5b4fc; font-size: 13px; font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-icon">📚</div>
+    <span class="nav-title">Study Partner</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="nav-user" id="navUser" onclick="openSubjectModal()" style="cursor:pointer;" title="Edit subjects">
+      👤 <span id="navUserName"></span> ✏️
+    </div>
+    <button class="btn-nav-sync" onclick="openSyncModal()" title="Export / Import Data">⇅ Sync</button>
+  </div>
+</nav>
+
+<main>
+  <!-- STEP: ONBOARDING -->
+  <div class="step active" id="step-onboarding">
+    <div class="inner">
+      <div class="card">
+        <div class="onboarding-header">
+          <span class="emoji">🎓</span>
+          <h2>Welcome to Study Partner!</h2>
+          <p>Enter your information to get started</p>
+        </div>
+
+        <!-- Step 1: Name -->
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="inputName" placeholder="Enter your name..." />
+        </div>
+
+        <!-- Step 2: Class Type -->
+        <div class="form-group">
+          <label>Select Your Level</label>
+          <div class="level-grid" id="levelGrid">
+            <button class="level-card" data-level="school"    onclick="selectLevel('school')">🏫<span>School</span></button>
+            <button class="level-card" data-level="college"   onclick="selectLevel('college')">🏛️<span>College</span></button>
+            <button class="level-card" data-level="admission" onclick="selectLevel('admission')">📝<span>Admission</span></button>
+            <button class="level-card" data-level="university" onclick="selectLevel('university')">🎓<span>University</span></button>
+          </div>
+        </div>
+
+        <!-- University department selector (hidden by default) -->
+        <div class="form-group" id="deptGroup" style="display:none;">
+          <label>Select Your Department</label>
+          <div class="level-grid" id="deptGrid">
+            <button class="level-card" data-dept="CSE"        onclick="selectDept('CSE')">💻<span>CSE</span></button>
+            <button class="level-card" data-dept="EEE"        onclick="selectDept('EEE')">⚡<span>EEE</span></button>
+            <button class="level-card" data-dept="MECHANICAL" onclick="selectDept('MECHANICAL')">⚙️<span>Mechanical</span></button>
+          </div>
+        </div>
+
+        <!-- Subject chips (hidden until level selected) -->
+        <div class="form-group" id="subjectGroup" style="display:none;">
+          <label id="subjectGroupLabel">Select Your Subjects</label>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;" id="subjectChips"></div>
+          <!-- Others input -->
+          <div id="othersInputGroup" style="display:none;margin-top:12px;">
+            <input type="text" id="othersSubjectInput" placeholder="Type subject name and press Enter..."
+              onkeydown="if(event.key==='Enter'){addOthersSubject();event.preventDefault();}" />
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;" id="customSubjectChips"></div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="submitOnboarding()">
+          Next Step →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP: CALENDAR -->
+  <div class="step" id="step-calendar">
+    <div class="inner">
+      <div class="welcome-bar">
+        <div>
+          <h1>Hi, <span id="welcomeName"></span>! 👋</h1>
+          <p>Class: <span id="welcomeClass"></span> &nbsp;·&nbsp; Subjects: <span id="welcomeSubjects"></span></p>
+        </div>
+        <div class="year-badge" id="yearBadge">📅 2026</div>
+      </div>
+      <p class="section-title">Select a Month</p>
+      <div class="month-grid" id="monthGrid"></div>
+    </div>
+  </div>
+
+  <!-- STEP: OPTIONS -->
+  <div class="step" id="step-options">
+    <div class="inner">
+      <button class="back-btn" onclick="goTo('calendar')">← Back to Months</button>
+      <div class="options-header">
+        <h2 id="optionsTitle"></h2>
+        <p>Select routine type</p>
+      </div>
+      <button class="option-card-primary" onclick="goTo('weekly')">
+        <div>
+          <div class="label">📅 Monthly Routine</div>
+          <div class="sub" id="optionsSub">View all dates of this month</div>
+        </div>
+        <span style="font-size:22px;">›</span>
+      </button>
+      <button class="option-card-goals" onclick="openMonthlyGoals()">
+        <div>
+          <div class="label">🎯 Monthly Goals</div>
+          <div class="sub">Write your goals for this month</div>
+        </div>
+        <span style="font-size:22px;">›</span>
+      </button>
+      <button class="option-card-progress" onclick="openStudyProgress()">
+        <div>
+          <div class="label">📖 Study Progress</div>
+          <div class="sub">Week-wise completed studies log</div>
+        </div>
+        <span style="font-size:22px;">›</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP: WEEKLY / DATE VIEW -->
+  <div class="step" id="step-weekly">
+    <div class="inner">
+      <button class="back-btn" onclick="goTo('options')">← Back to Options</button>
+      <h2 style="font-size:22px;font-weight:800;margin-bottom:20px;" id="weeklyTitle"></h2>
+      <div class="date-list" id="dateList"></div>
+    </div>
+  </div>
+
+  <!-- STEP: DAY ITEMS -->
+  <div class="step" id="step-day-items">
+    <div class="inner">
+      <button class="back-btn" onclick="goTo('weekly')">← Back to Dates</button>
+      <div class="day-header">
+        <div>
+          <h2 id="dayTitle"></h2>
+          <p>Select an activity</p>
+        </div>
+        <button class="btn-add" onclick="openAddModal()" title="Add new">+</button>
+      </div>
+      <div class="activity-list" id="activityList"></div>
+    </div>
+  </div>
+
+  <!-- STEP: STUDY TABLE -->
+  <div class="step" id="step-table">
+    <div class="inner">
+      <button class="back-btn" onclick="goTo('day-items')">← Back</button>
+      <div class="table-wrapper">
+        <div class="table-header">
+          <div>
+            <h2>📝 Study Plan</h2>
+            <p id="tableDate"></p>
+          </div>
+          <div class="class-badge">Class: <span id="tableClass"></span></div>
+        </div>
+        <div class="study-table-scroll">
+          <table>
+            <thead>
+              <tr id="studyTableHead">
+                <th>Subject</th>
+                <th>Study Slot 1</th>
+                <th>Study Slot 2</th>
+                <th>Study Slot 3</th>
+              </tr>
+            </thead>
+            <tbody id="studyTableBody"></tbody>
+          </table>
+        </div>
+        <div class="slot-controls">
+          <span id="slotCountLabel">3 / 5 slots</span>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-slot-remove" id="btnRemoveSlot" onclick="removeSlot()" title="Remove last slot">− Remove Slot</button>
+            <button class="btn-slot-add" id="btnAddSlot" onclick="addSlot()" title="Add slot">+ Add Slot</button>
+          </div>
+        </div>
+        <!-- University: add row button -->
+        <div class="slot-controls" id="uniRowControls" style="display:none;border-top:1px solid #c7d2fe;">
+          <span style="font-size:13px;font-weight:700;color:var(--primary);">Course rows</span>
+          <button class="btn-slot-add" onclick="addUniRow()">+ Add Course Row</button>
+        </div>
+
+        <!-- COMPLETED TODAY SECTION -->
+        <div class="completed-section">
+          <div class="completed-header">
+            <div class="completed-title">
+              <span>✅</span>
+              <span>Completed Today</span>
+            </div>
+            <span class="completed-count" id="completedCount">0 items</span>
+          </div>
+          <div class="completed-add-row">
+            <input type="text" id="completedInput" placeholder="What did you finish today? e.g. Chapter 3 of Math..." onkeydown="if(event.key==='Enter') addCompletedItem()" />
+            <button class="btn-completed-add" onclick="addCompletedItem()">+ Add</button>
+          </div>
+          <div class="completed-list" id="completedList"></div>
+        </div>
+
+        <div class="table-footer">
+          <p id="tableNote">* Data is unique to this specific date</p>
+          <button class="btn-save" onclick="savePlan()">
+            ✅ SAVE TODAY'S PLAN
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP: TO-DO LIST -->
+  <div class="step" id="step-todo">
+    <div class="inner">
+      <button class="back-btn" onclick="goTo('day-items')">← Back to Activities</button>
+      <div class="todo-header">
+        <div>
+          <h2 id="todoTitle">📋 To-Do List</h2>
+          <p id="todoDate"></p>
+        </div>
+        <span style="font-size:36px;" id="todoIcon">📋</span>
+      </div>
+      <div class="todo-add-row">
+        <input type="text" id="todoInput" placeholder="Add a new task..." onkeydown="if(event.key==='Enter') addTodoItem()" />
+        <button class="btn-todo-add" onclick="addTodoItem()">+ Add</button>
+      </div>
+      <div class="todo-stats">
+        <span id="todoStatsText">0 of 0 completed</span>
+        <span id="todoStatsPercent">0%</span>
+      </div>
+      <div class="todo-progress">
+        <div class="todo-progress-bar" id="todoProgressBar" style="width:0%"></div>
+      </div>
+      <div class="todo-list" id="todoList"></div>
+      <button class="todo-save-btn" onclick="saveTodo()">✅ Save List</button>
+    </div>
+  </div>
+  <!-- STEP: MONTHLY GOALS -->
+  <div class="step" id="step-goals">
+    <div class="inner">
+      <button class="back-btn" onclick="goTo('options')">← Back to Options</button>
+      <div class="goals-header">
+        <div>
+          <h2>🎯 Monthly Goals</h2>
+          <p id="goalsMonthLabel"></p>
+        </div>
+        <span style="font-size:36px;">🎯</span>
+      </div>
+      <div class="goals-type-row">
+        <button class="btn-list-type active" id="btnBullet" onclick="setGoalType('bullet')">• Bullet List</button>
+        <button class="btn-list-type" id="btnNumber" onclick="setGoalType('number')">1. Numbered List</button>
+      </div>
+      <div class="goals-add-row">
+        <input type="text" id="goalsInput" placeholder="Write a goal..." onkeydown="if(event.key==='Enter') addGoalItem()" />
+        <button class="btn-goals-add" onclick="addGoalItem()">+ Add</button>
+      </div>
+      <div class="goals-list" id="goalsList"></div>
+      <button class="goals-save-btn" onclick="saveGoals()">✅ Save Goals</button>
+    </div>
+  </div>
+  <!-- STEP: STUDY PROGRESS -->
+  <div class="step" id="step-progress">
+    <div class="inner">
+      <button class="back-btn" onclick="goTo('options')">← Back to Options</button>
+      <div class="progress-header">
+        <div>
+          <h2>📖 Study Progress</h2>
+          <p id="progressMonthLabel"></p>
+        </div>
+        <span style="font-size:36px;">📖</span>
+      </div>
+      <div class="progress-type-row">
+        <button class="btn-prog-type active" id="btnProgBullet" onclick="setProgressType('bullet')">• Bullet</button>
+        <button class="btn-prog-type" id="btnProgNumber" onclick="setProgressType('number')">1. Numbered</button>
+      </div>
+      <div id="weekBlocks"></div>
+    </div>
+  </div>
+</main>
+
+<!-- CREDIT FOOTER -->
+<div style="
+  text-align: center;
+  padding: 20px 16px 32px;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  color: #9ca3af;
+  position: relative;
+  z-index: 1;
+">
+  Designed & Built by
+  <span style="
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: 0.04em;
+  ">Ohab Johory Afad</span>
+  <span style="margin: 0 6px;">·</span>
+  <span style="font-size: 12px;">© 2025 Study Partner</span>
+</div>
+
+<!-- CREDIT FOOTER -->
+<footer style="
+  text-align: center;
+  padding: 20px 16px;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  color: #9ca3af;
+  border-top: 1px solid #f3f4f6;
+  margin-top: 20px;
+">
+  Designed & Built by <strong style="color:#4f46e5;">Ohab Johory Afad</strong> 🎓
+</footer>
+<div class="toast" id="toast">✅ Plan saved successfully!</div>
+
+<!-- MODAL: Edit Subjects -->
+<div class="modal-overlay" id="subjectModal">
+  <div class="modal" style="max-width:440px;">
+    <h3>✏️ Edit Subjects</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Select or deselect your subjects</p>
+    <div class="chips" id="subjectModalChips">
+      <button class="chip" data-sub="Bangla">📖 Bangla</button>
+      <button class="chip" data-sub="English">🔤 English</button>
+      <button class="chip" data-sub="Math">📐 Math</button>
+      <button class="chip" data-sub="Science">🔬 Science</button>
+      <button class="chip" data-sub="Physics">⚛️ Physics</button>
+      <button class="chip" data-sub="Chemistry">🧪 Chemistry</button>
+      <button class="chip" data-sub="Biology">🧬 Biology</button>
+      <button class="chip" data-sub="ICT">💻 ICT</button>
+      <button class="chip" data-sub="Religion">🕌 Religion</button>
+      <button class="chip" data-sub="Social Science">🌍 Social Science</button>
+    </div>
+    <div class="modal-btns" style="margin-top:20px;">
+      <button class="btn btn-primary" onclick="saveSubjectModal()">Save</button>
+      <button class="btn" style="background:#f3f4f6;color:#374151;" onclick="closeSubjectModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Sync / Export / Import -->
+<div class="modal-overlay" id="syncModal">
+  <div class="modal" style="max-width:420px;">
+    <h3>⇅ Sync Data</h3>
+    <div class="sync-tabs">
+      <button class="sync-tab active" id="tabExport" onclick="switchSyncTab('export')">📤 Export</button>
+      <button class="sync-tab" id="tabImport" onclick="switchSyncTab('import')">📥 Import</button>
+    </div>
+
+    <!-- EXPORT PANEL -->
+    <div class="sync-panel active" id="panelExport">
+      <div class="sync-info">
+        <strong>How to sync:</strong><br>
+        1. Click "Generate Code" below<br>
+        2. Copy the code and save it (WhatsApp, Notes, etc.)<br>
+        3. On your other device, paste it in the Import tab
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:12px;" onclick="generateExportCode()">
+        🔄 Generate Code
+      </button>
+      <textarea class="sync-code-box" id="exportCodeBox" placeholder="Your export code will appear here..." readonly></textarea>
+      <button class="btn" id="btnCopyCode" style="width:100%;justify-content:center;background:#f0fdf4;color:#059669;font-weight:700;border:none;border-radius:12px;padding:12px;cursor:pointer;font-family:inherit;font-size:14px;" onclick="copyExportCode()" disabled>
+        📋 Copy Code
+      </button>
+    </div>
+
+    <!-- IMPORT PANEL -->
+    <div class="sync-panel" id="panelImport">
+      <div class="sync-info">
+        <strong>⚠️ Warning:</strong> Importing will <strong>replace</strong> all current data on this device. Make sure to export first if needed!
+      </div>
+      <textarea class="sync-code-box" id="importCodeBox" placeholder="Paste your export code here..."></textarea>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="importData()">
+        📥 Import & Apply
+      </button>
+    </div>
+
+    <button class="btn" style="background:#f3f4f6;color:#374151;width:100%;justify-content:center;margin-top:10px;" onclick="closeSyncModal()">Close</button>
+  </div>
+</div>
+
+<!-- MODAL: Add Activity -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h3>➕ Add New Activity</h3>
+    <div class="form-group">
+      <label>Activity Name</label>
+      <input type="text" id="newActivityInput" placeholder="e.g. Sports, Art..." onkeydown="if(event.key==='Enter') document.getElementById('scopeBtns').style.display='flex'" />
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;font-weight:600;">Apply to:</p>
+    <div class="modal-scope-btns" id="scopeBtns">
+      <button class="btn-scope" onclick="confirmAddActivity('date')">
+        <span class="scope-icon">📅</span>
+        <span class="scope-label">This date only</span>
+        <span class="scope-sub" id="scopeDateLabel"></span>
+      </button>
+      <button class="btn-scope" onclick="confirmAddActivity('month')">
+        <span class="scope-icon">📆</span>
+        <span class="scope-label">All dates in month</span>
+        <span class="scope-sub" id="scopeMonthLabel"></span>
+      </button>
+    </div>
+    <button class="btn" style="background:#f3f4f6;color:#374151;width:100%;justify-content:center;margin-top:10px;" onclick="closeAddModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- MODAL: Delete Activity -->
+<div class="modal-overlay" id="deleteActModal">
+  <div class="modal">
+    <h3>🗑️ Remove Activity</h3>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:18px;">Remove "<strong id="deleteActName"></strong>" from:</p>
+    <div class="modal-scope-btns">
+      <button class="btn-scope btn-scope-danger" onclick="confirmDeleteActivity('date')">
+        <span class="scope-icon">📅</span>
+        <span class="scope-label">This date only</span>
+        <span class="scope-sub" id="deleteScopeDateLabel"></span>
+      </button>
+      <button class="btn-scope btn-scope-danger" onclick="confirmDeleteActivity('month')">
+        <span class="scope-icon">📆</span>
+        <span class="scope-label">All dates in month</span>
+        <span class="scope-sub" id="deleteScopeMonthLabel"></span>
+      </button>
+    </div>
+    <button class="btn" style="background:#f3f4f6;color:#374151;width:100%;justify-content:center;margin-top:10px;" onclick="closeDeleteActModal()">Cancel</button>
+  </div>
+</div>
+
+<script>
+  //  REAL DATE  (updates every time app loads)
+  // ─────────────────────────────────────────
+  const _now          = new Date();
+  const currentYear   = _now.getFullYear();
+  const currentMonthIdx = _now.getMonth();   // 0-based
+  const currentDay    = _now.getDate();
+
+  const months = [
+    { name:"January",  days:31, icon:"❄️" },
+    { name:"February", days: (currentYear % 4 === 0 ? 29 : 28), icon:"🌸" },
+    { name:"March",    days:31, icon:"🌱" },
+    { name:"April",    days:30, icon:"🌷" },
+    { name:"May",      days:31, icon:"☀️" },
+    { name:"June",     days:30, icon:"🌊" },
+    { name:"July",     days:31, icon:"🏖️" },
+    { name:"August",   days:31, icon:"🌻" },
+    { name:"September",days:30, icon:"🍂" },
+    { name:"October",  days:31, icon:"🎃" },
+    { name:"November", days:30, icon:"🍁" },
+    { name:"December", days:31, icon:"🎄" }
+  ];
+
+  // ─────────────────────────────────────────
+  //  STATE  (loaded from localStorage)
+  // ─────────────────────────────────────────
+  const LS_PROFILE  = 'sp_profile';
+  const LS_DATA     = 'sp_tableData';
+  const LS_SAVED    = 'sp_savedDates';
+  const LS_CUSTOM_ACT  = 'sp_customActivities';
+  const LS_HIDDEN_ACT  = 'sp_hiddenActivities';
+  const LS_ACT_ORDER   = 'sp_activityOrder'; // { "March-10": ["Studies","Religion",...] }
+
+  const savedProfile   = JSON.parse(localStorage.getItem(LS_PROFILE)  || 'null');
+  const savedTableData = JSON.parse(localStorage.getItem(LS_DATA)     || '{}');
+  const savedDatesSet  = JSON.parse(localStorage.getItem(LS_SAVED)    || '[]');
+  const savedCustomAct = JSON.parse(localStorage.getItem(LS_CUSTOM_ACT) || '{}');
+  const savedHiddenAct = JSON.parse(localStorage.getItem(LS_HIDDEN_ACT) || '{}');
+  const savedActOrder  = JSON.parse(localStorage.getItem(LS_ACT_ORDER)  || '{}');
+
+  const DEFAULT_ACTIVITIES = [
+    { id: 1, name: 'Studies',  icon: '📚' },
+    { id: 2, name: 'Religion', icon: '🕌' },
+    { id: 3, name: 'Others',   icon: '✏️' }
+  ];
+
+  const state = {
+    name:      savedProfile?.name    || '',
+    class:     savedProfile?.class   || '',
+    subjects:  savedProfile?.subjects || [],
+    selectedMonth: null,
+    selectedDay:   null,
+    tableData:  savedTableData,
+    savedDates: new Set(savedDatesSet),
+    customActivities: savedCustomAct,
+    hiddenActivities: savedHiddenAct,
+    activityOrder:    savedActOrder   // { "March-10": ["Studies","Religion",...] }
+  };
+
+  // ─── Persist helpers ─────────────────────
+  function persistProfile() {
+    localStorage.setItem(LS_PROFILE, JSON.stringify({
+      name: state.name, class: state.class, subjects: state.subjects,
+      level: state.selectedLevel, dept: state.selectedDept,
+      customSubjects: state.customSubjects
+    }));
+  }
+  function persistTableData() {
+    localStorage.setItem(LS_DATA, JSON.stringify(state.tableData));
+  }
+  function persistSavedDates() {
+    localStorage.setItem(LS_SAVED, JSON.stringify([...state.savedDates]));
+  }
+  function persistCustomActivities() {
+    localStorage.setItem(LS_CUSTOM_ACT, JSON.stringify(state.customActivities));
+  }
+  function persistHiddenActivities() {
+    localStorage.setItem(LS_HIDDEN_ACT, JSON.stringify(state.hiddenActivities));
+  }
+  function persistActivityOrder() {
+    localStorage.setItem(LS_ACT_ORDER, JSON.stringify(state.activityOrder));
+  }
+
+  // Build activity list for current date: defaults + month-wide + date-specific, minus hidden, sorted by saved order
+  function getActivitiesForCurrentDate() {
+    const m = state.selectedMonth?.name;
+    const d = state.selectedDay;
+    const dateKey  = `${m}-${d}`;
+    const monthActs = state.customActivities[m]        || [];
+    const dateActs  = state.customActivities[dateKey]  || [];
+    const hidden    = new Set(state.hiddenActivities[dateKey] || []);
+
+    const seen = new Set(DEFAULT_ACTIVITIES.map(a => a.name));
+    const extras = [];
+    [...monthActs, ...dateActs].forEach(a => {
+      if (!seen.has(a.name) && !hidden.has(a.name)) {
+        seen.add(a.name);
+        extras.push(a);
+      }
+    });
+    const all = [...DEFAULT_ACTIVITIES, ...extras];
+
+    // Apply saved order if exists
+    const savedOrder = state.activityOrder[dateKey];
+    if (savedOrder && savedOrder.length) {
+      const map = Object.fromEntries(all.map(a => [a.name, a]));
+      const ordered = savedOrder.filter(n => map[n]).map(n => map[n]);
+      // Add any new activities not in saved order yet
+      all.forEach(a => { if (!savedOrder.includes(a.name)) ordered.push(a); });
+      return ordered;
+    }
+    return all;
+  }
+
+  // ─── Check if a date has been explicitly saved ───
+  function isSaved(monthName, day) {
+    return state.savedDates.has(`${monthName}-${day}`);
+  }
+
+  // ─── Build list of months to show in grid ───
+  // Current month + future months of this year.
+  // Also show past months of this year IF they have saved data.
+  function getVisibleMonths() {
+    const visible = [];
+    months.forEach((m, idx) => {
+      if (idx > currentMonthIdx) {
+        // future month → always show
+        visible.push({ ...m, index: idx, isPast: false, isCurrent: false });
+      } else if (idx === currentMonthIdx) {
+        // current month → always show
+        visible.push({ ...m, index: idx, isPast: false, isCurrent: true });
+      } else {
+        // past month → show only if has saved data
+        const hasSaved = [...state.savedDates].some(key => key.startsWith(m.name + '-'));
+        if (hasSaved) visible.push({ ...m, index: idx, isPast: true, isCurrent: false });
+      }
+    });
+    return visible;
+  }
+
+  // ─── Build list of days to show for a month ───
+  // Current month : today onwards  +  any past days that were saved
+  // Past month    : only saved days
+  // Future month  : all days 1..end
+  function getVisibleDays(m) {
+    const days = [];
+    if (m.index > currentMonthIdx) {
+      // future
+      for (let d = 1; d <= m.days; d++) days.push({ day: d, isPast: false });
+    } else if (m.index === currentMonthIdx) {
+      // past saved days first (before today)
+      for (let d = 1; d < currentDay; d++) {
+        if (isSaved(m.name, d)) days.push({ day: d, isPast: true });
+      }
+      // today onwards
+      for (let d = currentDay; d <= m.days; d++) days.push({ day: d, isPast: false });
+    } else {
+      // past month — only saved
+      for (let d = 1; d <= m.days; d++) {
+        if (isSaved(m.name, d)) days.push({ day: d, isPast: true });
+      }
+    }
+    return days;
+  }
+
+  // ─────────────────────────────────────────
+  //  NAVIGATION
+  // ─────────────────────────────────────────
+  function goTo(stepId) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step-' + stepId).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ─────────────────────────────────────────
+  //  ONBOARDING
+  // ─────────────────────────────────────────
+  document.querySelectorAll('.chip').forEach(chip => {
+    // Restore selected state for returning users
+    if (state.subjects.includes(chip.dataset.sub)) chip.classList.add('selected');
+    chip.addEventListener('click', () => {
+      const sub = chip.dataset.sub;
+      if (state.subjects.includes(sub)) {
+        state.subjects = state.subjects.filter(s => s !== sub);
+        chip.classList.remove('selected');
+      } else {
+        state.subjects.push(sub);
+        chip.classList.add('selected');
+      }
+    });
+  });
+
+  // ─────────────────────────────────────────
+  //  ONBOARDING — level & subject system
+  // ─────────────────────────────────────────
+  const SUBJECT_MAP = {
+    school: [
+      'English 1st', 'English 2nd', 'Bangla 1st', 'Bangla 2nd',
+      'Higher Math', 'General Math', 'Biology 1st', 'Biology 2nd',
+      'Physics 1st', 'Physics 2nd', 'Others'
+    ],
+    college: [
+      'Physics 1st', 'Physics 2nd', 'Math 1st', 'Math 2nd',
+      'Biology 1st', 'Biology 2nd', 'Bangla 1st', 'Bangla 2nd',
+      'English 1st', 'English 2nd'
+    ],
+    admission: [
+      'Physics 1st', 'Physics 2nd', 'Math 1st', 'Math 2nd',
+      'Biology 1st', 'Biology 2nd', 'Bangla 1st', 'Bangla 2nd',
+      'English 1st', 'English 2nd'
+    ],
+    university: [] // courses entered manually, no chips
+  };
+
+  state.selectedLevel = savedProfile?.level || '';
+  state.selectedDept  = savedProfile?.dept  || '';
+  state.customSubjects = savedProfile?.customSubjects || [];
+
+  function selectLevel(level) {
+    state.selectedLevel = level;
+    document.querySelectorAll('.level-card[data-level]').forEach(c =>
+      c.classList.toggle('selected', c.dataset.level === level));
+
+    const deptGroup    = document.getElementById('deptGroup');
+    const subjectGroup = document.getElementById('subjectGroup');
+    const label        = document.getElementById('subjectGroupLabel');
+
+    if (level === 'university') {
+      deptGroup.style.display = 'block';
+      subjectGroup.style.display = 'none';
+      state.selectedDept = '';
+      document.querySelectorAll('.level-card[data-dept]').forEach(c => c.classList.remove('selected'));
+    } else {
+      deptGroup.style.display = 'none';
+      subjectGroup.style.display = 'block';
+      label.textContent = 'Select Your Subjects';
+      renderOnboardingChips(SUBJECT_MAP[level]);
+    }
+  }
+
+  function selectDept(dept) {
+    state.selectedDept = dept;
+    document.querySelectorAll('.level-card[data-dept]').forEach(c =>
+      c.classList.toggle('selected', c.dataset.dept === dept));
+    // University has no subject chips — user adds courses in table
+    document.getElementById('subjectGroup').style.display = 'none';
+  }
+
+  function renderOnboardingChips(subjects) {
+    const container = document.getElementById('subjectChips');
+    container.innerHTML = '';
+    state.customSubjects = [];
+    document.getElementById('othersInputGroup').style.display = 'none';
+    document.getElementById('customSubjectChips').innerHTML = '';
+
+    subjects.forEach(sub => {
+      const btn = document.createElement('button');
+      btn.className = 'chip';
+      btn.dataset.sub = sub;
+      btn.textContent = sub;
+      btn.onclick = () => {
+        btn.classList.toggle('selected');
+        if (sub === 'Others') {
+          document.getElementById('othersInputGroup').style.display =
+            btn.classList.contains('selected') ? 'block' : 'none';
+        }
+      };
+      container.appendChild(btn);
+    });
+  }
+
+  function addOthersSubject() {
+    const input = document.getElementById('othersSubjectInput');
+    const val = input.value.trim();
+    if (!val) return;
+    if (state.customSubjects.includes(val)) return;
+    state.customSubjects.push(val);
+    input.value = '';
+    // Render custom chip
+    const chips = document.getElementById('customSubjectChips');
+    const span = document.createElement('span');
+    span.className = 'chip selected';
+    span.style.cursor = 'default';
+    span.innerHTML = `${val} <button onclick="removeCustomSubject('${val}', this)" style="background:none;border:none;cursor:pointer;color:inherit;font-size:13px;padding:0 0 0 4px;">✕</button>`;
+    chips.appendChild(span);
+  }
+
+  function removeCustomSubject(val, btn) {
+    state.customSubjects = state.customSubjects.filter(s => s !== val);
+    btn.parentElement.remove();
+  }
+
+  function submitOnboarding() {
+    const name = document.getElementById('inputName').value.trim();
+    if (!name) { showToast('⚠️ Please enter your name!', '#ef4444'); return; }
+    if (!state.selectedLevel) { showToast('⚠️ Please select your level!', '#ef4444'); return; }
+    if (state.selectedLevel === 'university' && !state.selectedDept) {
+      showToast('⚠️ Please select your department!', '#ef4444'); return;
+    }
+
+    let subjects = [];
+    if (state.selectedLevel !== 'university') {
+      subjects = [...document.querySelectorAll('#subjectChips .chip.selected')]
+        .map(c => c.dataset.sub).filter(s => s !== 'Others');
+      subjects = [...subjects, ...state.customSubjects];
+      if (subjects.length === 0) { showToast('⚠️ Please select at least one subject!', '#ef4444'); return; }
+    }
+
+    state.name     = name;
+    state.class    = state.selectedLevel === 'university'
+      ? `University · ${state.selectedDept}`
+      : state.selectedLevel.charAt(0).toUpperCase() + state.selectedLevel.slice(1);
+    state.subjects = subjects;
+    persistProfile();
+    showCalendar();
+  }
+
+  function showCalendar() {
+    document.getElementById('navUserName').textContent = state.name;
+    document.getElementById('navUser').classList.add('visible');
+    document.getElementById('welcomeName').textContent = state.name;
+    document.getElementById('welcomeClass').textContent = state.class;
+    document.getElementById('welcomeSubjects').textContent = state.subjects.join(', ');
+    document.getElementById('yearBadge').textContent = `📅 ${currentYear}`;
+    renderMonthGrid();
+    goTo('calendar');
+  }
+
+  // ─────────────────────────────────────────
+  //  MONTH GRID
+  // ─────────────────────────────────────────
+  function renderMonthGrid() {
+    const grid = document.getElementById('monthGrid');
+    grid.innerHTML = '';
+    getVisibleMonths().forEach(m => {
+      const btn = document.createElement('button');
+      btn.className = 'month-card' + (m.isPast ? ' past-month' : '') + (m.isCurrent ? ' current-month' : '');
+      const savedCount = [...state.savedDates].filter(k => k.startsWith(m.name + '-')).length;
+      btn.innerHTML = `
+        <div class="month-icon">${m.icon}</div>
+        <span>${m.name}</span>
+        ${m.isCurrent ? '<span class="month-tag current-tag">Today</span>' : ''}
+        ${m.isPast    ? '<span class="month-tag past-tag">📌 Saved</span>' : ''}
+        ${savedCount  ? `<span class="month-tag saved-count">${savedCount} saved</span>` : ''}
+      `;
+      btn.onclick = () => {
+        state.selectedMonth = m;
+        document.getElementById('optionsTitle').textContent = `${m.name} ${currentYear}`;
+        document.getElementById('optionsSub').textContent = `View all dates of ${m.name}`;
+        goTo('options');
+      };
+      grid.appendChild(btn);
+    });
+  }
+
+  // ─────────────────────────────────────────
+  //  DATE LIST
+  // ─────────────────────────────────────────
+  function renderDateList() {
+    const m = state.selectedMonth;
+    const list = document.getElementById('dateList');
+    document.getElementById('weeklyTitle').textContent = `${m.name} ${currentYear} – Dates`;
+    list.innerHTML = '';
+
+    const days = getVisibleDays(m);
+
+    if (days.length === 0) {
+      list.innerHTML = `<p style="color:var(--muted);text-align:center;padding:40px 0;">
+        No saved data for this month.</p>`;
+      return;
+    }
+
+    days.forEach(({ day, isPast }) => {
+      const saved = isSaved(m.name, day);
+      const hasUnsaved = !saved && state.subjects.some(sub =>
+        [1,2,3].some(slot => state.tableData[`${m.name}-${day}-${sub}-${slot}`])
+      );
+      const isToday = (m.index === currentMonthIdx && day === currentDay);
+
+      const row = document.createElement('div');
+      row.className = 'date-row' + (isPast ? ' date-row-past' : '') + (isToday ? ' date-row-today' : '');
+      row.innerHTML = `
+        <div class="date-badge ${isToday ? 'today-badge' : ''}">
+          ${day}
+          <span class="month-abbr">${m.name.slice(0,3).toUpperCase()}</span>
+        </div>
+        <div class="date-info">
+          <div class="title">
+            My Routine
+            ${isToday  ? '<span class="tag today-tag">Today</span>' : ''}
+            ${saved    ? '<span class="tag saved-tag">✓ Saved</span>' : ''}
+            ${hasUnsaved ? '<span class="tag draft-tag">Draft</span>' : ''}
+          </div>
+          <div class="sub">
+            ${isPast ? '📌 Past · ' : ''}Plan for ${m.name} ${day}, ${currentYear}
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn-open" onclick="openDay(${day})">Open</button>
+          <button class="btn-clear-date" onclick="clearDateData(${day}, event)" title="Clear all data for this date">🗑️</button>
+        </div>
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  function openDay(day) {
+    state.selectedDay = day;
+    const m = state.selectedMonth;
+    document.getElementById('dayTitle').textContent = `${m.name} ${day}`;
+    renderActivityList();
+    goTo('day-items');
+  }
+
+  function clearDateData(day, event) {
+    event.stopPropagation();
+    const m = state.selectedMonth.name;
+    const dateKey = `${m}-${day}`;
+
+    // 1. Remove from savedDates
+    state.savedDates.delete(dateKey);
+    persistSavedDates();
+
+    // 2. Remove tableData keys for this date (all subjects, all slots, all checkboxes)
+    Object.keys(state.tableData).forEach(k => {
+      if (k.startsWith(`${m}-${day}-`)) delete state.tableData[k];
+    });
+    persistTableData();
+
+    // 3. Remove completedData for this date
+    if (state.completedData) {
+      delete state.completedData[dateKey];
+      persistCompletedData();
+    }
+
+    // 4. Remove todoData for this date
+    if (state.todoData) {
+      Object.keys(state.todoData).forEach(k => {
+        if (k.startsWith(dateKey + '-')) delete state.todoData[k];
+      });
+      persistTodoData();
+    }
+
+    // 5. Remove slot count for this date
+    localStorage.removeItem(`slotCount-${m}-${day}`);
+
+    // 6. Remove activity order for this date
+    if (state.activityOrder) {
+      delete state.activityOrder[dateKey];
+      persistActivityOrder();
+    }
+
+    // 7. Remove hidden activities for this date
+    if (state.hiddenActivities) {
+      delete state.hiddenActivities[dateKey];
+      persistHiddenActivities();
+    }
+
+    showToast(`🗑️ ${m} ${day}-এর সব data মুছে গেছে`);
+    renderDateList();
+    renderMonthGrid();
+  }
+
+  // ─────────────────────────────────────────
+  //  ACTIVITY LIST
+  // ─────────────────────────────────────────
+  function renderActivityList() {
+    const list = document.getElementById('activityList');
+    list.innerHTML = '';
+    const activities = getActivitiesForCurrentDate();
+    let dragSrcIdx = null;
+
+    activities.forEach((act, idx) => {
+      const div = document.createElement('div');
+      div.className = 'activity-card';
+      div.draggable = true;
+      div.dataset.idx = idx;
+      const isDefault = DEFAULT_ACTIVITIES.some(a => a.name === act.name);
+      div.innerHTML = `
+        <span class="drag-handle" title="Drag to reorder">⠿</span>
+        <div class="left">
+          <div class="activity-icon">${act.icon}</div>
+          <span class="name">${act.name}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          ${!isDefault ? `<button class="btn-act-delete" title="Remove activity" onclick="openDeleteActivityModal('${act.name.replace(/'/g,"\\'")}', event)">✕</button>` : ''}
+          <span class="arrow">›</span>
+        </div>
+      `;
+
+      div.addEventListener('click', () => {
+        if (div.classList.contains('dragging')) return;
+        if (act.name === 'Studies') openStudyTable();
+        else openTodoPage(act);
+      });
+
+      div.addEventListener('dragstart', e => {
+        dragSrcIdx = idx;
+        setTimeout(() => div.classList.add('dragging'), 0);
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      div.addEventListener('dragend', () => {
+        div.classList.remove('dragging');
+        list.querySelectorAll('.activity-card').forEach(c => c.classList.remove('drag-over'));
+      });
+      div.addEventListener('dragover', e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        list.querySelectorAll('.activity-card').forEach(c => c.classList.remove('drag-over'));
+        if (idx !== dragSrcIdx) div.classList.add('drag-over');
+      });
+      div.addEventListener('dragleave', () => div.classList.remove('drag-over'));
+      div.addEventListener('drop', e => {
+        e.preventDefault();
+        if (dragSrcIdx === null || dragSrcIdx === idx) return;
+        const arr = getActivitiesForCurrentDate();
+        const moved = arr.splice(dragSrcIdx, 1)[0];
+        arr.splice(idx, 0, moved);
+        // Save new order
+        const dateKey = `${state.selectedMonth.name}-${state.selectedDay}`;
+        state.activityOrder[dateKey] = arr.map(a => a.name);
+        persistActivityOrder();
+        dragSrcIdx = null;
+        renderActivityList();
+      });
+
+      list.appendChild(div);
+    });
+  }
+
+  // ─────────────────────────────────────────
+  //  ADD ACTIVITY MODAL
+  // ─────────────────────────────────────────
+  function openAddModal() {
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    document.getElementById('newActivityInput').value = '';
+    document.getElementById('scopeDateLabel').textContent  = `${m.name} ${d} only`;
+    document.getElementById('scopeMonthLabel').textContent = `All of ${m.name}`;
+    document.getElementById('addModal').classList.add('open');
+    setTimeout(() => document.getElementById('newActivityInput').focus(), 100);
+  }
+  function closeAddModal() {
+    document.getElementById('addModal').classList.remove('open');
+  }
+  function confirmAddActivity(scope) {
+    const val = document.getElementById('newActivityInput').value.trim();
+    if (!val) { showToast('⚠️ Please enter an activity name!', '#ef4444'); return; }
+    const icons = ['🎨','⚽','🎵','🏋️','🎯','📷','🌿','🎮'];
+    const icon  = icons[Math.floor(Math.random() * icons.length)];
+    const newAct = { id: Date.now(), name: val, icon };
+
+    const m = state.selectedMonth.name;
+    const d = state.selectedDay;
+    const key = scope === 'month' ? m : `${m}-${d}`;
+
+    if (!state.customActivities[key]) state.customActivities[key] = [];
+    // Avoid duplicate names
+    if (!state.customActivities[key].some(a => a.name === val)) {
+      state.customActivities[key].push(newAct);
+    }
+    persistCustomActivities();
+    renderActivityList();
+    closeAddModal();
+    const scopeLabel = scope === 'month' ? `all of ${m}` : `${m} ${d} only`;
+    showToast(`✅ "${val}" added for ${scopeLabel}!`);
+  }
+  document.getElementById('addModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('addModal')) closeAddModal();
+  });
+
+  // ─────────────────────────────────────────
+  //  DELETE ACTIVITY
+  // ─────────────────────────────────────────
+  state._deleteActName = null;
+
+  function openDeleteActivityModal(name, event) {
+    event.stopPropagation();
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    state._deleteActName = name;
+    document.getElementById('deleteActName').textContent = name;
+    document.getElementById('deleteScopeDateLabel').textContent  = `${m.name} ${d} only`;
+    document.getElementById('deleteScopeMonthLabel').textContent = `All of ${m.name}`;
+    document.getElementById('deleteActModal').classList.add('open');
+  }
+
+  function closeDeleteActModal() {
+    document.getElementById('deleteActModal').classList.remove('open');
+    state._deleteActName = null;
+  }
+
+  function confirmDeleteActivity(scope) {
+    const name = state._deleteActName;
+    const m    = state.selectedMonth.name;
+    const d    = state.selectedDay;
+
+    if (scope === 'date') {
+      // Remove from date-specific key only
+      const dateKey = `${m}-${d}`;
+      if (state.customActivities[dateKey]) {
+        state.customActivities[dateKey] = state.customActivities[dateKey].filter(a => a.name !== name);
+      }
+      showToast(`🗑️ "${name}" removed from ${m} ${d}`);
+    } else {
+      // Remove from month key AND all date keys of this month
+      if (state.customActivities[m]) {
+        state.customActivities[m] = state.customActivities[m].filter(a => a.name !== name);
+      }
+      Object.keys(state.customActivities).forEach(key => {
+        if (key.startsWith(m + '-')) {
+          state.customActivities[key] = state.customActivities[key].filter(a => a.name !== name);
+        }
+      });
+      showToast(`🗑️ "${name}" removed from all of ${m}`);
+    }
+
+    persistCustomActivities();
+    closeDeleteActModal();
+    renderActivityList();
+  }
+
+  document.getElementById('deleteActModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('deleteActModal')) closeDeleteActModal();
+  });
+
+  // ─────────────────────────────────────────
+  //  STUDY TABLE
+  // ─────────────────────────────────────────
+  function openStudyTable() {
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    document.getElementById('tableDate').textContent  = `${m.name} ${d}, ${currentYear}`;
+    document.getElementById('tableClass').textContent = state.class;
+    document.getElementById('tableNote').textContent  = `* Data is unique to ${m.name} ${d}`;
+    const slotKey = `slotCount-${m.name}-${d}`;
+    state.slotCount = parseInt(localStorage.getItem(slotKey) || '3');
+
+    const isUni = state.selectedLevel === 'university';
+    // Show/hide add/remove row buttons for university
+    document.getElementById('uniRowControls').style.display = isUni ? 'flex' : 'none';
+    document.getElementById('btnAddSlot').textContent   = isUni ? '+ Column' : '+ Add Slot';
+    document.getElementById('btnRemoveSlot').textContent = isUni ? '− Column' : '− Remove Slot';
+
+    if (isUni) {
+      const rowKey = `uniRows-${m.name}-${d}`;
+      state.uniRows = JSON.parse(localStorage.getItem(rowKey) || '[""]');
+    }
+
+    renderStudyTable();
+    renderCompletedList();
+    goTo('table');
+  }
+
+  function renderStudyTable() {
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    const slotKey = `slotCount-${m.name}-${d}`;
+    localStorage.setItem(slotKey, state.slotCount);
+    const isUni = state.selectedLevel === 'university';
+
+    // Update thead
+    const head = document.getElementById('studyTableHead');
+    if (isUni) {
+      let headHtml = '<th style="min-width:140px;">Course Title</th>';
+      for (let s = 1; s <= state.slotCount; s++) headHtml += `<th>Column ${s}</th>`;
+      headHtml += '<th style="width:40px;"></th>'; // delete row col
+      head.innerHTML = headHtml;
+    } else {
+      let headHtml = '<th>Subject</th>';
+      for (let s = 1; s <= state.slotCount; s++) headHtml += `<th>Study Slot ${s}</th>`;
+      head.innerHTML = headHtml;
+    }
+
+    // Update tbody
+    const tbody = document.getElementById('studyTableBody');
+    tbody.innerHTML = '';
+
+    if (isUni) {
+      state.uniRows.forEach((courseName, rowIdx) => {
+        const tr = document.createElement('tr');
+        const rowKey = `${m.name}-${d}-row${rowIdx}`;
+        let html = `<td class="subject-cell">
+          <input type="text" class="course-title-input" value="${courseName.replace(/"/g,'&quot;')}"
+            placeholder="Course name..."
+            oninput="saveUniRowTitle(${rowIdx}, this.value)" />
+        </td>`;
+        for (let slot = 1; slot <= state.slotCount; slot++) {
+          const key      = `${rowKey}-slot${slot}`;
+          const checkKey = `${key}-done`;
+          const val      = (state.tableData[key] || '').replace(/</g,'&lt;');
+          const isDone   = state.tableData[checkKey] === 'true';
+          html += `<td class="slot-cell ${isDone ? 'slot-done' : ''}">
+            <textarea placeholder="Notes..."
+              oninput="saveCell('${key}', this.value)"
+              ${isDone ? 'disabled' : ''}>${val}</textarea>
+            <div class="slot-check-row">
+              <label class="slot-checkbox-label">
+                <input type="checkbox" class="slot-checkbox"
+                  ${isDone ? 'checked' : ''}
+                  onchange="toggleSlotDone('${key}', this.checked)" />
+                <span class="slot-check-text">${isDone ? 'Done ✓' : 'Mark as done'}</span>
+              </label>
+            </div>
+          </td>`;
+        }
+        html += `<td style="text-align:center;vertical-align:middle;">
+          <button class="btn-clear-date" style="padding:6px 8px;font-size:12px;"
+            onclick="removeUniRow(${rowIdx})" title="Remove row">✕</button>
+        </td>`;
+        tr.innerHTML = html;
+        tbody.appendChild(tr);
+      });
+    } else {
+      state.subjects.forEach(sub => {
+        const tr = document.createElement('tr');
+        let html = `<td class="subject-cell"><span class="subject-pill">${sub}</span></td>`;
+        for (let slot = 1; slot <= state.slotCount; slot++) {
+          const key      = `${m.name}-${d}-${sub}-${slot}`;
+          const checkKey = `${key}-done`;
+          const val      = (state.tableData[key] || '').replace(/</g,'&lt;');
+          const isDone   = state.tableData[checkKey] === 'true';
+          html += `<td class="slot-cell ${isDone ? 'slot-done' : ''}">
+            <textarea placeholder="Write notes for ${sub}..."
+              oninput="saveCell('${key}', this.value)"
+              ${isDone ? 'disabled' : ''}>${val}</textarea>
+            <div class="slot-check-row">
+              <label class="slot-checkbox-label">
+                <input type="checkbox" class="slot-checkbox"
+                  ${isDone ? 'checked' : ''}
+                  onchange="toggleSlotDone('${key}', this.checked)" />
+                <span class="slot-check-text">${isDone ? 'Done ✓' : 'Mark as done'}</span>
+              </label>
+            </div>
+          </td>`;
+        }
+        tr.innerHTML = html;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Slot controls
+    document.getElementById('slotCountLabel').textContent = isUni
+      ? `${state.slotCount} / 5 columns`
+      : `${state.slotCount} / 5 slots`;
+    document.getElementById('btnAddSlot').disabled    = state.slotCount >= 5;
+    document.getElementById('btnRemoveSlot').disabled = state.slotCount <= 1;
+  }
+
+  function saveUniRowTitle(rowIdx, val) {
+    state.uniRows[rowIdx] = val;
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    localStorage.setItem(`uniRows-${m.name}-${d}`, JSON.stringify(state.uniRows));
+  }
+
+  function addUniRow() {
+    state.uniRows.push('');
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    localStorage.setItem(`uniRows-${m.name}-${d}`, JSON.stringify(state.uniRows));
+    renderStudyTable();
+  }
+
+  function removeUniRow(rowIdx) {
+    state.uniRows.splice(rowIdx, 1);
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    localStorage.setItem(`uniRows-${m.name}-${d}`, JSON.stringify(state.uniRows));
+    renderStudyTable();
+  }
+
+  function addSlot() {
+    if (state.slotCount >= 5) return;
+    state.slotCount++;
+    renderStudyTable();
+  }
+
+  function removeSlot() {
+    if (state.slotCount <= 1) return;
+    state.slotCount--;
+    renderStudyTable();
+  }
+
+  function saveCell(key, value) {
+    state.tableData[key] = value;
+    persistTableData();
+  }
+
+  function toggleSlotDone(key, isDone) {
+    const checkKey = `${key}-done`;
+    state.tableData[checkKey] = String(isDone);
+    persistTableData();
+
+    const text = (state.tableData[key] || '').trim();
+
+    if (isDone && text) {
+      // Add to Completed Today
+      const compKey = getCompletedKey();
+      if (!state.completedData[compKey]) state.completedData[compKey] = [];
+      // Use "Subject – Slot text" as label, avoid duplicates
+      const label = text;
+      if (!state.completedData[compKey].includes(label)) {
+        state.completedData[compKey].push(label);
+        persistCompletedData();
+        renderCompletedList();
+        showToast(`✅ Added to Completed Today!`);
+      }
+    } else if (!isDone && text) {
+      // Remove from Completed Today
+      const compKey = getCompletedKey();
+      if (state.completedData[compKey]) {
+        state.completedData[compKey] = state.completedData[compKey].filter(i => i !== text);
+        persistCompletedData();
+        renderCompletedList();
+      }
+    }
+
+    // Re-render table to update disabled state and styling
+    renderStudyTable();
+  }
+
+  // ─────────────────────────────────────────
+  //  COMPLETED TODAY
+  // ─────────────────────────────────────────
+  const LS_COMPLETED = 'sp_completedData';
+  const savedCompletedData = JSON.parse(localStorage.getItem(LS_COMPLETED) || '{}');
+  state.completedData = savedCompletedData; // { "March-10": ["item1", "item2",...] }
+
+  function persistCompletedData() {
+    localStorage.setItem(LS_COMPLETED, JSON.stringify(state.completedData));
+  }
+
+  function getCompletedKey() {
+    return `${state.selectedMonth.name}-${state.selectedDay}`;
+  }
+
+  function renderCompletedList() {
+    const key   = getCompletedKey();
+    const items = state.completedData[key] || [];
+    const list  = document.getElementById('completedList');
+    list.innerHTML = '';
+
+    document.getElementById('completedCount').textContent =
+      items.length === 0 ? '0 items' : `${items.length} item${items.length > 1 ? 's' : ''}`;
+
+    if (items.length === 0) {
+      list.innerHTML = `<div class="completed-empty">Nothing logged yet — add what you finished today! 📚</div>`;
+      return;
+    }
+
+    items.forEach((text, idx) => {
+      const div = document.createElement('div');
+      div.className = 'completed-item';
+      div.innerHTML = `
+        <span class="completed-check">✅</span>
+        <span class="completed-text">${text}</span>
+        <button class="completed-del" onclick="deleteCompleted(${idx})" title="Remove">✕</button>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function addCompletedItem() {
+    const input = document.getElementById('completedInput');
+    const text  = input.value.trim();
+    if (!text) return;
+    const key = getCompletedKey();
+    if (!state.completedData[key]) state.completedData[key] = [];
+    state.completedData[key].push(text);
+    persistCompletedData();
+    input.value = '';
+    renderCompletedList();
+    input.focus();
+  }
+
+  function deleteCompleted(idx) {
+    const key = getCompletedKey();
+    state.completedData[key].splice(idx, 1);
+    persistCompletedData();
+    renderCompletedList();
+  }
+
+  // ─────────────────────────────────────────
+  //  TO-DO LIST
+  // ─────────────────────────────────────────
+  const LS_TODO = 'sp_todoData';
+  const savedTodoData = JSON.parse(localStorage.getItem(LS_TODO) || '{}');
+  state.todoData = savedTodoData;  // { "MonthName-day-ActivityName": [{text, done},...] }
+
+  function persistTodoData() {
+    localStorage.setItem(LS_TODO, JSON.stringify(state.todoData));
+  }
+
+  function getTodoKey() {
+    const m = state.selectedMonth.name;
+    const d = state.selectedDay;
+    return `${m}-${d}-${state.currentActivity.name}`;
+  }
+
+  function openTodoPage(act) {
+    state.currentActivity = act;
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    document.getElementById('todoTitle').textContent = `${act.icon} ${act.name}`;
+    document.getElementById('todoIcon').textContent = act.icon;
+    document.getElementById('todoDate').textContent = `${m.name} ${d}, ${currentYear}`;
+    document.getElementById('todoInput').value = '';
+    renderTodoList();
+    goTo('todo');
+  }
+
+  function renderTodoList() {
+    const key = getTodoKey();
+    const items = state.todoData[key] || [];
+    const list = document.getElementById('todoList');
+    list.innerHTML = '';
+
+    if (items.length === 0) {
+      list.innerHTML = `<div class="todo-empty">
+        <span class="icon">📝</span>
+        No tasks yet. Add your first task above!
+      </div>`;
+    } else {
+      items.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'todo-item' + (item.done ? ' done' : '');
+        div.innerHTML = `
+          <div class="todo-checkbox" onclick="toggleTodo(${idx})">${item.done ? '✓' : ''}</div>
+          <span class="todo-text">${item.text}</span>
+          <button class="todo-delete" onclick="deleteTodo(${idx})" title="Delete">✕</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+    updateTodoStats();
+  }
+
+  function updateTodoStats() {
+    const key = getTodoKey();
+    const items = state.todoData[key] || [];
+    const done = items.filter(i => i.done).length;
+    const total = items.length;
+    const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+    document.getElementById('todoStatsText').textContent = `${done} of ${total} completed`;
+    document.getElementById('todoStatsPercent').textContent = `${pct}%`;
+    document.getElementById('todoProgressBar').style.width = pct + '%';
+  }
+
+  function addTodoItem() {
+    const input = document.getElementById('todoInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const key = getTodoKey();
+    if (!state.todoData[key]) state.todoData[key] = [];
+    state.todoData[key].push({ text, done: false });
+    persistTodoData();
+    input.value = '';
+    renderTodoList();
+    input.focus();
+  }
+
+  function toggleTodo(idx) {
+    const key = getTodoKey();
+    state.todoData[key][idx].done = !state.todoData[key][idx].done;
+    persistTodoData();
+    renderTodoList();
+  }
+
+  function deleteTodo(idx) {
+    const key = getTodoKey();
+    state.todoData[key].splice(idx, 1);
+    persistTodoData();
+    renderTodoList();
+  }
+
+  function saveTodo() {
+    persistTodoData();
+    const act = state.currentActivity;
+    showToast(`✅ ${act.name} list saved!`);
+    setTimeout(() => goTo('day-items'), 1200);
+  }
+
+  // ─────────────────────────────────────────
+  //  MONTHLY GOALS
+  // ─────────────────────────────────────────
+  const LS_GOALS = 'sp_goalsData';
+  const savedGoalsData = JSON.parse(localStorage.getItem(LS_GOALS) || '{}');
+  state.goalsData = savedGoalsData;  // { "MonthName": { type: 'bullet'|'number', items: [str,...] } }
+  state.goalType = 'bullet';
+
+  function persistGoalsData() {
+    localStorage.setItem(LS_GOALS, JSON.stringify(state.goalsData));
+  }
+
+  function openMonthlyGoals() {
+    const m = state.selectedMonth;
+    document.getElementById('goalsMonthLabel').textContent = `${m.name} ${currentYear}`;
+    // Load saved type
+    const saved = state.goalsData[m.name];
+    state.goalType = saved?.type || 'bullet';
+    updateGoalTypeButtons();
+    renderGoalsList();
+    goTo('goals');
+  }
+
+  function setGoalType(type) {
+    state.goalType = type;
+    const m = state.selectedMonth;
+    if (!state.goalsData[m.name]) state.goalsData[m.name] = { type, items: [] };
+    state.goalsData[m.name].type = type;
+    persistGoalsData();
+    updateGoalTypeButtons();
+    renderGoalsList();
+  }
+
+  function updateGoalTypeButtons() {
+    document.getElementById('btnBullet').classList.toggle('active', state.goalType === 'bullet');
+    document.getElementById('btnNumber').classList.toggle('active', state.goalType === 'number');
+  }
+
+  function renderGoalsList() {
+    const m = state.selectedMonth;
+    const data = state.goalsData[m.name] || { type: 'bullet', items: [] };
+    const list = document.getElementById('goalsList');
+    list.innerHTML = '';
+
+    if (data.items.length === 0) {
+      list.innerHTML = `<div class="goals-empty">
+        <span class="icon">🎯</span>
+        No goals yet. Add your first goal above!
+      </div>`;
+      return;
+    }
+
+    data.items.forEach((text, idx) => {
+      const div = document.createElement('div');
+      div.className = 'goal-item';
+      const label = state.goalType === 'number' ? `${idx + 1}.` : '•';
+      div.innerHTML = `
+        <div class="goal-bullet">${label}</div>
+        <span class="goal-text">${text}</span>
+        <button class="goal-delete" onclick="deleteGoal(${idx})" title="Delete">✕</button>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function addGoalItem() {
+    const input = document.getElementById('goalsInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const m = state.selectedMonth;
+    if (!state.goalsData[m.name]) state.goalsData[m.name] = { type: state.goalType, items: [] };
+    state.goalsData[m.name].items.push(text);
+    persistGoalsData();
+    input.value = '';
+    renderGoalsList();
+    input.focus();
+  }
+
+  function deleteGoal(idx) {
+    const m = state.selectedMonth;
+    state.goalsData[m.name].items.splice(idx, 1);
+    persistGoalsData();
+    renderGoalsList();
+  }
+
+  function saveGoals() {
+    persistGoalsData();
+    showToast(`✅ Goals for ${state.selectedMonth.name} saved!`);
+    setTimeout(() => goTo('options'), 1200);
+  }
+
+  // ─────────────────────────────────────────
+  //  STUDY PROGRESS
+  // ─────────────────────────────────────────
+  state.progressType = 'bullet';
+
+  function openStudyProgress() {
+    const m = state.selectedMonth;
+    document.getElementById('progressMonthLabel').textContent = `${m.name} ${currentYear} — Week-wise completed studies`;
+    state.progressType = 'bullet';
+    document.getElementById('btnProgBullet').classList.add('active');
+    document.getElementById('btnProgNumber').classList.remove('active');
+    renderWeekBlocks();
+    goTo('progress');
+  }
+
+  function setProgressType(type) {
+    state.progressType = type;
+    document.getElementById('btnProgBullet').classList.toggle('active', type === 'bullet');
+    document.getElementById('btnProgNumber').classList.toggle('active', type === 'number');
+    renderWeekBlocks();
+  }
+
+  function renderWeekBlocks() {
+    const m   = state.selectedMonth;
+    const container = document.getElementById('weekBlocks');
+    container.innerHTML = '';
+
+    // Build 4 weeks (week 4 goes to end of month)
+    const weeks = [
+      { num: 1, start: 1,  end: 7  },
+      { num: 2, start: 8,  end: 14 },
+      { num: 3, start: 15, end: 21 },
+      { num: 4, start: 22, end: m.days }
+    ];
+
+    weeks.forEach((wk, wkIdx) => {
+      // Gather all completed items for days in this week
+      const allItems = [];
+      for (let day = wk.start; day <= wk.end; day++) {
+        const key   = `${m.name}-${day}`;
+        const items = (state.completedData || {})[key] || [];
+        items.forEach(text => allItems.push({ day, text }));
+      }
+
+      const block = document.createElement('div');
+      block.className = 'week-block' + (wkIdx === 0 ? ' open' : '');
+
+      const dateRangeText = `${m.name} ${wk.start} – ${m.name} ${wk.end}`;
+      const countText = allItems.length ? `${allItems.length} completed` : 'No entries';
+
+      block.innerHTML = `
+        <div class="week-title" onclick="this.parentElement.classList.toggle('open')">
+          <div class="week-title-left">
+            <span class="week-num">Week ${wk.num}</span>
+            <span class="week-dates">${dateRangeText}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="week-badge ${allItems.length ? '' : 'empty'}">${countText}</span>
+            <span class="week-chevron">›</span>
+          </div>
+        </div>
+        <div class="week-items" id="weekItems-${wk.num}"></div>
+      `;
+      container.appendChild(block);
+
+      // Fill items
+      const itemsDiv = block.querySelector(`#weekItems-${wk.num}`);
+      if (allItems.length === 0) {
+        itemsDiv.innerHTML = `<div class="week-empty">Nothing completed in this week yet.</div>`;
+      } else {
+        let counter = 1;
+        allItems.forEach(({ day, text }) => {
+          const bullet = state.progressType === 'number' ? `${counter++}.` : '•';
+          const item = document.createElement('div');
+          item.className = 'week-item';
+          item.innerHTML = `
+            <span class="week-item-bullet">${bullet}</span>
+            <span class="week-item-date">${m.name.slice(0,3)} ${day}</span>
+            <span class="week-item-text">${text}</span>
+          `;
+          itemsDiv.appendChild(item);
+        });
+      }
+    });
+  }
+
+  function savePlan() {
+    const m = state.selectedMonth.name;
+    const d = state.selectedDay;
+    // Mark this date as explicitly saved
+    state.savedDates.add(`${m}-${d}`);
+    persistSavedDates();
+    persistTableData();
+    showToast(`✅ Plan for ${m} ${d} has been saved!`);
+    setTimeout(() => {
+      renderDateList();
+      renderMonthGrid();   // refresh saved-count badges
+      goTo('weekly');
+    }, 1200);
+  }
+
+  // ─────────────────────────────────────────
+  //  TOAST
+  // ─────────────────────────────────────────
+  let toastTimer;
+  // ─────────────────────────────────────────
+  //  SYNC — EXPORT / IMPORT
+  // ─────────────────────────────────────────
+  function openSyncModal() {
+    switchSyncTab('export');
+    document.getElementById('exportCodeBox').value = '';
+    document.getElementById('importCodeBox').value = '';
+    document.getElementById('btnCopyCode').disabled = true;
+    document.getElementById('syncModal').classList.add('open');
+  }
+  function closeSyncModal() {
+    document.getElementById('syncModal').classList.remove('open');
+  }
+  function switchSyncTab(tab) {
+    document.getElementById('panelExport').classList.toggle('active', tab === 'export');
+    document.getElementById('panelImport').classList.toggle('active', tab === 'import');
+    document.getElementById('tabExport').classList.toggle('active', tab === 'export');
+    document.getElementById('tabImport').classList.toggle('active', tab === 'import');
+  }
+
+  function getAllData() {
+    // Collect every localStorage key belonging to this app
+    const data = {};
+    const prefix = ['sp_', 'slotCount-'];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (prefix.some(p => k.startsWith(p))) {
+        data[k] = localStorage.getItem(k);
+      }
+    }
+    return data;
+  }
+
+  function generateExportCode() {
+    const data = getAllData();
+    const json = JSON.stringify(data);
+    // Base64 encode so it's a single copyable string
+    const code = btoa(unescape(encodeURIComponent(json)));
+    document.getElementById('exportCodeBox').value = code;
+    document.getElementById('btnCopyCode').disabled = false;
+    showToast('✅ Code generated! Now copy it.');
+  }
+
+  function copyExportCode() {
+    const box = document.getElementById('exportCodeBox');
+    navigator.clipboard.writeText(box.value).then(() => {
+      showToast('📋 Code copied to clipboard!');
+    }).catch(() => {
+      box.select();
+      document.execCommand('copy');
+      showToast('📋 Code copied!');
+    });
+  }
+
+  function importData() {
+    const code = document.getElementById('importCodeBox').value.trim();
+    if (!code) { showToast('⚠️ Please paste a code first!', '#ef4444'); return; }
+    try {
+      const json = decodeURIComponent(escape(atob(code)));
+      const data = JSON.parse(json);
+      // Clear existing app data
+      const prefix = ['sp_', 'slotCount-'];
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (prefix.some(p => k.startsWith(p))) keysToRemove.push(k);
+      }
+      keysToRemove.forEach(k => localStorage.removeItem(k));
+      // Write imported data
+      Object.entries(data).forEach(([k, v]) => localStorage.setItem(k, v));
+      showToast('✅ Data imported! Reloading...');
+      closeSyncModal();
+      setTimeout(() => location.reload(), 1500);
+    } catch (e) {
+      showToast('❌ Invalid code! Please check and try again.', '#ef4444');
+    }
+  }
+
+  document.getElementById('syncModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('syncModal')) closeSyncModal();
+  });
+
+  // ─────────────────────────────────────────
+  //  EDIT SUBJECTS MODAL
+  // ─────────────────────────────────────────
+  function openSubjectModal() {
+    if (state.selectedLevel === 'university') {
+      showToast('University users manage courses in the study table!', '#6366f1');
+      return;
+    }
+    const subs = SUBJECT_MAP[state.selectedLevel] || [];
+    const container = document.getElementById('subjectModalChips');
+    container.innerHTML = '';
+    subs.filter(s => s !== 'Others').forEach(sub => {
+      const btn = document.createElement('button');
+      btn.className = 'chip' + (state.subjects.includes(sub) ? ' selected' : '');
+      btn.dataset.sub = sub;
+      btn.textContent = sub;
+      btn.onclick = () => btn.classList.toggle('selected');
+      container.appendChild(btn);
+    });
+    // Show custom subjects
+    state.customSubjects.forEach(sub => {
+      const btn = document.createElement('button');
+      btn.className = 'chip selected';
+      btn.dataset.sub = sub;
+      btn.textContent = sub + ' ✕';
+      btn.onclick = () => {
+        state.customSubjects = state.customSubjects.filter(s => s !== sub);
+        btn.remove();
+      };
+      container.appendChild(btn);
+    });
+    document.getElementById('subjectModal').classList.add('open');
+  }
+  function closeSubjectModal() {
+    document.getElementById('subjectModal').classList.remove('open');
+  }
+  function saveSubjectModal() {
+    const selected = [...document.querySelectorAll('#subjectModalChips .chip.selected')]
+      .map(c => c.dataset.sub);
+    if (selected.length === 0) {
+      showToast('⚠️ Please select at least one subject!', '#ef4444');
+      return;
+    }
+    state.subjects = selected;
+    persistProfile();
+    closeSubjectModal();
+    showToast('✅ Subjects updated!');
+  }
+  document.getElementById('subjectModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('subjectModal')) closeSubjectModal();
+  });
+
+  function showToast(msg, bg = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.background = bg || '';
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ─────────────────────────────────────────
+  //  BOOT  — skip onboarding for returning users
+  // ─────────────────────────────────────────
+  (function boot() {
+    if (savedProfile && savedProfile.name && savedProfile.class && savedProfile.level) {
+      state.selectedLevel   = savedProfile.level   || '';
+      state.selectedDept    = savedProfile.dept    || '';
+      state.customSubjects  = savedProfile.customSubjects || [];
+      showCalendar();
+    }
+  })();
+
+  // Wire up options → weekly
+  document.querySelector('.option-card-primary').addEventListener('click', () => {
+    renderDateList();
+    goTo('weekly');
+  });
+</script>
+</body>
+</html>
