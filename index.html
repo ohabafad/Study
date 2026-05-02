@@ -283,6 +283,27 @@
   .onboarding-header p { color: var(--muted); font-size: 14px; }
   .form-group { margin-bottom: 20px; }
 
+  .level-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .level-card {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; padding: 14px 8px;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg);
+    font-family: inherit;
+    color: var(--muted); cursor: pointer;
+    transition: all 0.18s;
+    font-size: 22px;
+  }
+  .level-card span { font-size: 12px; font-weight: 700; }
+  .level-card:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+  .level-card.selected { border-color: var(--primary); background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(79,70,229,0.35); }
+
   /* MONTH GRID */
   #step-calendar .inner {
     max-width: 860px;
@@ -870,6 +891,14 @@
 
   .slot-done { background: #f0fdf4; }
   .slot-done textarea { text-decoration: line-through; color: #6ee7b7; }
+  .course-title-input {
+    width: 100%; padding: 8px 10px;
+    border: 2px solid #e0e7ff; border-radius: 8px;
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    color: var(--primary-dark); background: #f5f7ff;
+    outline: none; transition: border-color 0.18s;
+  }
+  .course-title-input:focus { border-color: var(--primary); background: #fff; }
   .slot-check-row {
     padding: 6px 10px 8px;
     display: flex; align-items: center;
@@ -1291,8 +1320,8 @@
     <span class="nav-title">Study Partner</span>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
-    <div class="nav-user" id="navUser">
-      👤 <span id="navUserName"></span>
+    <div class="nav-user" id="navUser" onclick="openSubjectModal()" style="cursor:pointer;" title="Edit subjects">
+      👤 <span id="navUserName"></span> ✏️
     </div>
     <button class="btn-nav-sync" onclick="openSyncModal()" title="Export / Import Data">⇅ Sync</button>
   </div>
@@ -1308,29 +1337,46 @@
           <h2>Welcome to Study Partner!</h2>
           <p>Enter your information to get started</p>
         </div>
+
+        <!-- Step 1: Name -->
         <div class="form-group">
           <label>Your Name</label>
           <input type="text" id="inputName" placeholder="Enter your name..." />
         </div>
+
+        <!-- Step 2: Class Type -->
         <div class="form-group">
-          <label>Your Class</label>
-          <input type="text" id="inputClass" placeholder="Enter your class..." />
-        </div>
-        <div class="form-group">
-          <label>Select Your Subjects</label>
-          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;" id="subjectChips">
-            <button class="chip" data-sub="Bangla">📖 Bangla</button>
-            <button class="chip" data-sub="English">🔤 English</button>
-            <button class="chip" data-sub="Math">📐 Math</button>
-            <button class="chip" data-sub="Science">🔬 Science</button>
-            <button class="chip" data-sub="Physics">⚛️ Physics</button>
-            <button class="chip" data-sub="Chemistry">🧪 Chemistry</button>
-            <button class="chip" data-sub="Biology">🧬 Biology</button>
-            <button class="chip" data-sub="ICT">💻 ICT</button>
-            <button class="chip" data-sub="Religion">🕌 Religion</button>
-            <button class="chip" data-sub="Social Science">🌍 Social Science</button>
+          <label>Select Your Level</label>
+          <div class="level-grid" id="levelGrid">
+            <button class="level-card" data-level="school"    onclick="selectLevel('school')">🏫<span>School</span></button>
+            <button class="level-card" data-level="college"   onclick="selectLevel('college')">🏛️<span>College</span></button>
+            <button class="level-card" data-level="admission" onclick="selectLevel('admission')">📝<span>Admission</span></button>
+            <button class="level-card" data-level="university" onclick="selectLevel('university')">🎓<span>University</span></button>
           </div>
         </div>
+
+        <!-- University department selector (hidden by default) -->
+        <div class="form-group" id="deptGroup" style="display:none;">
+          <label>Select Your Department</label>
+          <div class="level-grid" id="deptGrid">
+            <button class="level-card" data-dept="CSE"        onclick="selectDept('CSE')">💻<span>CSE</span></button>
+            <button class="level-card" data-dept="EEE"        onclick="selectDept('EEE')">⚡<span>EEE</span></button>
+            <button class="level-card" data-dept="MECHANICAL" onclick="selectDept('MECHANICAL')">⚙️<span>Mechanical</span></button>
+          </div>
+        </div>
+
+        <!-- Subject chips (hidden until level selected) -->
+        <div class="form-group" id="subjectGroup" style="display:none;">
+          <label id="subjectGroupLabel">Select Your Subjects</label>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;" id="subjectChips"></div>
+          <!-- Others input -->
+          <div id="othersInputGroup" style="display:none;margin-top:12px;">
+            <input type="text" id="othersSubjectInput" placeholder="Type subject name and press Enter..."
+              onkeydown="if(event.key==='Enter'){addOthersSubject();event.preventDefault();}" />
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;" id="customSubjectChips"></div>
+          </div>
+        </div>
+
         <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="submitOnboarding()">
           Next Step →
         </button>
@@ -1441,6 +1487,11 @@
             <button class="btn-slot-add" id="btnAddSlot" onclick="addSlot()" title="Add slot">+ Add Slot</button>
           </div>
         </div>
+        <!-- University: add row button -->
+        <div class="slot-controls" id="uniRowControls" style="display:none;border-top:1px solid #c7d2fe;">
+          <span style="font-size:13px;font-weight:700;color:var(--primary);">Course rows</span>
+          <button class="btn-slot-add" onclick="addUniRow()">+ Add Course Row</button>
+        </div>
 
         <!-- COMPLETED TODAY SECTION -->
         <div class="completed-section">
@@ -1537,8 +1588,63 @@
   </div>
 </main>
 
-<!-- TOAST -->
+<!-- CREDIT FOOTER -->
+<div style="
+  text-align: center;
+  padding: 20px 16px 32px;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  color: #9ca3af;
+  position: relative;
+  z-index: 1;
+">
+  Designed & Built by
+  <span style="
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: 0.04em;
+  ">Ohab Johory Afad</span>
+  <span style="margin: 0 6px;">·</span>
+  <span style="font-size: 12px;">© 2025 Study Partner</span>
+</div>
+
+<!-- CREDIT FOOTER -->
+<footer style="
+  text-align: center;
+  padding: 20px 16px;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  color: #9ca3af;
+  border-top: 1px solid #f3f4f6;
+  margin-top: 20px;
+">
+  Designed & Built by <strong style="color:#4f46e5;">Ohab Johory Afad</strong> 🎓
+</footer>
 <div class="toast" id="toast">✅ Plan saved successfully!</div>
+
+<!-- MODAL: Edit Subjects -->
+<div class="modal-overlay" id="subjectModal">
+  <div class="modal" style="max-width:440px;">
+    <h3>✏️ Edit Subjects</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Select or deselect your subjects</p>
+    <div class="chips" id="subjectModalChips">
+      <button class="chip" data-sub="Bangla">📖 Bangla</button>
+      <button class="chip" data-sub="English">🔤 English</button>
+      <button class="chip" data-sub="Math">📐 Math</button>
+      <button class="chip" data-sub="Science">🔬 Science</button>
+      <button class="chip" data-sub="Physics">⚛️ Physics</button>
+      <button class="chip" data-sub="Chemistry">🧪 Chemistry</button>
+      <button class="chip" data-sub="Biology">🧬 Biology</button>
+      <button class="chip" data-sub="ICT">💻 ICT</button>
+      <button class="chip" data-sub="Religion">🕌 Religion</button>
+      <button class="chip" data-sub="Social Science">🌍 Social Science</button>
+    </div>
+    <div class="modal-btns" style="margin-top:20px;">
+      <button class="btn btn-primary" onclick="saveSubjectModal()">Save</button>
+      <button class="btn" style="background:#f3f4f6;color:#374151;" onclick="closeSubjectModal()">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL: Sync / Export / Import -->
 <div class="modal-overlay" id="syncModal">
@@ -1689,7 +1795,9 @@
   // ─── Persist helpers ─────────────────────
   function persistProfile() {
     localStorage.setItem(LS_PROFILE, JSON.stringify({
-      name: state.name, class: state.class, subjects: state.subjects
+      name: state.name, class: state.class, subjects: state.subjects,
+      level: state.selectedLevel, dept: state.selectedDept,
+      customSubjects: state.customSubjects
     }));
   }
   function persistTableData() {
@@ -1817,15 +1925,127 @@
     });
   });
 
+  // ─────────────────────────────────────────
+  //  ONBOARDING — level & subject system
+  // ─────────────────────────────────────────
+  const SUBJECT_MAP = {
+    school: [
+      'English 1st', 'English 2nd', 'Bangla 1st', 'Bangla 2nd',
+      'Higher Math', 'General Math', 'Biology 1st', 'Biology 2nd',
+      'Physics 1st', 'Physics 2nd', 'Others'
+    ],
+    college: [
+      'Physics 1st', 'Physics 2nd', 'Math 1st', 'Math 2nd',
+      'Biology 1st', 'Biology 2nd', 'Bangla 1st', 'Bangla 2nd',
+      'English 1st', 'English 2nd'
+    ],
+    admission: [
+      'Physics 1st', 'Physics 2nd', 'Math 1st', 'Math 2nd',
+      'Biology 1st', 'Biology 2nd', 'Bangla 1st', 'Bangla 2nd',
+      'English 1st', 'English 2nd'
+    ],
+    university: [] // courses entered manually, no chips
+  };
+
+  state.selectedLevel = savedProfile?.level || '';
+  state.selectedDept  = savedProfile?.dept  || '';
+  state.customSubjects = savedProfile?.customSubjects || [];
+
+  function selectLevel(level) {
+    state.selectedLevel = level;
+    document.querySelectorAll('.level-card[data-level]').forEach(c =>
+      c.classList.toggle('selected', c.dataset.level === level));
+
+    const deptGroup    = document.getElementById('deptGroup');
+    const subjectGroup = document.getElementById('subjectGroup');
+    const label        = document.getElementById('subjectGroupLabel');
+
+    if (level === 'university') {
+      deptGroup.style.display = 'block';
+      subjectGroup.style.display = 'none';
+      state.selectedDept = '';
+      document.querySelectorAll('.level-card[data-dept]').forEach(c => c.classList.remove('selected'));
+    } else {
+      deptGroup.style.display = 'none';
+      subjectGroup.style.display = 'block';
+      label.textContent = 'Select Your Subjects';
+      renderOnboardingChips(SUBJECT_MAP[level]);
+    }
+  }
+
+  function selectDept(dept) {
+    state.selectedDept = dept;
+    document.querySelectorAll('.level-card[data-dept]').forEach(c =>
+      c.classList.toggle('selected', c.dataset.dept === dept));
+    // University has no subject chips — user adds courses in table
+    document.getElementById('subjectGroup').style.display = 'none';
+  }
+
+  function renderOnboardingChips(subjects) {
+    const container = document.getElementById('subjectChips');
+    container.innerHTML = '';
+    state.customSubjects = [];
+    document.getElementById('othersInputGroup').style.display = 'none';
+    document.getElementById('customSubjectChips').innerHTML = '';
+
+    subjects.forEach(sub => {
+      const btn = document.createElement('button');
+      btn.className = 'chip';
+      btn.dataset.sub = sub;
+      btn.textContent = sub;
+      btn.onclick = () => {
+        btn.classList.toggle('selected');
+        if (sub === 'Others') {
+          document.getElementById('othersInputGroup').style.display =
+            btn.classList.contains('selected') ? 'block' : 'none';
+        }
+      };
+      container.appendChild(btn);
+    });
+  }
+
+  function addOthersSubject() {
+    const input = document.getElementById('othersSubjectInput');
+    const val = input.value.trim();
+    if (!val) return;
+    if (state.customSubjects.includes(val)) return;
+    state.customSubjects.push(val);
+    input.value = '';
+    // Render custom chip
+    const chips = document.getElementById('customSubjectChips');
+    const span = document.createElement('span');
+    span.className = 'chip selected';
+    span.style.cursor = 'default';
+    span.innerHTML = `${val} <button onclick="removeCustomSubject('${val}', this)" style="background:none;border:none;cursor:pointer;color:inherit;font-size:13px;padding:0 0 0 4px;">✕</button>`;
+    chips.appendChild(span);
+  }
+
+  function removeCustomSubject(val, btn) {
+    state.customSubjects = state.customSubjects.filter(s => s !== val);
+    btn.parentElement.remove();
+  }
+
   function submitOnboarding() {
     const name = document.getElementById('inputName').value.trim();
-    const cls  = document.getElementById('inputClass').value.trim();
-    if (!name || !cls || state.subjects.length === 0) {
-      showToast('⚠️ Please fill in all fields!', '#ef4444');
-      return;
+    if (!name) { showToast('⚠️ Please enter your name!', '#ef4444'); return; }
+    if (!state.selectedLevel) { showToast('⚠️ Please select your level!', '#ef4444'); return; }
+    if (state.selectedLevel === 'university' && !state.selectedDept) {
+      showToast('⚠️ Please select your department!', '#ef4444'); return;
     }
-    state.name  = name;
-    state.class = cls;
+
+    let subjects = [];
+    if (state.selectedLevel !== 'university') {
+      subjects = [...document.querySelectorAll('#subjectChips .chip.selected')]
+        .map(c => c.dataset.sub).filter(s => s !== 'Others');
+      subjects = [...subjects, ...state.customSubjects];
+      if (subjects.length === 0) { showToast('⚠️ Please select at least one subject!', '#ef4444'); return; }
+    }
+
+    state.name     = name;
+    state.class    = state.selectedLevel === 'university'
+      ? `University · ${state.selectedDept}`
+      : state.selectedLevel.charAt(0).toUpperCase() + state.selectedLevel.slice(1);
+    state.subjects = subjects;
     persistProfile();
     showCalendar();
   }
@@ -2150,6 +2370,18 @@
     document.getElementById('tableNote').textContent  = `* Data is unique to ${m.name} ${d}`;
     const slotKey = `slotCount-${m.name}-${d}`;
     state.slotCount = parseInt(localStorage.getItem(slotKey) || '3');
+
+    const isUni = state.selectedLevel === 'university';
+    // Show/hide add/remove row buttons for university
+    document.getElementById('uniRowControls').style.display = isUni ? 'flex' : 'none';
+    document.getElementById('btnAddSlot').textContent   = isUni ? '+ Column' : '+ Add Slot';
+    document.getElementById('btnRemoveSlot').textContent = isUni ? '− Column' : '− Remove Slot';
+
+    if (isUni) {
+      const rowKey = `uniRows-${m.name}-${d}`;
+      state.uniRows = JSON.parse(localStorage.getItem(rowKey) || '[""]');
+    }
+
     renderStudyTable();
     renderCompletedList();
     goTo('table');
@@ -2160,46 +2392,117 @@
     const d = state.selectedDay;
     const slotKey = `slotCount-${m.name}-${d}`;
     localStorage.setItem(slotKey, state.slotCount);
+    const isUni = state.selectedLevel === 'university';
 
     // Update thead
     const head = document.getElementById('studyTableHead');
-    let headHtml = '<th>Subject</th>';
-    for (let s = 1; s <= state.slotCount; s++) headHtml += `<th>Study Slot ${s}</th>`;
-    head.innerHTML = headHtml;
+    if (isUni) {
+      let headHtml = '<th style="min-width:140px;">Course Title</th>';
+      for (let s = 1; s <= state.slotCount; s++) headHtml += `<th>Column ${s}</th>`;
+      headHtml += '<th style="width:40px;"></th>'; // delete row col
+      head.innerHTML = headHtml;
+    } else {
+      let headHtml = '<th>Subject</th>';
+      for (let s = 1; s <= state.slotCount; s++) headHtml += `<th>Study Slot ${s}</th>`;
+      head.innerHTML = headHtml;
+    }
 
     // Update tbody
     const tbody = document.getElementById('studyTableBody');
     tbody.innerHTML = '';
-    state.subjects.forEach(sub => {
-      const tr = document.createElement('tr');
-      let html = `<td class="subject-cell"><span class="subject-pill">${sub}</span></td>`;
-      for (let slot = 1; slot <= state.slotCount; slot++) {
-        const key     = `${m.name}-${d}-${sub}-${slot}`;
-        const checkKey = `${key}-done`;
-        const val     = (state.tableData[key] || '').replace(/</g,'&lt;');
-        const isDone  = state.tableData[checkKey] === 'true';
-        html += `<td class="slot-cell ${isDone ? 'slot-done' : ''}">
-          <textarea placeholder="Write notes for ${sub}..."
-            oninput="saveCell('${key}', this.value)"
-            ${isDone ? 'disabled' : ''}>${val}</textarea>
-          <div class="slot-check-row">
-            <label class="slot-checkbox-label">
-              <input type="checkbox" class="slot-checkbox"
-                ${isDone ? 'checked' : ''}
-                onchange="toggleSlotDone('${key}', this.checked)" />
-              <span class="slot-check-text">${isDone ? 'Done ✓' : 'Mark as done'}</span>
-            </label>
-          </div>
-        </td>`;
-      }
-      tr.innerHTML = html;
-      tbody.appendChild(tr);
-    });
 
-    // Update slot controls
-    document.getElementById('slotCountLabel').textContent = `${state.slotCount} / 5 slots`;
+    if (isUni) {
+      state.uniRows.forEach((courseName, rowIdx) => {
+        const tr = document.createElement('tr');
+        const rowKey = `${m.name}-${d}-row${rowIdx}`;
+        let html = `<td class="subject-cell">
+          <input type="text" class="course-title-input" value="${courseName.replace(/"/g,'&quot;')}"
+            placeholder="Course name..."
+            oninput="saveUniRowTitle(${rowIdx}, this.value)" />
+        </td>`;
+        for (let slot = 1; slot <= state.slotCount; slot++) {
+          const key      = `${rowKey}-slot${slot}`;
+          const checkKey = `${key}-done`;
+          const val      = (state.tableData[key] || '').replace(/</g,'&lt;');
+          const isDone   = state.tableData[checkKey] === 'true';
+          html += `<td class="slot-cell ${isDone ? 'slot-done' : ''}">
+            <textarea placeholder="Notes..."
+              oninput="saveCell('${key}', this.value)"
+              ${isDone ? 'disabled' : ''}>${val}</textarea>
+            <div class="slot-check-row">
+              <label class="slot-checkbox-label">
+                <input type="checkbox" class="slot-checkbox"
+                  ${isDone ? 'checked' : ''}
+                  onchange="toggleSlotDone('${key}', this.checked)" />
+                <span class="slot-check-text">${isDone ? 'Done ✓' : 'Mark as done'}</span>
+              </label>
+            </div>
+          </td>`;
+        }
+        html += `<td style="text-align:center;vertical-align:middle;">
+          <button class="btn-clear-date" style="padding:6px 8px;font-size:12px;"
+            onclick="removeUniRow(${rowIdx})" title="Remove row">✕</button>
+        </td>`;
+        tr.innerHTML = html;
+        tbody.appendChild(tr);
+      });
+    } else {
+      state.subjects.forEach(sub => {
+        const tr = document.createElement('tr');
+        let html = `<td class="subject-cell"><span class="subject-pill">${sub}</span></td>`;
+        for (let slot = 1; slot <= state.slotCount; slot++) {
+          const key      = `${m.name}-${d}-${sub}-${slot}`;
+          const checkKey = `${key}-done`;
+          const val      = (state.tableData[key] || '').replace(/</g,'&lt;');
+          const isDone   = state.tableData[checkKey] === 'true';
+          html += `<td class="slot-cell ${isDone ? 'slot-done' : ''}">
+            <textarea placeholder="Write notes for ${sub}..."
+              oninput="saveCell('${key}', this.value)"
+              ${isDone ? 'disabled' : ''}>${val}</textarea>
+            <div class="slot-check-row">
+              <label class="slot-checkbox-label">
+                <input type="checkbox" class="slot-checkbox"
+                  ${isDone ? 'checked' : ''}
+                  onchange="toggleSlotDone('${key}', this.checked)" />
+                <span class="slot-check-text">${isDone ? 'Done ✓' : 'Mark as done'}</span>
+              </label>
+            </div>
+          </td>`;
+        }
+        tr.innerHTML = html;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Slot controls
+    document.getElementById('slotCountLabel').textContent = isUni
+      ? `${state.slotCount} / 5 columns`
+      : `${state.slotCount} / 5 slots`;
     document.getElementById('btnAddSlot').disabled    = state.slotCount >= 5;
     document.getElementById('btnRemoveSlot').disabled = state.slotCount <= 1;
+  }
+
+  function saveUniRowTitle(rowIdx, val) {
+    state.uniRows[rowIdx] = val;
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    localStorage.setItem(`uniRows-${m.name}-${d}`, JSON.stringify(state.uniRows));
+  }
+
+  function addUniRow() {
+    state.uniRows.push('');
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    localStorage.setItem(`uniRows-${m.name}-${d}`, JSON.stringify(state.uniRows));
+    renderStudyTable();
+  }
+
+  function removeUniRow(rowIdx) {
+    state.uniRows.splice(rowIdx, 1);
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    localStorage.setItem(`uniRows-${m.name}-${d}`, JSON.stringify(state.uniRows));
+    renderStudyTable();
   }
 
   function addSlot() {
@@ -2691,6 +2994,58 @@
     if (e.target === document.getElementById('syncModal')) closeSyncModal();
   });
 
+  // ─────────────────────────────────────────
+  //  EDIT SUBJECTS MODAL
+  // ─────────────────────────────────────────
+  function openSubjectModal() {
+    if (state.selectedLevel === 'university') {
+      showToast('University users manage courses in the study table!', '#6366f1');
+      return;
+    }
+    const subs = SUBJECT_MAP[state.selectedLevel] || [];
+    const container = document.getElementById('subjectModalChips');
+    container.innerHTML = '';
+    subs.filter(s => s !== 'Others').forEach(sub => {
+      const btn = document.createElement('button');
+      btn.className = 'chip' + (state.subjects.includes(sub) ? ' selected' : '');
+      btn.dataset.sub = sub;
+      btn.textContent = sub;
+      btn.onclick = () => btn.classList.toggle('selected');
+      container.appendChild(btn);
+    });
+    // Show custom subjects
+    state.customSubjects.forEach(sub => {
+      const btn = document.createElement('button');
+      btn.className = 'chip selected';
+      btn.dataset.sub = sub;
+      btn.textContent = sub + ' ✕';
+      btn.onclick = () => {
+        state.customSubjects = state.customSubjects.filter(s => s !== sub);
+        btn.remove();
+      };
+      container.appendChild(btn);
+    });
+    document.getElementById('subjectModal').classList.add('open');
+  }
+  function closeSubjectModal() {
+    document.getElementById('subjectModal').classList.remove('open');
+  }
+  function saveSubjectModal() {
+    const selected = [...document.querySelectorAll('#subjectModalChips .chip.selected')]
+      .map(c => c.dataset.sub);
+    if (selected.length === 0) {
+      showToast('⚠️ Please select at least one subject!', '#ef4444');
+      return;
+    }
+    state.subjects = selected;
+    persistProfile();
+    closeSubjectModal();
+    showToast('✅ Subjects updated!');
+  }
+  document.getElementById('subjectModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('subjectModal')) closeSubjectModal();
+  });
+
   function showToast(msg, bg = '') {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -2704,18 +3059,12 @@
   //  BOOT  — skip onboarding for returning users
   // ─────────────────────────────────────────
   (function boot() {
-    if (savedProfile && savedProfile.name && savedProfile.class && savedProfile.subjects?.length) {
-      // Restore form fields in case they visit onboarding again
-      document.getElementById('inputName').value  = savedProfile.name;
-      document.getElementById('inputClass').value = savedProfile.class;
-      savedProfile.subjects.forEach(sub => {
-        const chip = document.querySelector(`.chip[data-sub="${sub}"]`);
-        if (chip) chip.classList.add('selected');
-      });
-      // Jump straight to calendar
+    if (savedProfile && savedProfile.name && savedProfile.class && savedProfile.level) {
+      state.selectedLevel   = savedProfile.level   || '';
+      state.selectedDept    = savedProfile.dept    || '';
+      state.customSubjects  = savedProfile.customSubjects || [];
       showCalendar();
     }
-    // else: default is onboarding (already active)
   })();
 
   // Wire up options → weekly
