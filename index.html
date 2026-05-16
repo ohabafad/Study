@@ -1029,6 +1029,30 @@
   .btn-scope-danger:hover { border-color: var(--danger); background: #fee2e2; }
   .btn-scope-danger:hover .scope-label { color: var(--danger); }
 
+  /* SPECIFIC DATE PICKER */
+  .date-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+  .dp-day {
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .dp-day:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+  .dp-day.selected { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(79,70,229,0.3); }
+  .dp-day.past { opacity: 0.4; }
+  .dp-day.today { border-color: var(--success); color: var(--success); }
+  .dp-day.today.selected { background: var(--success); border-color: var(--success); color: #fff; }
+
   /* MONTH TAGS */
   .month-tag {
     display: inline-block;
@@ -1310,6 +1334,144 @@
     text-align: center; padding: 20px 0;
     color: #a5b4fc; font-size: 13px; font-weight: 600;
   }
+
+  /* CALENDAR VIEW BUTTON */
+  .btn-calview {
+    padding: 9px 18px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border-bright);
+    color: var(--primary);
+    border-radius: 99px;
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: all 0.18s;
+    white-space: nowrap;
+  }
+  .btn-calview:hover { background: var(--primary); color: #fff; box-shadow: var(--glow); }
+
+  /* CALENDAR VIEW PAGE */
+  .calview-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    color: #fff;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+  }
+  .calview-header h2 { font-size: 22px; font-weight: 800; }
+  .calview-header p  { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+  .calview-nav {
+    background: rgba(255,255,255,0.15);
+    border: none; border-radius: 10px;
+    color: #fff; font-size: 22px; font-weight: 700;
+    width: 40px; height: 40px;
+    cursor: pointer; transition: all 0.18s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .calview-nav:hover { background: rgba(255,255,255,0.3); }
+  .calview-dow {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .calview-dow span {
+    font-size: 11px; font-weight: 700;
+    color: var(--muted); padding: 6px 0; text-transform: uppercase;
+  }
+  .calview-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    gap: 5px; margin-bottom: 20px;
+  }
+  .cv-cell {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative;
+    font-size: 14px; font-weight: 700;
+    cursor: default;
+    transition: all 0.15s;
+    border: 1.5px solid transparent;
+    gap: 3px;
+  }
+  .cv-cell.empty { background: transparent; }
+  .cv-cell.normal {
+    background: var(--surface);
+    color: var(--text-soft);
+    border-color: var(--border);
+  }
+  .cv-cell.has-data {
+    background: var(--primary-light);
+    border-color: var(--border-bright);
+    color: var(--primary);
+    cursor: pointer;
+  }
+  .cv-cell.has-data:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    transform: scale(1.08);
+    box-shadow: var(--shadow);
+    z-index: 2;
+  }
+  .cv-cell.today-cv {
+    border-color: var(--success);
+    color: var(--success);
+  }
+  .cv-cell.today-cv.has-data { background: #ecfdf5; color: var(--success); }
+  .cv-cell.today-cv.has-data:hover { background: var(--success); color: #fff; border-color: var(--success); }
+  .cv-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.7;
+  }
+
+  /* DETAIL PANEL */
+  .calview-detail {
+    background: var(--surface);
+    border: 1.5px solid var(--border-bright);
+    border-radius: var(--radius);
+    padding: 0;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    animation: fadeUp 0.2s ease;
+  }
+  .calview-detail-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    font-size: 15px; font-weight: 800;
+  }
+  .calview-section {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .calview-section:last-child { border-bottom: none; }
+  .calview-section-title {
+    font-size: 11px; font-weight: 800;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 10px;
+  }
+  .calview-task-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 12px; margin-bottom: 6px;
+    background: var(--surface2); border-radius: 10px;
+    font-size: 13px; font-weight: 600; color: var(--text);
+    opacity: 1;
+  }
+  .calview-task-row.done-task {
+    text-decoration: line-through;
+    color: var(--muted);
+    background: #f0fdf4;
+  }
+  .calview-task-sub { font-size: 11px; color: var(--primary); font-weight: 700; }
+  .calview-empty-day {
+    text-align: center; padding: 24px;
+    color: var(--muted); font-size: 13px;
+  }
 </style>
 </head>
 <body>
@@ -1392,7 +1554,10 @@
           <h1>Hi, <span id="welcomeName"></span>! 👋</h1>
           <p>Class: <span id="welcomeClass"></span> &nbsp;·&nbsp; Subjects: <span id="welcomeSubjects"></span></p>
         </div>
-        <div class="year-badge" id="yearBadge">📅 2026</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button class="btn-calview" onclick="openCalendarView()">🗓 Calendar View</button>
+          <div class="year-badge" id="yearBadge">📅 2026</div>
+        </div>
       </div>
       <p class="section-title">Select a Month</p>
       <div class="month-grid" id="monthGrid"></div>
@@ -1586,6 +1751,37 @@
       <div id="weekBlocks"></div>
     </div>
   </div>
+  <!-- STEP: CALENDAR VIEW (read-only) -->
+  <div class="step" id="step-calview">
+    <div class="inner" style="max-width:780px;margin:32px auto 0;padding:0 16px 60px;">
+      <button class="back-btn" onclick="goTo('calendar')">← Back to Home</button>
+
+      <div class="calview-header">
+        <button class="calview-nav" onclick="shiftCalViewMonth(-1)">‹</button>
+        <div>
+          <h2 id="calViewTitle"></h2>
+          <p id="calViewSub"></p>
+        </div>
+        <button class="calview-nav" onclick="shiftCalViewMonth(1)">›</button>
+      </div>
+
+      <!-- Day-of-week labels -->
+      <div class="calview-dow">
+        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+        <span>Thu</span><span>Fri</span><span>Sat</span>
+      </div>
+      <div class="calview-grid" id="calViewGrid"></div>
+
+      <!-- Detail panel (shown when a date is clicked) -->
+      <div class="calview-detail" id="calViewDetail" style="display:none;">
+        <div class="calview-detail-header">
+          <span id="calViewDetailDate"></span>
+          <button onclick="document.getElementById('calViewDetail').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);">✕</button>
+        </div>
+        <div id="calViewDetailBody"></div>
+      </div>
+    </div>
+  </div>
 </main>
 
 <!-- CREDIT FOOTER -->
@@ -1707,7 +1903,22 @@
         <span class="scope-label">All dates in month</span>
         <span class="scope-sub" id="scopeMonthLabel"></span>
       </button>
+      <button class="btn-scope" onclick="showSpecificDatePicker()">
+        <span class="scope-icon">🗓️</span>
+        <span class="scope-label">Specific dates</span>
+        <span class="scope-sub">Pick dates manually</span>
+      </button>
     </div>
+
+    <!-- Specific date picker (hidden by default) -->
+    <div id="specificDatePicker" style="display:none;margin-top:14px;">
+      <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;">SELECT DATES FROM <span id="pickerMonthName"></span></p>
+      <div class="date-picker-grid" id="datePickerGrid"></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:14px;" onclick="confirmAddActivity('specific')">
+        ✅ Add to Selected Dates
+      </button>
+    </div>
+
     <button class="btn" style="background:#f3f4f6;color:#374151;width:100%;justify-content:center;margin-top:10px;" onclick="closeAddModal()">Cancel</button>
   </div>
 </div>
@@ -2050,6 +2261,140 @@
     showCalendar();
   }
 
+  // ─────────────────────────────────────────
+  //  CALENDAR VIEW (read-only)
+  // ─────────────────────────────────────────
+  state.calViewMonthIdx = new Date().getMonth();
+
+  function openCalendarView() {
+    state.calViewMonthIdx = new Date().getMonth();
+    document.getElementById('calViewDetail').style.display = 'none';
+    renderCalendarView();
+    goTo('calview');
+  }
+
+  function shiftCalViewMonth(dir) {
+    state.calViewMonthIdx = (state.calViewMonthIdx + dir + 12) % 12;
+    document.getElementById('calViewDetail').style.display = 'none';
+    renderCalendarView();
+  }
+
+  function renderCalendarView() {
+    const mIdx = state.calViewMonthIdx;
+    const m    = months[mIdx];
+    const today = new Date();
+
+    document.getElementById('calViewTitle').textContent = `${m.name} ${currentYear}`;
+    const savedCount = [...state.savedDates].filter(k => k.startsWith(m.name + '-')).length;
+    document.getElementById('calViewSub').textContent =
+      savedCount ? `${savedCount} saved date${savedCount > 1 ? 's' : ''}` : 'No saved dates yet';
+
+    // Figure out what day of week month starts on (0=Sun)
+    const firstDow = new Date(currentYear, mIdx, 1).getDay();
+    const grid = document.getElementById('calViewGrid');
+    grid.innerHTML = '';
+
+    // Empty cells before day 1
+    for (let i = 0; i < firstDow; i++) {
+      const e = document.createElement('div');
+      e.className = 'cv-cell empty';
+      grid.appendChild(e);
+    }
+
+    for (let day = 1; day <= m.days; day++) {
+      const key     = `${m.name}-${day}`;
+      const hasSave = state.savedDates.has(key);
+      // Check for any table data even if not explicitly saved
+      const hasData = hasSave || Object.keys(state.tableData).some(k => k.startsWith(`${m.name}-${day}-`))
+                               || (state.completedData && state.completedData[key]?.length > 0);
+      const isToday = day === today.getDate() && mIdx === today.getMonth() && currentYear === today.getFullYear();
+
+      const cell = document.createElement('div');
+      cell.className = 'cv-cell ' + (hasData ? 'has-data' : 'normal') + (isToday ? ' today-cv' : '');
+      cell.innerHTML = `<span>${day}</span>${hasData ? '<div class="cv-dot"></div>' : ''}`;
+
+      if (hasData) {
+        cell.addEventListener('click', () => showCalViewDetail(m, day));
+      }
+      grid.appendChild(cell);
+    }
+  }
+
+  function showCalViewDetail(m, day) {
+    const key = `${m.name}-${day}`;
+    const detail = document.getElementById('calViewDetail');
+    const body   = document.getElementById('calViewDetailBody');
+    document.getElementById('calViewDetailDate').textContent = `📅 ${m.name} ${day}, ${currentYear}`;
+    body.innerHTML = '';
+
+    // 1. Study slot data
+    const slotCount = parseInt(localStorage.getItem(`slotCount-${m.name}-${day}`) || '3');
+    const slotRows  = [];
+    state.subjects.forEach(sub => {
+      for (let slot = 1; slot <= slotCount; slot++) {
+        const k    = `${m.name}-${day}-${sub}-${slot}`;
+        const text = (state.tableData[k] || '').trim();
+        const done = state.tableData[`${k}-done`] === 'true';
+        if (text) slotRows.push({ sub, slot, text, done });
+      }
+    });
+
+    if (slotRows.length > 0) {
+      const sec = document.createElement('div');
+      sec.className = 'calview-section';
+      sec.innerHTML = `<div class="calview-section-title">📚 Study Plan</div>`;
+      slotRows.forEach(r => {
+        const row = document.createElement('div');
+        row.className = 'calview-task-row' + (r.done ? ' done-task' : '');
+        row.innerHTML = `<span class="calview-task-sub">${r.sub} · Slot ${r.slot}</span>
+          <span style="flex:1">${r.text}</span>
+          ${r.done ? '<span style="color:var(--success);font-size:14px;">✓</span>' : ''}`;
+        sec.appendChild(row);
+      });
+      body.appendChild(sec);
+    }
+
+    // 2. Completed Today
+    const completed = (state.completedData || {})[key] || [];
+    if (completed.length > 0) {
+      const sec = document.createElement('div');
+      sec.className = 'calview-section';
+      sec.innerHTML = `<div class="calview-section-title">✅ Completed Today</div>`;
+      completed.forEach(text => {
+        const row = document.createElement('div');
+        row.className = 'calview-task-row';
+        row.innerHTML = `<span style="color:var(--success)">✅</span><span>${text}</span>`;
+        sec.appendChild(row);
+      });
+      body.appendChild(sec);
+    }
+
+    // 3. To-do lists
+    const todoKeys = Object.keys((state.todoData || {})).filter(k => k.startsWith(key + '-'));
+    todoKeys.forEach(tk => {
+      const actName = tk.replace(key + '-', '');
+      const items   = state.todoData[tk] || [];
+      if (!items.length) return;
+      const sec = document.createElement('div');
+      sec.className = 'calview-section';
+      sec.innerHTML = `<div class="calview-section-title">📋 ${actName}</div>`;
+      items.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'calview-task-row' + (item.done ? ' done-task' : '');
+        row.innerHTML = `<span>${item.done ? '✓' : '○'}</span><span>${item.text}</span>`;
+        sec.appendChild(row);
+      });
+      body.appendChild(sec);
+    });
+
+    if (body.children.length === 0) {
+      body.innerHTML = `<div class="calview-empty-day">No data saved for this date.</div>`;
+    }
+
+    detail.style.display = 'block';
+    detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
   function showCalendar() {
     document.getElementById('navUserName').textContent = state.name;
     document.getElementById('navUser').classList.add('visible');
@@ -2272,28 +2617,76 @@
     document.getElementById('newActivityInput').value = '';
     document.getElementById('scopeDateLabel').textContent  = `${m.name} ${d} only`;
     document.getElementById('scopeMonthLabel').textContent = `All of ${m.name}`;
+    document.getElementById('specificDatePicker').style.display = 'none';
+    state.selectedSpecificDates = [];
     document.getElementById('addModal').classList.add('open');
     setTimeout(() => document.getElementById('newActivityInput').focus(), 100);
   }
   function closeAddModal() {
     document.getElementById('addModal').classList.remove('open');
+    state.selectedSpecificDates = [];
   }
+
+  function showSpecificDatePicker() {
+    const m = state.selectedMonth;
+    state.selectedSpecificDates = [];
+    document.getElementById('pickerMonthName').textContent = `${m.name.toUpperCase()} ${currentYear}`;
+    const grid = document.getElementById('datePickerGrid');
+    grid.innerHTML = '';
+    const today = new Date();
+    const monthIdx = months.findIndex(mo => mo.name === m.name);
+
+    for (let day = 1; day <= m.days; day++) {
+      const btn = document.createElement('div');
+      btn.className = 'dp-day';
+      btn.textContent = day;
+      const dateObj = new Date(currentYear, monthIdx, day);
+      const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      if (dateObj < todayDate) btn.classList.add('past');
+      if (day === today.getDate() && monthIdx === today.getMonth() && currentYear === today.getFullYear())
+        btn.classList.add('today');
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('selected');
+        if (btn.classList.contains('selected')) {
+          if (!state.selectedSpecificDates.includes(day)) state.selectedSpecificDates.push(day);
+        } else {
+          state.selectedSpecificDates = state.selectedSpecificDates.filter(d => d !== day);
+        }
+      });
+      grid.appendChild(btn);
+    }
+    document.getElementById('specificDatePicker').style.display = 'block';
+  }
+
   function confirmAddActivity(scope) {
     const val = document.getElementById('newActivityInput').value.trim();
     if (!val) { showToast('⚠️ Please enter an activity name!', '#ef4444'); return; }
     const icons = ['🎨','⚽','🎵','🏋️','🎯','📷','🌿','🎮'];
     const icon  = icons[Math.floor(Math.random() * icons.length)];
     const newAct = { id: Date.now(), name: val, icon };
-
     const m = state.selectedMonth.name;
     const d = state.selectedDay;
-    const key = scope === 'month' ? m : `${m}-${d}`;
 
-    if (!state.customActivities[key]) state.customActivities[key] = [];
-    // Avoid duplicate names
-    if (!state.customActivities[key].some(a => a.name === val)) {
-      state.customActivities[key].push(newAct);
+    if (scope === 'specific') {
+      const dates = state.selectedSpecificDates || [];
+      if (dates.length === 0) { showToast('⚠️ Please select at least one date!', '#ef4444'); return; }
+      dates.forEach(day => {
+        const key = `${m}-${day}`;
+        if (!state.customActivities[key]) state.customActivities[key] = [];
+        if (!state.customActivities[key].some(a => a.name === val))
+          state.customActivities[key].push({...newAct, id: Date.now() + day});
+      });
+      persistCustomActivities();
+      renderActivityList();
+      closeAddModal();
+      showToast(`✅ "${val}" added to ${dates.length} date${dates.length > 1 ? 's' : ''}!`);
+      return;
     }
+
+    const key = scope === 'month' ? m : `${m}-${d}`;
+    if (!state.customActivities[key]) state.customActivities[key] = [];
+    if (!state.customActivities[key].some(a => a.name === val))
+      state.customActivities[key].push(newAct);
     persistCustomActivities();
     renderActivityList();
     closeAddModal();
