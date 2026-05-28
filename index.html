@@ -3,8 +3,27 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Study Partner</title>
+<title>Study Partner & Skill Academy</title>
+<!-- Tailwind CSS for modern adaptive visual layout -->
+<script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet"/>
+<!-- Configure Tailwind themes for standard design compatibility -->
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#4f46e5',
+          'primary-dark': '#3730a3',
+          'primary-light': '#e0e7ff',
+          accent: '#f59e0b',
+          success: '#10b981',
+          danger: '#ef4444'
+        }
+      }
+    }
+  }
+</script>
 <style>
   :root {
     --bg: #f0f2ff;
@@ -50,7 +69,7 @@
     z-index: 0;
   }
 
-  /* NAV */
+  /* NAVBAR DESIGN */
   nav {
     position: sticky; top: 0; z-index: 100;
     background: rgba(255,255,255,0.85);
@@ -61,9 +80,7 @@
     display: flex; align-items: center; justify-content: space-between;
     box-shadow: 0 2px 12px rgba(79,70,229,0.06);
   }
-  .nav-logo {
-    display: flex; align-items: center; gap: 12px;
-  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; }
   .nav-icon {
     width: 40px; height: 40px;
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -73,87 +90,57 @@
     font-size: 20px;
   }
   .nav-title {
-    font-weight: 800;
-    font-size: 18px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-weight: 800; font-size: 16px;
+    letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--primary-dark);
   }
   .nav-user {
     display: flex; align-items: center; gap: 6px;
     background: var(--primary-light);
     border: 1px solid rgba(99,102,241,0.2);
-    padding: 6px 14px;
-    border-radius: 99px;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--primary);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0;
-    transition: opacity 0.3s;
+    padding: 6px 14px; border-radius: 99px;
+    font-size: 11px; font-weight: 700; color: var(--primary);
+    text-transform: uppercase; opacity: 0; transition: opacity 0.3s;
   }
   .nav-user.visible { opacity: 1; }
   .btn-nav-sync {
     background: var(--primary-light);
     border: 1.5px solid rgba(99,102,241,0.25);
-    color: var(--primary);
-    border-radius: 99px;
-    padding: 6px 14px;
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.18s;
-    letter-spacing: 0.04em;
+    color: var(--primary); border-radius: 99px;
+    padding: 6px 14px; font-family: inherit;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+    transition: all 0.18s; letter-spacing: 0.04em;
   }
   .btn-nav-sync:hover { background: var(--primary); color: #fff; }
 
-  /* SYNC MODAL */
-  .sync-tabs {
-    display: flex; gap: 0;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 20px;
+  /* ONBOARDING DESIGN */
+  #step-onboarding .inner {
+    max-width: 480px; margin: 48px auto 0; padding: 0 16px;
   }
-  .sync-tab {
-    flex: 1; padding: 10px;
-    background: var(--bg); border: none;
-    font-family: inherit; font-size: 13px;
-    font-weight: 700; color: var(--muted);
-    cursor: pointer; transition: all 0.18s;
+  .onboarding-header { text-align: center; margin-bottom: 32px; }
+  .onboarding-header .emoji {
+    font-size: 56px; display: block; margin-bottom: 16px; animation: bounce 1.5s infinite;
   }
-  .sync-tab.active { background: var(--primary); color: #fff; }
-  .sync-panel { display: none; }
-  .sync-panel.active { display: block; }
-  .sync-code-box {
-    width: 100%;
-    min-height: 100px;
-    max-height: 160px;
-    padding: 12px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    font-family: monospace;
-    font-size: 12px;
-    resize: none;
-    background: #f9fafb;
-    color: var(--text);
-    outline: none;
-    word-break: break-all;
-    margin-bottom: 12px;
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
   }
-  .sync-code-box:focus { border-color: var(--primary); }
-  .sync-info {
-    font-size: 12px; color: var(--muted);
-    background: #f0f2ff; border-radius: 10px;
-    padding: 10px 14px; margin-bottom: 16px;
-    line-height: 1.6;
-  }
-  .sync-info strong { color: var(--primary); }
+  .onboarding-header h2 { font-size: 26px; font-weight: 800; color: var(--primary-dark); margin-bottom: 6px; }
+  .onboarding-header p { color: var(--muted); font-size: 14px; }
+  .form-group { margin-bottom: 20px; }
 
-  /* MAIN */
-  main { position: relative; z-index: 1; padding-bottom: 60px; }
+  .level-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px;
+  }
+  .level-card {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; padding: 14px 8px; border: 2px solid var(--border);
+    border-radius: 14px; background: var(--bg); font-family: inherit;
+    color: var(--muted); cursor: pointer; transition: all 0.18s; font-size: 22px;
+  }
+  .level-card span { font-size: 12px; font-weight: 700; }
+  .level-card:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+  .level-card.selected { border-color: var(--primary); background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(79,70,229,0.35); }
 
   /* STEPS */
   .step { display: none; animation: fadeUp 0.35s ease; }
@@ -163,1315 +150,278 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* CARD */
+  /* CARD STYLE */
   .card {
-    background: var(--surface);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(229,231,235,0.8);
+    background: var(--surface); border-radius: var(--radius);
+    box-shadow: var(--shadow); border: 1px solid rgba(229,231,235,0.8);
     padding: 32px;
   }
 
   /* BUTTONS */
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 14px 28px;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
-    text-decoration: none;
+    padding: 14px 28px; border-radius: var(--radius);
+    font-family: inherit; font-weight: 700; font-size: 15px;
+    cursor: pointer; border: none; transition: all 0.2s; text-decoration: none;
   }
   .btn-primary {
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff;
-    box-shadow: 0 4px 16px rgba(79,70,229,0.3);
+    color: #fff; box-shadow: 0 4px 16px rgba(79,70,229,0.3);
   }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,70,229,0.4); }
-  .btn-primary:active { transform: translateY(0); }
-  .btn-ghost {
-    background: transparent;
-    color: var(--primary);
-    font-size: 14px;
-    padding: 8px 4px;
-  }
-  .btn-ghost:hover { text-decoration: underline; }
-  .btn-outline {
-    background: var(--surface);
-    border: 2px solid var(--border);
-    color: var(--muted);
-    cursor: not-allowed;
-  }
-
-  /* INPUTS */
-  input[type=text] {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 15px;
-    color: var(--text);
-    background: var(--bg);
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  input[type=text]:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
-  }
-  label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    margin-bottom: 6px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
 
   /* SUBJECT CHIPS */
   .chip {
-    padding: 8px 18px;
-    border-radius: 99px;
-    border: 2px solid var(--border);
-    background: var(--bg);
-    color: var(--muted);
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.18s;
+    padding: 8px 18px; border-radius: 99px; border: 2px solid var(--border);
+    background: var(--bg); color: var(--muted); font-family: inherit;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.18s;
   }
   .chip:hover { border-color: var(--primary); color: var(--primary); }
   .chip.selected {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: #fff;
+    background: var(--primary); border-color: var(--primary); color: #fff;
     box-shadow: 0 2px 8px rgba(79,70,229,0.25);
   }
 
-  /* ONBOARDING */
-  #step-onboarding .inner {
-    max-width: 480px;
-    margin: 48px auto 0;
-    padding: 0 16px;
-  }
-  .onboarding-header {
-    text-align: center;
-    margin-bottom: 32px;
-  }
-  .onboarding-header .emoji {
-    font-size: 56px;
-    display: block;
-    margin-bottom: 16px;
-    animation: bounce 1.5s infinite;
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
-  .onboarding-header h2 {
-    font-size: 26px;
-    font-weight: 800;
-    color: var(--primary-dark);
-    margin-bottom: 6px;
-  }
-  .onboarding-header p { color: var(--muted); font-size: 14px; }
-  .form-group { margin-bottom: 20px; }
-
-  .level-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-top: 8px;
-  }
-  .level-card {
-    display: flex; flex-direction: column; align-items: center;
-    gap: 6px; padding: 14px 8px;
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    background: var(--bg);
-    font-family: inherit;
-    color: var(--muted); cursor: pointer;
-    transition: all 0.18s;
-    font-size: 22px;
-  }
-  .level-card span { font-size: 12px; font-weight: 700; }
-  .level-card:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-  .level-card.selected { border-color: var(--primary); background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(79,70,229,0.35); }
-
-  /* MONTH GRID */
-  #step-calendar .inner {
-    max-width: 860px;
-    margin: 40px auto 0;
-    padding: 0 16px;
-  }
-  .welcome-bar {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 36px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: var(--radius);
-    padding: 24px 28px;
-    color: #fff;
-    box-shadow: var(--shadow-lg);
-  }
-  .welcome-bar h1 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
-  .welcome-bar p { opacity: 0.75; font-size: 14px; }
-  .year-badge {
-    background: rgba(255,255,255,0.18);
-    border: 1px solid rgba(255,255,255,0.3);
-    padding: 8px 16px;
-    border-radius: 99px;
-    font-size: 13px;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  .section-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .month-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 14px;
-  }
-  .month-card {
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: var(--radius);
-    padding: 28px 16px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.22s;
-    box-shadow: var(--shadow);
-  }
-  .month-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-  }
-  .month-card .month-icon { font-size: 32px; margin-bottom: 10px; }
-  .month-card span { font-weight: 700; font-size: 16px; color: var(--text); }
-
-  /* OPTIONS */
-  #step-options .inner {
-    max-width: 440px;
-    margin: 48px auto 0;
-    padding: 0 16px;
-  }
-  .options-header {
-    margin-bottom: 28px;
-  }
-  .options-header h2 { font-size: 26px; font-weight: 800; }
-  .options-header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
-  .option-card-primary {
-    width: 100%;
-    background: linear-gradient(135deg, var(--primary), #6366f1);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    padding: 24px 22px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: space-between;
-    font-family: inherit;
-    box-shadow: 0 8px 28px rgba(79,70,229,0.35);
-    transition: all 0.2s;
-    margin-bottom: 14px;
-  }
-  .option-card-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(79,70,229,0.45); }
-  .option-card-primary .label { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
-  .option-card-primary .sub { font-size: 12px; opacity: 0.75; }
-  .option-card-disabled {
-    width: 100%;
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px 22px;
-    display: flex; align-items: center; justify-content: space-between;
-    cursor: not-allowed;
-    font-family: inherit;
-  }
-  .option-card-disabled .label { font-size: 16px; font-weight: 700; color: var(--muted); }
-  .option-card-disabled .sub { font-size: 12px; color: #d1d5db; margin-top: 2px; }
-
-  /* GOALS CARD */
-  .option-card-goals {
-    width: 100%;
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    padding: 24px 22px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: space-between;
-    font-family: inherit;
-    box-shadow: 0 8px 28px rgba(245,158,11,0.35);
-    transition: all 0.2s;
-    margin-bottom: 14px;
-  }
-  .option-card-goals:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(245,158,11,0.45); }
-  .option-card-goals .label { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
-  .option-card-goals .sub { font-size: 12px; opacity: 0.75; }
-
-  /* STUDY PROGRESS CARD */
-  .option-card-progress {
-    width: 100%;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    padding: 24px 22px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: space-between;
-    font-family: inherit;
-    box-shadow: 0 8px 28px rgba(16,185,129,0.35);
-    transition: all 0.2s;
-    margin-bottom: 14px;
-  }
-  .option-card-progress:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(16,185,129,0.45); }
-  .option-card-progress .label { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
-  .option-card-progress .sub { font-size: 12px; opacity: 0.75; }
-
-  /* STUDY PROGRESS PAGE */
-  #step-progress .inner {
-    max-width: 700px;
-    margin: 40px auto 0;
-    padding: 0 16px 40px;
-  }
-  .progress-header {
-    background: linear-gradient(135deg, #10b981, #059669);
-    border-radius: var(--radius);
-    padding: 24px 28px;
-    color: #fff;
-    margin-bottom: 24px;
-    box-shadow: 0 8px 28px rgba(16,185,129,0.3);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .progress-header h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-  .progress-header p  { font-size: 13px; opacity: 0.75; }
-  .progress-type-row {
-    display: flex; gap: 10px; margin-bottom: 24px;
-  }
-  .btn-prog-type {
-    padding: 8px 18px; border-radius: 99px;
-    border: 2px solid var(--border);
-    background: var(--surface); color: var(--muted);
-    font-family: inherit; font-size: 13px; font-weight: 700;
+  /* SYNC ENGINE TABS */
+  .sync-tabs { display: flex; border: 2px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+  .sync-tab {
+    flex: 1; padding: 10px; background: var(--bg); border: none;
+    font-family: inherit; font-size: 13px; font-weight: 700; color: var(--muted);
     cursor: pointer; transition: all 0.18s;
   }
-  .btn-prog-type.active {
-    background: #10b981; border-color: #10b981;
-    color: #fff; box-shadow: 0 2px 8px rgba(16,185,129,0.3);
+  .sync-tab.active { background: var(--primary); color: #fff; }
+  .sync-panel { display: none; }
+  .sync-panel.active { display: block; }
+  .sync-code-box {
+    width: 100%; min-height: 100px; max-height: 160px; padding: 12px;
+    border: 2px solid var(--border); border-radius: 12px; font-family: monospace;
+    font-size: 12px; resize: none; background: #f9fafb; color: var(--text);
+    outline: none; word-break: break-all; margin-bottom: 12px;
   }
-  .btn-prog-type:hover:not(.active) { border-color: #10b981; color: #059669; }
-  .week-block {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    margin-bottom: 16px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-    transition: box-shadow 0.2s;
-  }
-  .week-block:hover { box-shadow: 0 4px 20px rgba(16,185,129,0.12); }
-  .week-title {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-    border-bottom: 1.5px solid #a7f3d0;
-    cursor: pointer;
-    user-select: none;
-  }
-  .week-title-left { display: flex; align-items: center; gap: 10px; }
-  .week-num { font-size: 15px; font-weight: 800; color: #065f46; }
-  .week-dates { font-size: 12px; color: #059669; font-weight: 600; }
-  .week-badge {
-    font-size: 11px; font-weight: 700;
-    background: #10b981; color: #fff;
-    padding: 3px 10px; border-radius: 99px;
-  }
-  .week-badge.empty { background: #e5e7eb; color: #9ca3af; }
-  .week-chevron { font-size: 14px; color: #059669; transition: transform 0.2s; }
-  .week-block.open .week-chevron { transform: rotate(90deg); }
-  .week-items {
-    display: none;
-    padding: 14px 20px;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .week-block.open .week-items { display: flex; }
-  .week-item {
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 10px 14px;
-    background: #f0fdf4;
-    border: 1px solid #d1fae5;
-    border-radius: 10px;
-    animation: fadeUp 0.2s ease;
-  }
-  .week-item-bullet {
-    font-size: 13px; font-weight: 800;
-    color: #059669; min-width: 22px;
-    flex-shrink: 0; padding-top: 1px;
-  }
-  .week-item-date {
-    font-size: 11px; font-weight: 700;
-    color: #6ee7b7; background: #065f46;
-    padding: 2px 8px; border-radius: 99px;
-    flex-shrink: 0; white-space: nowrap;
-  }
-  .week-item-text { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
-  .week-empty {
-    padding: 20px; text-align: center;
-    color: #9ca3af; font-size: 13px; font-weight: 600;
+  .sync-info {
+    font-size: 12px; color: var(--muted); background: #f0f2ff;
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; line-height: 1.6;
   }
 
-  /* MONTHLY GOALS PAGE */
-  #step-goals .inner {
-    max-width: 680px;
-    margin: 40px auto 0;
-    padding: 0 16px;
+  /* STUDY MONTH VIEW (NEW INTEGRATION) */
+  #step-calendar .inner { max-width: 960px; margin: 40px auto 0; padding: 0 16px; }
+  .welcome-bar {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: var(--radius); padding: 24px 28px; color: #fff; box-shadow: var(--shadow-lg);
   }
-  .goals-header {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    border-radius: var(--radius);
-    padding: 24px 28px;
-    color: #fff;
-    margin-bottom: 24px;
-    box-shadow: 0 8px 28px rgba(245,158,11,0.3);
-    display: flex; align-items: center; justify-content: space-between;
+  .welcome-bar h1 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+  .welcome-bar p { opacity: 0.85; font-size: 14px; }
+  .year-badge {
+    background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
+    padding: 8px 16px; border-radius: 99px; font-size: 13px; font-weight: 700; white-space: nowrap;
   }
-  .goals-header h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-  .goals-header p  { font-size: 13px; opacity: 0.75; }
-  .goals-type-row {
-    display: flex; gap: 10px;
-    margin-bottom: 16px;
+  .month-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+  .month-card {
+    background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
+    padding: 24px 14px; cursor: pointer; text-align: center; transition: all 0.22s; box-shadow: var(--shadow);
   }
-  .btn-list-type {
-    padding: 8px 18px;
-    border-radius: 99px;
-    border: 2px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.18s;
-  }
-  .btn-list-type.active {
-    background: #f59e0b;
-    border-color: #f59e0b;
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(245,158,11,0.3);
-  }
-  .btn-list-type:hover:not(.active) { border-color: #f59e0b; color: #d97706; }
-  .goals-add-row {
-    display: flex; gap: 10px;
-    margin-bottom: 20px;
-  }
-  .goals-add-row input {
-    flex: 1;
-    padding: 13px 16px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 14px;
-    color: var(--text);
-    background: var(--surface);
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .goals-add-row input:focus {
-    border-color: #f59e0b;
-    box-shadow: 0 0 0 3px rgba(245,158,11,0.12);
-  }
-  .btn-goals-add {
-    padding: 13px 20px;
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(245,158,11,0.3);
-  }
-  .btn-goals-add:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(245,158,11,0.4); }
-  .goals-list { display: flex; flex-direction: column; gap: 10px; }
-  .goal-item {
-    display: flex; align-items: center; gap: 14px;
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 18px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    transition: all 0.2s;
-    animation: fadeUp 0.25s ease;
-  }
-  .goal-item:hover { border-color: #f59e0b; box-shadow: 0 4px 16px rgba(245,158,11,0.15); }
-  .goal-bullet {
-    width: 28px; height: 28px;
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
-    color: #d97706;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 800;
-    flex-shrink: 0;
-  }
-  .goal-text {
-    flex: 1;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .goal-delete {
-    background: none; border: none;
-    color: #d1d5db; font-size: 18px;
-    cursor: pointer; padding: 4px;
-    border-radius: 6px; transition: all 0.15s; line-height: 1;
-  }
-  .goal-delete:hover { color: var(--danger); background: #fee2e2; }
-  .goals-empty {
-    text-align: center; padding: 48px 0;
-    color: var(--muted); font-size: 14px;
-  }
-  .goals-empty .icon { font-size: 40px; display: block; margin-bottom: 12px; }
-  .goals-save-btn {
-    width: 100%; margin-top: 24px; padding: 15px;
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: #fff; border: none; border-radius: var(--radius);
-    font-family: inherit; font-size: 15px; font-weight: 800;
-    cursor: pointer; box-shadow: 0 6px 20px rgba(245,158,11,0.35);
-    transition: all 0.2s; letter-spacing: 0.04em;
-  }
-  .goals-save-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(245,158,11,0.45); }
+  .month-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .month-card .month-icon { font-size: 32px; margin-bottom: 10px; }
+  .month-card span { font-weight: 700; font-size: 15px; color: var(--text); }
+  .month-card.past-month { border-color: #fde68a; background: #fffbeb; }
+  .month-card.current-month { border-color: #86efac; background: #f0fdf4; }
 
   /* DATE VIEW */
-  #step-weekly .inner {
-    max-width: 700px;
-    margin: 40px auto 0;
-    padding: 0 16px;
-  }
+  #step-weekly .inner { max-width: 1200px; margin: 40px auto 0; padding: 0 16px; }
   .date-list { display: flex; flex-direction: column; gap: 10px; }
   .date-row {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 18px;
-    display: flex; align-items: center; justify-content: space-between;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    transition: all 0.18s;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.18s;
   }
   .date-row:hover { border-color: var(--primary); box-shadow: var(--shadow); transform: translateX(2px); }
   .date-badge {
     width: 52px; height: 52px;
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: 12px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: #fff;
-    font-weight: 800;
-    font-size: 18px;
-    line-height: 1;
-    box-shadow: 0 4px 10px rgba(79,70,229,0.3);
+    border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 18px; line-height: 1; box-shadow: 0 4px 10px rgba(79,70,229,0.3);
   }
   .date-badge .month-abbr { font-size: 9px; font-weight: 600; opacity: 0.8; margin-top: 2px; letter-spacing: 0.05em; }
   .date-info { flex: 1; margin-left: 14px; }
   .date-info .title { font-weight: 700; font-size: 15px; }
   .date-info .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .btn-open {
-    background: var(--primary-light);
-    color: var(--primary);
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.18s;
+    background: var(--primary-light); color: var(--primary); border: none; border-radius: 10px;
+    padding: 10px 20px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.18s;
   }
   .btn-open:hover { background: var(--primary); color: #fff; }
   .btn-clear-date {
-    background: #fee2e2;
-    color: var(--danger);
-    border: none;
-    border-radius: 10px;
-    padding: 10px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.18s;
-    flex-shrink: 0;
+    background: #fee2e2; color: var(--danger); border: none; border-radius: 10px;
+    padding: 10px 12px; font-size: 14px; cursor: pointer; transition: all 0.18s; flex-shrink: 0;
   }
   .btn-clear-date:hover { background: var(--danger); color: #fff; }
 
+  /* SIDEBAR WORKSPACE TABS */
+  .workspace-tab-btn {
+    padding: 10px 14px; font-size: 12px; font-weight: 700; border-radius: 10px; transition: all 0.2s;
+  }
+  .workspace-tab-btn.active { background: var(--primary-light); color: var(--primary); }
+
   /* DAY ITEMS */
-  #step-day-items .inner {
-    max-width: 440px;
-    margin: 48px auto 0;
-    padding: 0 16px;
-  }
-  .day-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 28px;
-  }
+  #step-day-items .inner { max-width: 440px; margin: 48px auto 0; padding: 0 16px; }
+  .day-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
   .day-header h2 { font-size: 26px; font-weight: 800; }
   .day-header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
   .btn-add {
-    width: 40px; height: 40px;
-    background: #d1fae5;
-    color: #059669;
-    border: none;
-    border-radius: 50%;
-    font-size: 22px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.18s;
-    flex-shrink: 0;
+    width: 40px; height: 40px; background: #d1fae5; color: #059669; border: none;
+    border-radius: 50%; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.18s; flex-shrink: 0;
   }
   .btn-add:hover { background: #059669; color: #fff; }
   .activity-list { display: flex; flex-direction: column; gap: 12px; }
   .activity-card {
-    width: 100%;
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    display: flex; align-items: center; justify-content: space-between;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s;
+    width: 100%; background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
+    padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-family: inherit; transition: all 0.2s;
   }
   .activity-card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
   .activity-card .left { display: flex; align-items: center; gap: 14px; }
-  .drag-handle {
-    color: #d1d5db;
-    font-size: 18px;
-    cursor: grab;
-    padding: 4px 6px 4px 0;
-    line-height: 1;
-    flex-shrink: 0;
-    transition: color 0.15s;
-  }
-  .drag-handle:active { cursor: grabbing; }
-  .activity-card:hover .drag-handle { color: var(--primary); }
-  .btn-act-delete {
-    background: none;
-    border: none;
-    color: #d1d5db;
-    font-size: 14px;
-    cursor: pointer;
-    width: 26px; height: 26px;
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-    flex-shrink: 0;
-  }
-  .btn-act-delete:hover { color: var(--danger); background: #fee2e2; }
-  .activity-card.dragging {
-    opacity: 0.4;
-    border-color: var(--primary);
-    transform: scale(0.98);
-  }
-  .activity-card.drag-over {
-    border-color: var(--primary);
-    background: var(--primary-light);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-  }
   .activity-icon {
-    width: 42px; height: 42px;
-    background: var(--primary-light);
-    color: var(--primary);
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
+    width: 42px; height: 42px; background: var(--primary-light); color: var(--primary);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;
   }
   .activity-card .name { font-weight: 700; font-size: 15px; color: var(--text); }
-  .arrow { color: #d1d5db; font-size: 18px; }
+  .btn-act-delete {
+    background: none; border: none; color: #d1d5db; font-size: 14px; cursor: pointer;
+    width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; flex-shrink: 0;
+  }
+  .btn-act-delete:hover { color: var(--danger); background: #fee2e2; }
+
+  /* DRAG AND DROP HANDLES */
+  .drag-handle { color: #d1d5db; font-size: 18px; cursor: grab; padding: 4px 6px 4px 0; line-height: 1; flex-shrink: 0; }
 
   /* STUDY TABLE */
-  #step-table .inner {
-    max-width: 960px;
-    margin: 32px auto 0;
-    padding: 0 16px;
-  }
-  .table-wrapper {
-    background: var(--surface);
-    border-radius: 24px;
-    box-shadow: var(--shadow-lg);
-    border: 1px solid var(--border);
-    overflow: hidden;
-  }
+  #step-table .inner { max-width: 960px; margin: 32px auto 0; padding: 0 16px; }
+  .table-wrapper { background: var(--surface); border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); overflow: hidden; }
   .table-header {
-    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-    padding: 24px 28px;
-    display: flex; align-items: flex-end; justify-content: space-between;
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary)); padding: 24px 28px;
+    display: flex; align-items: flex-end; justify-content: space-between; color: #fff;
   }
   .table-header h2 { font-size: 22px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
   .table-header p { font-size: 13px; opacity: 0.7; margin-top: 4px; }
-  .class-badge {
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.3);
-    padding: 6px 14px;
-    border-radius: 99px;
-    font-size: 12px;
-    font-weight: 700;
-  }
+  .class-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 700; }
   .study-table-scroll { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; min-width: 540px; }
   thead tr { background: #eef2ff; border-bottom: 2px solid #c7d2fe; }
-  th {
-    padding: 16px 14px;
-    font-size: 11px;
-    font-weight: 800;
-    color: var(--primary-dark);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-align: center;
-    border-right: 1px solid #c7d2fe;
-  }
-  th:last-child { border-right: none; }
+  th { padding: 16px 14px; font-size: 11px; font-weight: 800; color: var(--primary-dark); letter-spacing: 0.1em; text-transform: uppercase; text-align: center; border-right: 1px solid #c7d2fe; }
   tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
-  tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: #f5f7ff; }
   td { border-right: 1px solid var(--border); vertical-align: top; }
-  td:last-child { border-right: none; }
-  td.subject-cell {
-    padding: 0;
-    font-weight: 800;
-    font-size: 13px;
-    color: var(--text);
-    background: #f9fafb;
-    text-align: center;
-    vertical-align: middle;
-    border-right: 2px solid var(--border);
-    min-width: 110px;
-  }
-  .subject-pill {
-    display: inline-block;
-    padding: 6px 14px;
-    background: var(--primary-light);
-    color: var(--primary-dark);
-    border-radius: 99px;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-  }
+  td.subject-cell { padding: 0; font-weight: 800; font-size: 13px; color: var(--text); background: #f9fafb; text-align: center; vertical-align: middle; border-right: 2px solid var(--border); min-width: 110px; }
+  .subject-pill { display: inline-block; padding: 6px 14px; background: var(--primary-light); color: var(--primary-dark); border-radius: 99px; font-size: 12px; font-weight: 800; }
   td.slot-cell { padding: 6px; }
   textarea {
-    width: 100%;
-    min-height: 100px;
-    padding: 10px 12px;
-    border: 2px solid transparent;
-    border-radius: 10px;
-    background: transparent;
-    font-family: inherit;
-    font-size: 13px;
-    color: var(--text);
-    resize: none;
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-    line-height: 1.5;
+    width: 100%; min-height: 100px; padding: 10px 12px; border: 2px solid transparent; border-radius: 10px;
+    background: transparent; font-family: inherit; font-size: 13px; color: var(--text); resize: none; outline: none; transition: border-color 0.2s, background 0.2s; line-height: 1.5;
   }
   textarea:focus { border-color: var(--primary); background: #f5f7ff; }
-  textarea::placeholder { color: #c4b5fd; font-style: italic; }
   textarea:disabled { background: #f0fdf4; color: var(--muted); cursor: not-allowed; border-color: transparent; }
 
   .slot-done { background: #f0fdf4; }
   .slot-done textarea { text-decoration: line-through; color: #6ee7b7; }
-  .course-title-input {
-    width: 100%; padding: 8px 10px;
-    border: 2px solid #e0e7ff; border-radius: 8px;
-    font-family: inherit; font-size: 13px; font-weight: 700;
-    color: var(--primary-dark); background: #f5f7ff;
-    outline: none; transition: border-color 0.18s;
-  }
-  .course-title-input:focus { border-color: var(--primary); background: #fff; }
-  .slot-check-row {
-    padding: 6px 10px 8px;
-    display: flex; align-items: center;
-  }
-  .slot-checkbox-label {
-    display: flex; align-items: center; gap: 7px;
-    cursor: pointer; font-size: 12px;
-    font-weight: 700; color: var(--muted);
-    text-transform: none; letter-spacing: 0;
-    user-select: none;
-  }
-  .slot-checkbox {
-    width: 16px; height: 16px;
-    accent-color: var(--success);
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-  .slot-checkbox:checked + .slot-check-text {
-    color: var(--success);
-  }
-  .table-footer {
-    padding: 20px 28px;
-    background: #f5f7ff;
-    border-top: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .table-footer p { font-size: 12px; color: var(--muted); }
-  .btn-save {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 14px 32px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff;
-    border: none;
-    border-radius: 14px;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 6px 20px rgba(79,70,229,0.35);
-    letter-spacing: 0.04em;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .btn-save:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(79,70,229,0.45); }
-  .btn-save:active { transform: scale(0.98); }
+  .course-title-input { width: 100%; padding: 8px 10px; border: 2px solid #e0e7ff; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 700; color: var(--primary-dark); background: #f5f7ff; outline: none; }
+  .slot-check-row { padding: 6px 10px 8px; display: flex; align-items: center; }
+  .slot-checkbox-label { display: flex; align-items: center; gap: 7px; cursor: pointer; font-size: 12px; font-weight: 700; color: var(--muted); }
+  .slot-checkbox { width: 16px; height: 16px; accent-color: var(--success); cursor: pointer; flex-shrink: 0; }
+
+  .table-footer { padding: 20px 28px; background: #f5f7ff; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .btn-save { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: 14px; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(79,70,229,0.35); }
 
   /* BACK BTN */
-  .back-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: none;
-    border: none;
-    color: var(--primary);
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 20px;
-    padding: 0;
-    transition: opacity 0.15s;
-  }
-  .back-btn:hover { opacity: 0.7; }
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--primary); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 20px; padding: 0; }
 
-  /* TOAST */
+  /* COMPLETED TODAY */
+  .completed-section { padding: 24px 28px; border-top: 2px dashed #c7d2fe; background: linear-gradient(135deg, #fafbff, #f5f7ff); }
+  .completed-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .completed-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 800; color: var(--primary-dark); }
+  .completed-count { font-size: 12px; font-weight: 700; background: var(--primary-light); color: var(--primary); padding: 4px 12px; border-radius: 99px; }
+  .completed-add-row { display: flex; gap: 10px; margin-bottom: 16px; }
+  .completed-add-row input { flex: 1; padding: 12px 16px; border: 2px solid #c7d2fe; border-radius: 12px; font-family: inherit; font-size: 14px; color: var(--text); background: #fff; outline: none; }
+  .btn-completed-add { padding: 12px 18px; background: linear-gradient(135deg, var(--success), #059669); color: #fff; border: none; border-radius: 12px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .completed-list { display: flex; flex-direction: column; gap: 8px; }
+  .completed-item { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #d1fae5; border-left: 4px solid var(--success); border-radius: 12px; padding: 12px 16px; }
+  .completed-empty { text-align: center; padding: 20px 0; color: #a5b4fc; font-size: 13px; font-weight: 600; }
+
+  /* TO-DO LIST STYLE */
+  #step-todo .inner { max-width: 560px; margin: 40px auto 0; padding: 0 16px; }
+  .todo-header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: var(--radius); padding: 24px 28px; color: #fff; margin-bottom: 24px; box-shadow: var(--shadow-lg); display: flex; align-items: center; justify-content: space-between; }
+  .todo-add-row { display: flex; gap: 10px; margin-bottom: 20px; }
+  .todo-add-row input { flex: 1; padding: 13px 16px; border: 2px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 14px; color: var(--text); background: var(--surface); outline: none; }
+  .btn-todo-add { padding: 13px 20px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: 12px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .todo-list { display: flex; flex-direction: column; gap: 10px; }
+  .todo-item { display: flex; align-items: center; gap: 14px; background: var(--surface); border: 2px solid var(--border); border-radius: 14px; padding: 14px 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: all 0.2s; }
+  .todo-item.done { background: #f0fdf4; border-color: #86efac; }
+  .todo-item.done .todo-text { text-decoration: line-through; color: var(--muted); }
+  .todo-checkbox { width: 22px; height: 22px; border: 2px solid var(--border); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--bg); font-size: 13px; }
+  .todo-item.done .todo-checkbox { background: var(--success); border-color: var(--success); color: #fff; }
+  .todo-text { flex: 1; font-size: 15px; font-weight: 600; color: var(--text); }
+  .todo-delete { background: none; border: none; color: #d1d5db; font-size: 18px; cursor: pointer; padding: 4px; }
+  .todo-stats { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; font-size: 13px; font-weight: 600; color: var(--muted); }
+  .todo-progress { height: 6px; background: var(--border); border-radius: 99px; margin-bottom: 20px; overflow: hidden; }
+  .todo-progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--success)); border-radius: 99px; transition: width 0.4s ease; }
+  .todo-save-btn { width: 100%; margin-top: 24px; padding: 15px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: var(--radius); font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; }
+
+  /* WEEK BREAKDOWN DISPLAY */
+  .week-block { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); margin-bottom: 16px; overflow: hidden; }
+  .week-title { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-bottom: 1.5px solid #a7f3d0; cursor: pointer; }
+  .week-title-left { display: flex; align-items: center; gap: 10px; }
+  .week-num { font-size: 14px; font-weight: 800; color: #065f46; }
+  .week-dates { font-size: 11px; color: #059669; font-weight: 600; }
+  .week-items { display: none; padding: 12px 16px; flex-direction: column; gap: 6px; }
+  .week-block.open .week-items { display: flex; }
+  .week-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 12px; background: #f0fdf4; border: 1px solid #d1fae5; border-radius: 10px; }
+  .week-item-bullet { font-size: 12px; font-weight: 800; color: #059669; }
+  .week-item-date { font-size: 10px; font-weight: 700; color: #6ee7b7; background: #065f46; padding: 1px 6px; border-radius: 99px; }
+  .week-item-text { font-size: 13px; font-weight: 600; color: var(--text); }
+  .week-empty { text-align: center; padding: 10px; color: #9ca3af; font-size: 12px; }
+
+  /* COMPACT GOAL DISPLAY IN PANEL */
+  .goals-list { display: flex; flex-direction: column; gap: 8px; }
+  .goal-item { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; }
+  .goal-bullet { width: 24px; height: 24px; background: #fef3c7; color: #d97706; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+  .goal-text { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
+  .goal-delete { background: none; border: none; color: #d1d5db; font-size: 16px; cursor: pointer; }
+
+  /* TOAST MESSAGE */
   .toast {
-    position: fixed;
-    bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
-    background: linear-gradient(135deg, var(--success), #059669);
-    color: #fff;
-    padding: 14px 28px;
-    border-radius: 99px;
-    font-weight: 700;
-    font-size: 15px;
-    box-shadow: 0 8px 28px rgba(16,185,129,0.35);
-    z-index: 999;
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    white-space: nowrap;
+    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: linear-gradient(135deg, var(--success), #059669); color: #fff;
+    padding: 14px 28px; border-radius: 99px; font-weight: 700; font-size: 15px;
+    box-shadow: 0 8px 28px rgba(16,185,129,0.35); z-index: 999;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
   /* MODAL */
   .modal-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(30,27,75,0.35);
-    backdrop-filter: blur(4px);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
+    display: none; position: fixed; inset: 0; background: rgba(30,27,75,0.35);
+    backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center;
   }
   .modal-overlay.open { display: flex; }
   .modal {
-    background: var(--surface);
-    border-radius: 20px;
-    padding: 32px;
-    width: 90%;
-    max-width: 380px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    background: var(--surface); border-radius: 20px; padding: 32px;
+    width: 90%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
     animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.85); }
-    to   { opacity: 1; transform: scale(1); }
-  }
+  @keyframes popIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
   .modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
-  .modal input { margin-bottom: 16px; }
   .modal-btns { display: flex; gap: 10px; }
-  .modal-scope-btns {
-    display: flex; gap: 10px; margin-bottom: 4px;
-  }
   .btn-scope {
-    flex: 1;
-    background: var(--bg);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 10px;
-    cursor: pointer;
-    font-family: inherit;
-    text-align: center;
-    transition: all 0.18s;
+    flex: 1; background: var(--bg); border: 2px solid var(--border); border-radius: 14px;
+    padding: 14px 10px; cursor: pointer; font-family: inherit; text-align: center; transition: all 0.18s;
     display: flex; flex-direction: column; align-items: center; gap: 4px;
   }
   .btn-scope:hover { border-color: var(--primary); background: var(--primary-light); }
-  .btn-scope .scope-icon { font-size: 22px; }
-  .btn-scope .scope-label { font-size: 13px; font-weight: 700; color: var(--text); }
-  .btn-scope .scope-sub { font-size: 11px; color: var(--muted); font-weight: 600; }
   .btn-scope-danger:hover { border-color: var(--danger); background: #fee2e2; }
-  .btn-scope-danger:hover .scope-label { color: var(--danger); }
 
-  /* SPECIFIC DATE PICKER */
-  .date-picker-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
-  }
-  .dp-day {
-    aspect-ratio: 1;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 8px;
-    font-size: 13px; font-weight: 700;
-    cursor: pointer;
-    border: 1.5px solid var(--border);
-    background: var(--bg);
-    color: var(--text);
-    transition: all 0.15s;
-    user-select: none;
-  }
-  .dp-day:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-  .dp-day.selected { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(79,70,229,0.3); }
-  .dp-day.past { opacity: 0.4; }
-  .dp-day.today { border-color: var(--success); color: var(--success); }
-  .dp-day.today.selected { background: var(--success); border-color: var(--success); color: #fff; }
-
-  /* MONTH TAGS */
-  .month-tag {
-    display: inline-block;
-    font-size: 10px; font-weight: 700;
-    padding: 2px 8px; border-radius: 99px;
-    margin-top: 4px; letter-spacing: 0.04em;
-  }
-  .current-tag  { background: #dcfce7; color: #16a34a; }
-  .past-tag     { background: #fef9c3; color: #b45309; }
-  .saved-count  { background: var(--primary-light); color: var(--primary); }
-  .month-card.past-month    { border-color: #fde68a; background: #fffbeb; }
-  .month-card.current-month { border-color: #86efac; background: #f0fdf4; }
-
-  /* DATE ROW VARIANTS */
-  .date-row-past  { background: #fffbeb; border-color: #fde68a; }
-  .date-row-today { background: #f0fdf4; border-color: #86efac; }
-  .today-badge    { background: linear-gradient(135deg, #16a34a, #15803d) !important; }
-
-  /* INLINE TAGS */
-  .tag {
-    display: inline-block; font-size: 10px; font-weight: 700;
-    padding: 2px 7px; border-radius: 99px;
-    margin-left: 6px; vertical-align: middle;
-  }
-  .today-tag { background: #dcfce7; color: #15803d; }
-  .saved-tag { background: #d1fae5; color: #065f46; }
-  .draft-tag { background: #fef3c7; color: #92400e; }
-
-  @media (max-width: 600px) {
-    .welcome-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
-    .table-footer { flex-direction: column; align-items: stretch; }
-    .btn-save { justify-content: center; }
-  }
-
-  /* TO-DO LIST PAGE */
-  #step-todo .inner {
-    max-width: 560px;
-    margin: 40px auto 0;
-    padding: 0 16px;
-  }
-  .todo-header {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: var(--radius);
-    padding: 24px 28px;
-    color: #fff;
-    margin-bottom: 24px;
-    box-shadow: var(--shadow-lg);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .todo-header h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-  .todo-header p  { font-size: 13px; opacity: 0.75; }
-  .todo-add-row {
-    display: flex; gap: 10px;
-    margin-bottom: 20px;
-  }
-  .todo-add-row input {
-    flex: 1;
-    padding: 13px 16px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 14px;
-    color: var(--text);
-    background: var(--surface);
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .todo-add-row input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
-  }
-  .btn-todo-add {
-    padding: 13px 20px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(79,70,229,0.3);
-  }
-  .btn-todo-add:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(79,70,229,0.4); }
-  .todo-list { display: flex; flex-direction: column; gap: 10px; }
-  .todo-item {
-    display: flex; align-items: center; gap: 14px;
-    background: var(--surface);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 18px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    transition: all 0.2s;
-    animation: fadeUp 0.25s ease;
-  }
-  .todo-item:hover { border-color: var(--primary); box-shadow: var(--shadow); }
-  .todo-item.done { background: #f0fdf4; border-color: #86efac; }
-  .todo-item.done .todo-text { text-decoration: line-through; color: var(--muted); }
-  .todo-checkbox {
-    width: 22px; height: 22px;
-    border: 2px solid var(--border);
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.18s;
-    background: var(--bg);
-    font-size: 13px;
-  }
-  .todo-checkbox:hover { border-color: var(--primary); }
-  .todo-item.done .todo-checkbox {
-    background: var(--success);
-    border-color: var(--success);
-    color: #fff;
-  }
-  .todo-text {
-    flex: 1;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    transition: all 0.2s;
-  }
-  .todo-delete {
-    background: none;
-    border: none;
-    color: #d1d5db;
-    font-size: 18px;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 6px;
-    transition: all 0.15s;
-    line-height: 1;
-  }
-  .todo-delete:hover { color: var(--danger); background: #fee2e2; }
-  .todo-empty {
-    text-align: center;
-    padding: 48px 0;
-    color: var(--muted);
-    font-size: 14px;
-  }
-  .todo-empty .icon { font-size: 40px; display: block; margin-bottom: 12px; }
-  .todo-stats {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 14px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-  .todo-progress {
-    height: 6px;
-    background: var(--border);
-    border-radius: 99px;
-    margin-bottom: 20px;
-    overflow: hidden;
-  }
-  .todo-progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary), var(--success));
-    border-radius: 99px;
-    transition: width 0.4s ease;
-  }
-  .todo-save-btn {
-    width: 100%;
-    margin-top: 24px;
-    padding: 15px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff;
-    border: none;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 6px 20px rgba(79,70,229,0.35);
-    transition: all 0.2s;
-    letter-spacing: 0.04em;
-  }
-  .slot-controls {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 28px;
-    background: #f0f2ff;
-    border-top: 1px solid #c7d2fe;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  #slotCountLabel {
-    font-size: 13px; font-weight: 700;
-    color: var(--primary);
-    background: var(--primary-light);
-    padding: 5px 14px;
-    border-radius: 99px;
-  }
-  .btn-slot-add, .btn-slot-remove {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 10px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.18s;
-  }
-  .btn-slot-add {
-    background: var(--primary);
-    color: #fff;
-    box-shadow: 0 3px 10px rgba(79,70,229,0.3);
-  }
-  .btn-slot-add:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(79,70,229,0.4); }
-  .btn-slot-add:disabled { background: #d1d5db; color: #9ca3af; cursor: not-allowed; box-shadow: none; transform: none; }
-  .btn-slot-remove {
-    background: #fee2e2;
-    color: var(--danger);
-  }
-  .btn-slot-remove:hover { background: var(--danger); color: #fff; }
-  .btn-slot-remove:disabled { background: #f3f4f6; color: #d1d5db; cursor: not-allowed; }
-
-  /* COMPLETED TODAY SECTION */
-  .completed-section {
-    padding: 24px 28px;
-    border-top: 2px dashed #c7d2fe;
-    background: linear-gradient(135deg, #fafbff, #f5f7ff);
-  }
-  .completed-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .completed-title {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 16px; font-weight: 800; color: var(--primary-dark);
-  }
-  .completed-count {
-    font-size: 12px; font-weight: 700;
-    background: var(--primary-light); color: var(--primary);
-    padding: 4px 12px; border-radius: 99px;
-  }
-  .completed-add-row {
-    display: flex; gap: 10px; margin-bottom: 16px;
-  }
-  .completed-add-row input {
-    flex: 1; padding: 12px 16px;
-    border: 2px solid #c7d2fe; border-radius: 12px;
-    font-family: inherit; font-size: 14px; color: var(--text);
-    background: #fff; outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .completed-add-row input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
-  }
-  .btn-completed-add {
-    padding: 12px 18px;
-    background: linear-gradient(135deg, var(--success), #059669);
-    color: #fff; border: none; border-radius: 12px;
-    font-family: inherit; font-size: 13px; font-weight: 700;
-    cursor: pointer; transition: all 0.2s; white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(16,185,129,0.3);
-  }
-  .btn-completed-add:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(16,185,129,0.4); }
-  .completed-list { display: flex; flex-direction: column; gap: 8px; }
-  .completed-item {
-    display: flex; align-items: center; gap: 12px;
-    background: #fff; border: 1px solid #d1fae5;
-    border-left: 4px solid var(--success);
-    border-radius: 12px; padding: 12px 16px;
-    animation: fadeUp 0.25s ease; transition: all 0.18s;
-  }
-  .completed-item:hover { box-shadow: 0 3px 12px rgba(16,185,129,0.15); transform: translateX(2px); }
-  .completed-check { font-size: 16px; flex-shrink: 0; }
-  .completed-text { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); }
-  .completed-del {
-    background: none; border: none; color: #d1d5db;
-    font-size: 16px; cursor: pointer; padding: 3px 5px;
-    border-radius: 6px; transition: all 0.15s;
-  }
-  .completed-del:hover { color: var(--danger); background: #fee2e2; }
-  .completed-empty {
-    text-align: center; padding: 20px 0;
-    color: #a5b4fc; font-size: 13px; font-weight: 600;
-  }
-
-  /* CALENDAR VIEW BUTTON */
-  .btn-calview {
-    padding: 9px 18px;
-    background: var(--surface2);
-    border: 1.5px solid var(--border-bright);
-    color: var(--primary);
-    border-radius: 99px;
-    font-family: inherit; font-size: 13px; font-weight: 700;
-    cursor: pointer; transition: all 0.18s;
-    white-space: nowrap;
-  }
-  .btn-calview:hover { background: var(--primary); color: #fff; box-shadow: var(--glow); }
-
-  /* CALENDAR VIEW PAGE */
-  .calview-header {
-    display: flex; align-items: center; justify-content: space-between;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border-radius: var(--radius);
-    padding: 22px 24px;
-    color: #fff;
-    margin-bottom: 16px;
-    box-shadow: var(--shadow-lg);
-    text-align: center;
-  }
-  .calview-header h2 { font-size: 22px; font-weight: 800; }
-  .calview-header p  { font-size: 12px; opacity: 0.7; margin-top: 2px; }
-  .calview-nav {
-    background: rgba(255,255,255,0.15);
-    border: none; border-radius: 10px;
-    color: #fff; font-size: 22px; font-weight: 700;
-    width: 40px; height: 40px;
-    cursor: pointer; transition: all 0.18s;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .calview-nav:hover { background: rgba(255,255,255,0.3); }
-  .calview-dow {
-    display: grid; grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 6px;
-    text-align: center;
-  }
-  .calview-dow span {
-    font-size: 11px; font-weight: 700;
-    color: var(--muted); padding: 6px 0; text-transform: uppercase;
-  }
-  .calview-grid {
-    display: grid; grid-template-columns: repeat(7, 1fr);
-    gap: 5px; margin-bottom: 20px;
-  }
-  .cv-cell {
-    aspect-ratio: 1;
-    border-radius: 10px;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    position: relative;
-    font-size: 14px; font-weight: 700;
-    cursor: default;
-    transition: all 0.15s;
-    border: 1.5px solid transparent;
-    gap: 3px;
-  }
-  .cv-cell.empty { background: transparent; }
-  .cv-cell.normal {
-    background: var(--surface);
-    color: var(--text-soft);
-    border-color: var(--border);
-  }
-  .cv-cell.has-data {
-    background: var(--primary-light);
-    border-color: var(--border-bright);
-    color: var(--primary);
-    cursor: pointer;
-  }
-  .cv-cell.has-data:hover {
-    background: var(--primary);
-    color: #fff;
-    border-color: var(--primary);
-    transform: scale(1.08);
-    box-shadow: var(--shadow);
-    z-index: 2;
-  }
-  .cv-cell.today-cv {
-    border-color: var(--success);
-    color: var(--success);
-  }
-  .cv-cell.today-cv.has-data { background: #ecfdf5; color: var(--success); }
-  .cv-cell.today-cv.has-data:hover { background: var(--success); color: #fff; border-color: var(--success); }
-  .cv-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: currentColor;
-    opacity: 0.7;
-  }
-
-  /* DETAIL PANEL */
-  .calview-detail {
-    background: var(--surface);
-    border: 1.5px solid var(--border-bright);
-    border-radius: var(--radius);
-    padding: 0;
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
-    animation: fadeUp 0.2s ease;
-  }
-  .calview-detail-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff;
-    font-size: 15px; font-weight: 800;
-  }
-  .calview-section {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .calview-section:last-child { border-bottom: none; }
-  .calview-section-title {
-    font-size: 11px; font-weight: 800;
-    color: var(--muted); text-transform: uppercase;
-    letter-spacing: 0.06em; margin-bottom: 10px;
-  }
-  .calview-task-row {
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 8px 12px; margin-bottom: 6px;
-    background: var(--surface2); border-radius: 10px;
-    font-size: 13px; font-weight: 600; color: var(--text);
-    opacity: 1;
-  }
-  .calview-task-row.done-task {
-    text-decoration: line-through;
-    color: var(--muted);
-    background: #f0fdf4;
-  }
-  .calview-task-sub { font-size: 11px; color: var(--primary); font-weight: 700; }
-  .calview-empty-day {
-    text-align: center; padding: 24px;
-    color: var(--muted); font-size: 13px;
-  }
+  .slot-controls { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; background: #f0f2ff; border-top: 1px solid #c7d2fe; gap: 12px; flex-wrap: wrap; }
+  #slotCountLabel { font-size: 13px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 5px 14px; border-radius: 99px; }
+  .btn-slot-add { padding: 8px 16px; border: none; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.18s; background: var(--primary); color: #fff; }
+  .btn-slot-remove { padding: 8px 16px; border: none; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.18s; background: #fee2e2; color: var(--danger); }
 </style>
 </head>
 <body>
@@ -1500,13 +450,11 @@
           <p>Enter your information to get started</p>
         </div>
 
-        <!-- Step 1: Name -->
         <div class="form-group">
           <label>Your Name</label>
           <input type="text" id="inputName" placeholder="Enter your name..." />
         </div>
 
-        <!-- Step 2: Class Type -->
         <div class="form-group">
           <label>Select Your Level</label>
           <div class="level-grid" id="levelGrid">
@@ -1517,7 +465,6 @@
           </div>
         </div>
 
-        <!-- University department selector (hidden by default) -->
         <div class="form-group" id="deptGroup" style="display:none;">
           <label>Select Your Department</label>
           <div class="level-grid" id="deptGrid">
@@ -1527,11 +474,9 @@
           </div>
         </div>
 
-        <!-- Subject chips (hidden until level selected) -->
         <div class="form-group" id="subjectGroup" style="display:none;">
           <label id="subjectGroupLabel">Select Your Subjects</label>
           <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;" id="subjectChips"></div>
-          <!-- Others input -->
           <div id="othersInputGroup" style="display:none;margin-top:12px;">
             <input type="text" id="othersSubjectInput" placeholder="Type subject name and press Enter..."
               onkeydown="if(event.key==='Enter'){addOthersSubject();event.preventDefault();}" />
@@ -1539,14 +484,14 @@
           </div>
         </div>
 
-        <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="submitOnboarding()">
+        <button class="btn btn-primary w-full justify-center" onclick="submitOnboarding()">
           Next Step →
         </button>
       </div>
     </div>
   </div>
 
-  <!-- STEP: CALENDAR -->
+  <!-- STEP: CALENDAR (HOME PAGE WITH DUAL NAV TABS) -->
   <div class="step" id="step-calendar">
     <div class="inner">
       <div class="welcome-bar">
@@ -1554,54 +499,180 @@
           <h1>Hi, <span id="welcomeName"></span>! 👋</h1>
           <p>Class: <span id="welcomeClass"></span> &nbsp;·&nbsp; Subjects: <span id="welcomeSubjects"></span></p>
         </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <button class="btn-calview" onclick="openCalendarView()">🗓 Calendar View</button>
-          <div class="year-badge" id="yearBadge">📅 2026</div>
+        <div class="year-badge" id="yearBadge">📅 2026</div>
+      </div>
+
+      <!-- DUAL TABS FOR APP NAVIGATION -->
+      <div class="flex border-b border-gray-200 mb-6 bg-white rounded-xl p-1.5 shadow-md">
+        <button id="tab-routine" onclick="switchMainTab('routine')" class="flex-1 py-3 text-center rounded-lg text-sm font-bold transition-all duration-300 bg-primary text-white">
+          📅 Study Routine Planner
+        </button>
+        <button id="tab-skills" onclick="switchMainTab('skills')" class="flex-1 py-3 text-center rounded-lg text-sm font-bold transition-all duration-300 text-gray-500 hover:text-primary">
+          🚀 AI Skill Academy
+        </button>
+      </div>
+
+      <!-- MAIN ROUTINE SECTION -->
+      <div id="section-routine">
+        <p class="section-title">Select a Month</p>
+        <div class="month-grid" id="monthGrid"></div>
+      </div>
+
+      <!-- SKILL ACADEMY SECTION -->
+      <div id="section-skills" class="hidden space-y-6">
+        <div class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <h2 class="text-xl font-extrabold">🚀 AI Future Skill Academy</h2>
+              <p class="text-xs text-purple-100 mt-1">ভবিষ্যতের সবচেয়ে ডিমান্ডিং স্কিলগুলো শিখুন, প্রোগ্রেস ট্র্যাক করুন এবং AI কোচের সাহায্য নিন</p>
+            </div>
+            <button onclick="openAICoachDialog()" class="px-4 py-2 bg-white text-indigo-700 font-bold text-xs rounded-lg hover:bg-purple-100 transition-all flex items-center gap-1.5 shadow-md">
+              <span>🤖 Ask AI Coach</span> 🔮
+            </button>
+          </div>
+        </div>
+
+        <div class="flex gap-2 bg-gray-100 p-1 rounded-xl w-fit border border-gray-200">
+          <button id="skill-tab-browse" onclick="switchSkillSubTab('browse')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all bg-white text-indigo-600 shadow-sm">Browse Skills</button>
+          <button id="skill-tab-tracker" onclick="switchSkillSubTab('tracker')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-gray-500 hover:text-indigo-600">My Tracker (<span id="trackedCount">0</span>)</button>
+        </div>
+
+        <div id="skill-content-browse" class="space-y-4">
+          <div class="flex flex-col sm:flex-row gap-3">
+            <input type="text" id="skillSearch" placeholder="Search skills..." oninput="filterSkills()" class="flex-1 text-xs px-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500" />
+            <select id="skillCategoryFilter" onchange="filterSkills()" class="text-xs px-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 font-semibold text-gray-600">
+              <option value="all">All Categories</option>
+              <option value="AI & Future Tech">🤖 AI & Future Tech</option>
+              <option value="Software Development">💻 Software Development</option>
+              <option value="Cybersecurity & Cloud">🔒 Cybersecurity & Cloud</option>
+              <option value="UI/UX & Creative Design">🎨 UI/UX & Creative Design</option>
+              <option value="Business & Analytics">📈 Business & Analytics</option>
+              <option value="Soft Skills & Leadership">🤝 Soft Skills & Leadership</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="skillGrid"></div>
+        </div>
+
+        <div id="skill-content-tracker" class="hidden space-y-4">
+          <div class="bg-indigo-50/50 border border-indigo-100 p-4 rounded-xl flex flex-col sm:flex-row gap-3 items-end">
+            <div class="flex-1 w-full">
+              <label class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider">Add Custom Skill to Track</label>
+              <input type="text" id="customSkillInput" placeholder="Write skill name, e.g. Node.js, Video Editing..." class="w-full mt-1.5 text-xs px-3 py-2.5 bg-white border border-indigo-200 rounded-lg focus:outline-none focus:border-indigo-500" />
+            </div>
+            <button onclick="addCustomSkill()" class="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition-all shadow-md">
+              + Add to Track
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="trackedSkillList"></div>
         </div>
       </div>
-      <p class="section-title">Select a Month</p>
-      <div class="month-grid" id="monthGrid"></div>
     </div>
   </div>
 
-  <!-- STEP: OPTIONS -->
-  <div class="step" id="step-options">
-    <div class="inner">
-      <button class="back-btn" onclick="goTo('calendar')">← Back to Months</button>
-      <div class="options-header">
-        <h2 id="optionsTitle"></h2>
-        <p>Select routine type</p>
-      </div>
-      <button class="option-card-primary" onclick="goTo('weekly')">
-        <div>
-          <div class="label">📅 Monthly Routine</div>
-          <div class="sub" id="optionsSub">View all dates of this month</div>
-        </div>
-        <span style="font-size:22px;">›</span>
-      </button>
-      <button class="option-card-goals" onclick="openMonthlyGoals()">
-        <div>
-          <div class="label">🎯 Monthly Goals</div>
-          <div class="sub">Write your goals for this month</div>
-        </div>
-        <span style="font-size:22px;">›</span>
-      </button>
-      <button class="option-card-progress" onclick="openStudyProgress()">
-        <div>
-          <div class="label">📖 Study Progress</div>
-          <div class="sub">Week-wise completed studies log</div>
-        </div>
-        <span style="font-size:22px;">›</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- STEP: WEEKLY / DATE VIEW -->
+  <!-- STEP: DATE WORKSPACE & SIDEBAR (DIRECT FROM MONTH CARD) -->
   <div class="step" id="step-weekly">
     <div class="inner">
-      <button class="back-btn" onclick="goTo('options')">← Back to Options</button>
-      <h2 style="font-size:22px;font-weight:800;margin-bottom:20px;" id="weeklyTitle"></h2>
-      <div class="date-list" id="dateList"></div>
+      <button class="back-btn" onclick="goTo('calendar')">← Back to Months</button>
+      
+      <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h2 style="font-size:24px;font-weight:800;color:var(--primary-dark);" id="weeklyTitle"></h2>
+          <p class="text-xs text-gray-400 mt-1">মাসের তারিখের তালিকা এবং সাইডবার টুলস দিয়ে সরাসরি আপনার রুটিন ও প্রোগ্রেস কন্ট্রোল করুন</p>
+        </div>
+        <div class="flex flex-wrap gap-1.5 bg-gray-50 p-1.5 rounded-xl border border-gray-200">
+          <button id="ws-btn-goals" onclick="switchWorkspaceTab('goals')" class="workspace-tab-btn active">🎯 Goals</button>
+          <button id="ws-btn-progress" onclick="switchWorkspaceTab('progress')" class="workspace-tab-btn">📖 Progress</button>
+          <button id="ws-btn-backlog" onclick="switchWorkspaceTab('backlog')" class="workspace-tab-btn">📋 Backlog</button>
+          <button id="ws-btn-ai" onclick="switchWorkspaceTab('ai')" class="workspace-tab-btn">🧠 AI Insights</button>
+        </div>
+      </div>
+
+      <!-- SPLIT LAYOUT WORKSPACE -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- LEFT: DATE LIST COLUMN -->
+        <div class="lg:col-span-7 space-y-4">
+          <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">📅 Select Date to Study</p>
+          <div class="date-list" id="dateList"></div>
+        </div>
+
+        <!-- RIGHT: WORKSPACE SIDE PANEL -->
+        <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-md border border-gray-100 flex flex-col h-fit sticky top-20">
+          
+          <!-- SUBPANEL 1: MONTHLY GOALS -->
+          <div id="subpanel-goals" class="space-y-4">
+            <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+              <h3 class="font-bold text-gray-950 flex items-center gap-2">🎯 Monthly Goals</h3>
+              <div class="flex gap-1">
+                <button class="text-[10px] font-bold px-2 py-1 rounded bg-gray-100 text-gray-600" id="ws-btn-bullet" onclick="setGoalType('bullet')">• List</button>
+                <button class="text-[10px] font-bold px-2 py-1 rounded bg-gray-100 text-gray-600" id="ws-btn-number" onclick="setGoalType('number')">1. Num</button>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <input type="text" id="goalsInput" placeholder="Write a monthly goal..." class="flex-1 text-xs px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary" onkeydown="if(event.key==='Enter') addGoalItem()" />
+              <button class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold hover:bg-primary-dark transition-all" onclick="addGoalItem()">+ Add</button>
+            </div>
+            <div class="goals-list max-h-[300px] overflow-y-auto pr-1" id="goalsList"></div>
+          </div>
+
+          <!-- SUBPANEL 2: STUDY PROGRESS -->
+          <div id="subpanel-progress" class="hidden space-y-4">
+            <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+              <h3 class="font-bold text-gray-950 flex items-center gap-2">📖 Week-wise Completed Log</h3>
+              <div class="flex gap-1">
+                <button class="text-[10px] font-bold px-2 py-1 rounded bg-gray-100 text-gray-600" id="ws-btn-prog-bullet" onclick="setProgressType('bullet')">• Bullet</button>
+                <button class="text-[10px] font-bold px-2 py-1 rounded bg-gray-100 text-gray-600" id="ws-btn-prog-num" onclick="setProgressType('number')">1. Num</button>
+              </div>
+            </div>
+            <div id="weekBlocks" class="space-y-3 max-h-[380px] overflow-y-auto pr-1"></div>
+          </div>
+
+          <!-- SUBPANEL 3: GLOBAL BACKLOG -->
+          <div id="subpanel-backlog" class="hidden space-y-4">
+            <div class="pb-2 border-b border-gray-100">
+              <h3 class="font-bold text-gray-950 flex items-center gap-2">📋 Monthly Backlog & Drafts</h3>
+              <p class="text-[10px] text-gray-400 mt-0.5">রুটিন বা তারিখ ছাড়াও পুরো মাসের জন্য দরকারি টাস্ক লিস্ট বা খসড়া নোটসমূহ</p>
+            </div>
+            <div class="flex gap-2">
+              <input type="text" id="backlogInput" placeholder="Add custom month task or backlog..." class="flex-1 text-xs px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary" onkeydown="if(event.key==='Enter') addBacklogItem()" />
+              <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition-all" onclick="addBacklogItem()">+ Add</button>
+            </div>
+            <div class="space-y-2 max-h-[300px] overflow-y-auto pr-1" id="backlogList"></div>
+          </div>
+
+          <!-- SUBPANEL 4: AI INSIGHTS & ANALYTICS -->
+          <div id="subpanel-ai" class="hidden space-y-4">
+            <div class="pb-2 border-b border-gray-100">
+              <h3 class="font-bold text-gray-950 flex items-center gap-2">🧠 AI Month Analytics & Coach</h3>
+              <p class="text-[10px] text-gray-400 mt-0.5">আপনার পড়াশোনার অগ্রগতি অ্যানালাইসিস করতে AI কোচের সাহায্য নিন</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 bg-gray-50 p-3 rounded-xl border border-gray-150">
+              <div class="text-center p-2.5 bg-white rounded-lg shadow-sm">
+                <span class="block text-xl">📌</span>
+                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Logged Days</span>
+                <span class="text-lg font-extrabold text-primary" id="ai-stat-saved-days">0</span>
+              </div>
+              <div class="text-center p-2.5 bg-white rounded-lg shadow-sm">
+                <span class="block text-xl">✅</span>
+                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Tasks Completed</span>
+                <span class="text-lg font-extrabold text-emerald-600" id="ai-stat-tasks-done">0</span>
+              </div>
+            </div>
+
+            <button id="btnAIMonthReview" onclick="getAIMonthlyReview()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs py-3 rounded-xl transition-all duration-300 shadow-md flex items-center justify-center gap-2 border border-purple-400/40">
+              <span>🔮 AI Performance Review</span> ⚡
+            </button>
+
+            <!-- AI Month Output Box -->
+            <div id="aiMonthOutput" class="hidden bg-indigo-50/50 border border-indigo-100 p-4 rounded-xl text-xs leading-relaxed max-h-60 overflow-y-auto whitespace-pre-wrap text-indigo-950 font-medium">
+              আপনার পড়াশোনার গতিবিধি পর্যালোচনা হচ্ছে...
+            </div>
+          </div>
+
+        </div>
+
+      </div>
     </div>
   </div>
 
@@ -1620,7 +691,7 @@
     </div>
   </div>
 
-  <!-- STEP: STUDY TABLE -->
+  <!-- STEP: STUDY PLAN TABLE -->
   <div class="step" id="step-table">
     <div class="inner">
       <button class="back-btn" onclick="goTo('day-items')">← Back</button>
@@ -1652,13 +723,13 @@
             <button class="btn-slot-add" id="btnAddSlot" onclick="addSlot()" title="Add slot">+ Add Slot</button>
           </div>
         </div>
-        <!-- University: add row button -->
+        <!-- University department row options -->
         <div class="slot-controls" id="uniRowControls" style="display:none;border-top:1px solid #c7d2fe;">
           <span style="font-size:13px;font-weight:700;color:var(--primary);">Course rows</span>
           <button class="btn-slot-add" onclick="addUniRow()">+ Add Course Row</button>
         </div>
 
-        <!-- COMPLETED TODAY SECTION -->
+        <!-- COMPLETED TODAY -->
         <div class="completed-section">
           <div class="completed-header">
             <div class="completed-title">
@@ -1684,7 +755,7 @@
     </div>
   </div>
 
-  <!-- STEP: TO-DO LIST -->
+  <!-- STEP: TO-DO SECTIONS -->
   <div class="step" id="step-todo">
     <div class="inner">
       <button class="back-btn" onclick="goTo('day-items')">← Back to Activities</button>
@@ -1710,131 +781,14 @@
       <button class="todo-save-btn" onclick="saveTodo()">✅ Save List</button>
     </div>
   </div>
-  <!-- STEP: MONTHLY GOALS -->
-  <div class="step" id="step-goals">
-    <div class="inner">
-      <button class="back-btn" onclick="goTo('options')">← Back to Options</button>
-      <div class="goals-header">
-        <div>
-          <h2>🎯 Monthly Goals</h2>
-          <p id="goalsMonthLabel"></p>
-        </div>
-        <span style="font-size:36px;">🎯</span>
-      </div>
-      <div class="goals-type-row">
-        <button class="btn-list-type active" id="btnBullet" onclick="setGoalType('bullet')">• Bullet List</button>
-        <button class="btn-list-type" id="btnNumber" onclick="setGoalType('number')">1. Numbered List</button>
-      </div>
-      <div class="goals-add-row">
-        <input type="text" id="goalsInput" placeholder="Write a goal..." onkeydown="if(event.key==='Enter') addGoalItem()" />
-        <button class="btn-goals-add" onclick="addGoalItem()">+ Add</button>
-      </div>
-      <div class="goals-list" id="goalsList"></div>
-      <button class="goals-save-btn" onclick="saveGoals()">✅ Save Goals</button>
-    </div>
-  </div>
-  <!-- STEP: STUDY PROGRESS -->
-  <div class="step" id="step-progress">
-    <div class="inner">
-      <button class="back-btn" onclick="goTo('options')">← Back to Options</button>
-      <div class="progress-header">
-        <div>
-          <h2>📖 Study Progress</h2>
-          <p id="progressMonthLabel"></p>
-        </div>
-        <span style="font-size:36px;">📖</span>
-      </div>
-      <div class="progress-type-row">
-        <button class="btn-prog-type active" id="btnProgBullet" onclick="setProgressType('bullet')">• Bullet</button>
-        <button class="btn-prog-type" id="btnProgNumber" onclick="setProgressType('number')">1. Numbered</button>
-      </div>
-      <div id="weekBlocks"></div>
-    </div>
-  </div>
-  <!-- STEP: CALENDAR VIEW (read-only) -->
-  <div class="step" id="step-calview">
-    <div class="inner" style="max-width:780px;margin:32px auto 0;padding:0 16px 60px;">
-      <button class="back-btn" onclick="goTo('calendar')">← Back to Home</button>
-
-      <div class="calview-header">
-        <button class="calview-nav" onclick="shiftCalViewMonth(-1)">‹</button>
-        <div>
-          <h2 id="calViewTitle"></h2>
-          <p id="calViewSub"></p>
-        </div>
-        <button class="calview-nav" onclick="shiftCalViewMonth(1)">›</button>
-      </div>
-
-      <!-- Day-of-week labels -->
-      <div class="calview-dow">
-        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
-        <span>Thu</span><span>Fri</span><span>Sat</span>
-      </div>
-      <div class="calview-grid" id="calViewGrid"></div>
-
-      <!-- Detail panel (shown when a date is clicked) -->
-      <div class="calview-detail" id="calViewDetail" style="display:none;">
-        <div class="calview-detail-header">
-          <span id="calViewDetailDate"></span>
-          <button onclick="document.getElementById('calViewDetail').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);">✕</button>
-        </div>
-        <div id="calViewDetailBody"></div>
-      </div>
-    </div>
-  </div>
 </main>
-
-<!-- CREDIT FOOTER -->
-<div style="
-  text-align: center;
-  padding: 20px 16px 32px;
-  font-family: 'Sora', sans-serif;
-  font-size: 13px;
-  color: #9ca3af;
-  position: relative;
-  z-index: 1;
-">
-  Designed & Built by
-  <span style="
-    font-weight: 800;
-    color: var(--primary);
-    letter-spacing: 0.04em;
-  ">Ohab Johory Afad</span>
-  <span style="margin: 0 6px;">·</span>
-  <span style="font-size: 12px;">© 2025 Study Partner</span>
-</div>
-
-<!-- CREDIT FOOTER -->
-<footer style="
-  text-align: center;
-  padding: 20px 16px;
-  font-family: 'Sora', sans-serif;
-  font-size: 13px;
-  color: #9ca3af;
-  border-top: 1px solid #f3f4f6;
-  margin-top: 20px;
-">
-  Designed & Built by <strong style="color:#4f46e5;">Ohab Johory Afad</strong> 🎓
-</footer>
-<div class="toast" id="toast">✅ Plan saved successfully!</div>
 
 <!-- MODAL: Edit Subjects -->
 <div class="modal-overlay" id="subjectModal">
   <div class="modal" style="max-width:440px;">
-    <h3>✏️ Edit Subjects</h3>
+    <h3>✏ edit; Edit Subjects</h3>
     <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Select or deselect your subjects</p>
-    <div class="chips" id="subjectModalChips">
-      <button class="chip" data-sub="Bangla">📖 Bangla</button>
-      <button class="chip" data-sub="English">🔤 English</button>
-      <button class="chip" data-sub="Math">📐 Math</button>
-      <button class="chip" data-sub="Science">🔬 Science</button>
-      <button class="chip" data-sub="Physics">⚛️ Physics</button>
-      <button class="chip" data-sub="Chemistry">🧪 Chemistry</button>
-      <button class="chip" data-sub="Biology">🧬 Biology</button>
-      <button class="chip" data-sub="ICT">💻 ICT</button>
-      <button class="chip" data-sub="Religion">🕌 Religion</button>
-      <button class="chip" data-sub="Social Science">🌍 Social Science</button>
-    </div>
+    <div class="chips" id="subjectModalChips" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
     <div class="modal-btns" style="margin-top:20px;">
       <button class="btn btn-primary" onclick="saveSubjectModal()">Save</button>
       <button class="btn" style="background:#f3f4f6;color:#374151;" onclick="closeSubjectModal()">Cancel</button>
@@ -1859,13 +813,20 @@
         2. Copy the code and save it (WhatsApp, Notes, etc.)<br>
         3. On your other device, paste it in the Import tab
       </div>
-      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:12px;" onclick="generateExportCode()">
+      <button class="btn btn-primary w-full justify-center mb-3" onclick="generateExportCode()">
         🔄 Generate Code
       </button>
       <textarea class="sync-code-box" id="exportCodeBox" placeholder="Your export code will appear here..." readonly></textarea>
-      <button class="btn" id="btnCopyCode" style="width:100%;justify-content:center;background:#f0fdf4;color:#059669;font-weight:700;border:none;border-radius:12px;padding:12px;cursor:pointer;font-family:inherit;font-size:14px;" onclick="copyExportCode()" disabled>
+      <button class="btn w-full justify-center" id="btnCopyCode" style="background:#f0fdf4;color:#059669;font-weight:700;" onclick="copyExportCode()" disabled>
         📋 Copy Code
       </button>
+
+      <!-- Optional Gemini API Key configuration inside Sync pane -->
+      <div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--border);">
+        <label class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">🔮 Optional: Gemini API Key</label>
+        <input type="password" id="inputApiKey" placeholder="AI-এর জন্য Gemini API Key লিখুন (ঐচ্ছিক)" class="w-full mt-1.5 p-2.5 text-xs bg-indigo-50/50 border border-indigo-200 rounded-lg focus:outline-none focus:border-primary" onchange="saveApiKey(this.value)" />
+        <p class="text-[9px] text-gray-400 mt-1">রিয়েল-টাইম কাস্টম AI এনালাইসিস পেতে আপনার নিজের ফ্রি API Key সেট করতে পারেন।</p>
+      </div>
     </div>
 
     <!-- IMPORT PANEL -->
@@ -1874,52 +835,52 @@
         <strong>⚠️ Warning:</strong> Importing will <strong>replace</strong> all current data on this device. Make sure to export first if needed!
       </div>
       <textarea class="sync-code-box" id="importCodeBox" placeholder="Paste your export code here..."></textarea>
-      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="importData()">
+      <button class="btn btn-primary w-full justify-center" onclick="importData()">
         📥 Import & Apply
       </button>
     </div>
 
-    <button class="btn" style="background:#f3f4f6;color:#374151;width:100%;justify-content:center;margin-top:10px;" onclick="closeSyncModal()">Close</button>
+    <button class="btn w-full justify-center mt-3" style="background:#f3f4f6;color:#374151;" onclick="closeSyncModal()">Close</button>
   </div>
 </div>
 
 <!-- MODAL: Add Activity -->
 <div class="modal-overlay" id="addModal">
-  <div class="modal">
+  <div class="modal" style="max-width: 440px;">
     <h3>➕ Add New Activity</h3>
     <div class="form-group">
       <label>Activity Name</label>
-      <input type="text" id="newActivityInput" placeholder="e.g. Sports, Art..." onkeydown="if(event.key==='Enter') document.getElementById('scopeBtns').style.display='flex'" />
+      <input type="text" id="newActivityInput" placeholder="e.g. Sports, Art..." />
     </div>
     <p style="font-size:13px;color:var(--muted);margin-bottom:12px;font-weight:600;">Apply to:</p>
-    <div class="modal-scope-btns" id="scopeBtns">
+    <div class="grid grid-cols-3 gap-2 mb-2" id="scopeBtns">
       <button class="btn-scope" onclick="confirmAddActivity('date')">
         <span class="scope-icon">📅</span>
-        <span class="scope-label">This date only</span>
-        <span class="scope-sub" id="scopeDateLabel"></span>
+        <span class="scope-label text-[11px] font-bold">This date</span>
+        <span class="scope-sub text-[9px]" id="scopeDateLabel"></span>
       </button>
       <button class="btn-scope" onclick="confirmAddActivity('month')">
         <span class="scope-icon">📆</span>
-        <span class="scope-label">All dates in month</span>
-        <span class="scope-sub" id="scopeMonthLabel"></span>
+        <span class="scope-label text-[11px] font-bold">All month</span>
+        <span class="scope-sub text-[9px]" id="scopeMonthLabel"></span>
       </button>
-      <button class="btn-scope" onclick="showSpecificDatePicker()">
-        <span class="scope-icon">🗓️</span>
-        <span class="scope-label">Specific dates</span>
-        <span class="scope-sub">Pick dates manually</span>
-      </button>
-    </div>
-
-    <!-- Specific date picker (hidden by default) -->
-    <div id="specificDatePicker" style="display:none;margin-top:14px;">
-      <p style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;">SELECT DATES FROM <span id="pickerMonthName"></span></p>
-      <div class="date-picker-grid" id="datePickerGrid"></div>
-      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:14px;" onclick="confirmAddActivity('specific')">
-        ✅ Add to Selected Dates
+      <button class="btn-scope" onclick="toggleSpecificDateSelector()">
+        <span class="scope-icon">📍</span>
+        <span class="scope-label text-[11px] font-bold">Specific Date</span>
+        <span class="scope-sub text-[9px]">Pick Calendar</span>
       </button>
     </div>
 
-    <button class="btn" style="background:#f3f4f6;color:#374151;width:100%;justify-content:center;margin-top:10px;" onclick="closeAddModal()">Cancel</button>
+    <!-- Hidden Specific Date Picker Block -->
+    <div id="specificDateSelectorDiv" class="hidden mt-4 p-3 bg-indigo-50/50 border border-indigo-100 rounded-xl space-y-2">
+      <label class="text-[9px] font-bold text-indigo-700 uppercase tracking-wider block">Choose Calendar Date</label>
+      <input type="date" id="addSpecificDateInput" class="w-full text-xs px-3 py-2 bg-white border border-indigo-200 rounded-lg focus:outline-none focus:border-indigo-500 font-semibold" />
+      <button class="w-full py-2.5 bg-indigo-600 text-white font-bold text-xs rounded-lg hover:bg-indigo-700 transition-all shadow-md" onclick="confirmAddActivity('specific')">
+        Confirm & Send Activity
+      </button>
+    </div>
+
+    <button class="btn w-full justify-center mt-3" style="background:#f3f4f6;color:#374151;" onclick="closeAddModal()">Cancel</button>
   </div>
 </div>
 
@@ -1940,17 +901,110 @@
         <span class="scope-sub" id="deleteScopeMonthLabel"></span>
       </button>
     </div>
-    <button class="btn" style="background:#f3f4f6;color:#374151;width:100%;justify-content:center;margin-top:10px;" onclick="closeDeleteActModal()">Cancel</button>
+    <button class="btn w-full justify-center mt-3" style="background:#f3f4f6;color:#374151;" onclick="closeDeleteActModal()">Cancel</button>
   </div>
 </div>
 
+<!-- MODAL: Skill Details -->
+<div class="modal-overlay" id="skillDetailModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="flex justify-between items-start mb-4">
+      <div class="flex items-center gap-3">
+        <span id="sd-icon" class="text-3xl"></span>
+        <div>
+          <h3 id="sd-name" class="font-bold text-gray-950 text-base" style="margin-bottom:2px;"></h3>
+          <span id="sd-category" class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700"></span>
+        </div>
+      </div>
+      <span id="sd-priority" class="text-[10px] font-bold px-2 py-0.5 rounded"></span>
+    </div>
+    
+    <div class="space-y-3 my-4">
+      <div>
+        <h4 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Description</h4>
+        <p id="sd-desc" class="text-xs text-gray-600 mt-1 leading-relaxed"></p>
+      </div>
+      <div>
+        <h4 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Why it is crucial for 2026+</h4>
+        <p id="sd-why" class="text-xs text-gray-600 mt-1 leading-relaxed font-medium"></p>
+      </div>
+      <div>
+        <h4 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Recommended Free Resources</h4>
+        <p id="sd-resources" class="text-xs text-indigo-600 font-semibold mt-1 leading-relaxed"></p>
+      </div>
+    </div>
+
+    <div class="flex gap-2 pt-4 border-t border-gray-100">
+      <button id="sd-btn-track" onclick="trackCurrentSkillFromModal()" class="flex-1 py-2.5 bg-indigo-600 text-white font-bold text-xs rounded-xl hover:bg-indigo-700 transition-all text-center">
+        🎯 Add to Tracker
+      </button>
+      <button onclick="closeSkillDetailModal()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-bold text-xs rounded-xl hover:bg-gray-200 transition-all text-center">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: AI Coach Dialog -->
+<div class="modal-overlay" id="aiCoachModal">
+  <div class="modal" style="max-width:520px;">
+    <div class="flex items-center gap-3 pb-3 border-b border-gray-100 mb-4">
+      <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-xl">🤖</div>
+      <div>
+        <h3 class="font-bold text-gray-950 text-sm" style="margin-bottom:2px;">AI Future Coach</h3>
+        <p class="text-[10px] text-gray-400">আপনার ক্যারিয়ার ও স্কিল বিষয়ক ব্যক্তিগত কোচ</p>
+      </div>
+    </div>
+    
+    <div class="space-y-3">
+      <div class="bg-indigo-50/50 p-3.5 rounded-xl border border-indigo-100">
+        <p class="text-xs text-indigo-950 font-medium leading-relaxed">
+          স্বাগতম! আমি আপনার <strong>AI Career Coach</strong>। আপনার বর্তমান প্রোফাইল বিবেচনা করে আমি আপনাকে পারফেক্ট ক্যারিয়ার গাইডলাইন দিতে পারি। নিচে যেকোনো একটি কুইক অপশনে ক্লিক করুন বা চ্যাট করুন:
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-2 animate-pulse" id="aiCoachQuickOptions">
+        <button onclick="askCoachQuestion('recommend')" class="text-left px-3.5 py-2.5 bg-white border border-gray-200 hover:border-indigo-400 rounded-xl text-xs font-semibold text-gray-700 hover:text-indigo-600 transition-all">
+          🔮 Recommend the best skill for my profile
+        </button>
+        <button onclick="askCoachQuestion('trends')" class="text-left px-3.5 py-2.5 bg-white border border-gray-200 hover:border-indigo-400 rounded-xl text-xs font-semibold text-gray-700 hover:text-indigo-600 transition-all">
+          🚀 Show me future high-income career trends (2026-2030)
+        </button>
+        <button onclick="askCoachQuestion('time')" class="text-left px-3.5 py-2.5 bg-white border border-gray-200 hover:border-indigo-400 rounded-xl text-xs font-semibold text-gray-700 hover:text-indigo-600 transition-all">
+          ⏰ Best strategies to balance study and skill acquisition
+        </button>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex gap-2">
+          <input type="text" id="aiCoachCustomQuery" placeholder="Ask AI Coach anything about skills..." class="flex-1 text-xs px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500" onkeydown="if(event.key==='Enter') sendCustomCoachQuery()" />
+          <button onclick="sendCustomCoachQuery()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition-all">Ask</button>
+        </div>
+      </div>
+
+      <!-- AI Coach Output Box -->
+      <div id="aiCoachOutput" class="hidden bg-gray-50 border border-gray-150 p-4 rounded-xl text-xs leading-relaxed max-h-60 overflow-y-auto whitespace-pre-wrap text-gray-800 font-medium"></div>
+    </div>
+
+    <div class="pt-4 border-t border-gray-100 mt-4 flex justify-end">
+      <button onclick="closeAICoachModal()" class="px-5 py-2 bg-gray-100 text-gray-700 font-bold text-xs rounded-xl hover:bg-gray-200 transition-all">
+        Close Dialog
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer style="text-align: center; padding: 20px 16px; font-family: 'Sora', sans-serif; font-size: 13px; color: #9ca3af; border-top: 1px solid #f3f4f6; margin-top: 20px;">
+  Designed & Built by <strong style="color:#4f46e5;">Ohab Johory Afad</strong> 🎓
+</footer>
+<div class="toast" id="toast">✅ Plan saved successfully!</div>
+
 <script>
-  //  REAL DATE  (updates every time app loads)
-  // ─────────────────────────────────────────
-  const _now          = new Date();
-  const currentYear   = _now.getFullYear();
+  // REAL DATE STATE
+  const _now = new Date();
+  const currentYear = _now.getFullYear();
   const currentMonthIdx = _now.getMonth();   // 0-based
-  const currentDay    = _now.getDate();
+  const currentDay = _now.getDate();
 
   const months = [
     { name:"January",  days:31, icon:"❄️" },
@@ -1967,22 +1021,34 @@
     { name:"December", days:31, icon:"🎄" }
   ];
 
-  // ─────────────────────────────────────────
-  //  STATE  (loaded from localStorage)
-  // ─────────────────────────────────────────
-  const LS_PROFILE  = 'sp_profile';
-  const LS_DATA     = 'sp_tableData';
-  const LS_SAVED    = 'sp_savedDates';
+  // PERSISTENCE KEYS
+  const LS_PROFILE     = 'sp_profile';
+  const LS_DATA        = 'sp_tableData';
+  const LS_SAVED       = 'sp_savedDates';
   const LS_CUSTOM_ACT  = 'sp_customActivities';
   const LS_HIDDEN_ACT  = 'sp_hiddenActivities';
-  const LS_ACT_ORDER   = 'sp_activityOrder'; // { "March-10": ["Studies","Religion",...] }
+  const LS_ACT_ORDER   = 'sp_activityOrder'; 
+  const LS_TRACKED_SKILLS = 'sp_trackedSkills'; 
+  const LS_USER_CUSTOM_SKILLS = 'sp_userCustomSkills'; 
+  const LS_MONTH_BACKLOG = 'sp_monthBacklog'; 
+  const LS_GOALS = 'sp_goalsData'; 
+  const LS_COMPLETED = 'sp_completedData'; 
+  const LS_TODO = 'sp_todoData';
+  const LS_AI_KEY = 'sp_aiKey'; 
 
+  // RETRIEVE AND PARSE PERSISTED STATE
   const savedProfile   = JSON.parse(localStorage.getItem(LS_PROFILE)  || 'null');
   const savedTableData = JSON.parse(localStorage.getItem(LS_DATA)     || '{}');
   const savedDatesSet  = JSON.parse(localStorage.getItem(LS_SAVED)    || '[]');
   const savedCustomAct = JSON.parse(localStorage.getItem(LS_CUSTOM_ACT) || '{}');
   const savedHiddenAct = JSON.parse(localStorage.getItem(LS_HIDDEN_ACT) || '{}');
   const savedActOrder  = JSON.parse(localStorage.getItem(LS_ACT_ORDER)  || '{}');
+  const savedTracked   = JSON.parse(localStorage.getItem(LS_TRACKED_SKILLS) || '{}');
+  const savedUserCustSkills = JSON.parse(localStorage.getItem(LS_USER_CUSTOM_SKILLS) || '[]');
+  const savedMonthBacklog = JSON.parse(localStorage.getItem(LS_MONTH_BACKLOG) || '{}');
+  const savedGoalsData = JSON.parse(localStorage.getItem(LS_GOALS) || '{}');
+  const savedCompletedData = JSON.parse(localStorage.getItem(LS_COMPLETED) || '{}');
+  const savedTodoData = JSON.parse(localStorage.getItem(LS_TODO) || '{}');
 
   const DEFAULT_ACTIVITIES = [
     { id: 1, name: 'Studies',  icon: '📚' },
@@ -1991,185 +1057,78 @@
   ];
 
   const state = {
-    name:      savedProfile?.name    || '',
-    class:     savedProfile?.class   || '',
-    subjects:  savedProfile?.subjects || [],
+    name: savedProfile?.name || '',
+    class: savedProfile?.class || '',
+    subjects: savedProfile?.subjects || [],
+    selectedLevel: savedProfile?.level || '',
+    selectedDept: savedProfile?.dept || '',
+    customSubjects: savedProfile?.customSubjects || [],
     selectedMonth: null,
-    selectedDay:   null,
-    tableData:  savedTableData,
+    selectedDay: null,
+    tableData: savedTableData,
     savedDates: new Set(savedDatesSet),
     customActivities: savedCustomAct,
     hiddenActivities: savedHiddenAct,
-    activityOrder:    savedActOrder   // { "March-10": ["Studies","Religion",...] }
+    activityOrder: savedActOrder,   
+    trackedSkills: savedTracked,     
+    userCustomSkills: savedUserCustSkills, 
+    monthBacklog: savedMonthBacklog, 
+    goalsData: savedGoalsData,
+    completedData: savedCompletedData,
+    todoData: savedTodoData,
+    activeMainTab: 'routine',
+    activeWorkspaceTab: 'goals',
+    goalType: 'bullet',
+    progressType: 'bullet',
+    currentActivity: null,
+    selectedSkill: null,
+    slotCount: 3,
+    uniRows: [""]
   };
 
-  // ─── Persist helpers ─────────────────────
-  function persistProfile() {
-    localStorage.setItem(LS_PROFILE, JSON.stringify({
-      name: state.name, class: state.class, subjects: state.subjects,
-      level: state.selectedLevel, dept: state.selectedDept,
-      customSubjects: state.customSubjects
-    }));
-  }
-  function persistTableData() {
-    localStorage.setItem(LS_DATA, JSON.stringify(state.tableData));
-  }
-  function persistSavedDates() {
-    localStorage.setItem(LS_SAVED, JSON.stringify([...state.savedDates]));
-  }
-  function persistCustomActivities() {
-    localStorage.setItem(LS_CUSTOM_ACT, JSON.stringify(state.customActivities));
-  }
-  function persistHiddenActivities() {
-    localStorage.setItem(LS_HIDDEN_ACT, JSON.stringify(state.hiddenActivities));
-  }
-  function persistActivityOrder() {
-    localStorage.setItem(LS_ACT_ORDER, JSON.stringify(state.activityOrder));
-  }
+  // PERSIST STATE EMITTERS
+  function persistProfile() { localStorage.setItem(LS_PROFILE, JSON.stringify({ name: state.name, class: state.class, subjects: state.subjects, level: state.selectedLevel, dept: state.selectedDept, customSubjects: state.customSubjects })); }
+  function persistTableData() { localStorage.setItem(LS_DATA, JSON.stringify(state.tableData)); }
+  function persistSavedDates() { localStorage.setItem(LS_SAVED, JSON.stringify([...state.savedDates])); }
+  function persistCustomActivities() { localStorage.setItem(LS_CUSTOM_ACT, JSON.stringify(state.customActivities)); }
+  function persistHiddenActivities() { localStorage.setItem(LS_HIDDEN_ACT, JSON.stringify(state.hiddenActivities)); }
+  function persistActivityOrder() { localStorage.setItem(LS_ACT_ORDER, JSON.stringify(state.activityOrder)); }
+  function persistTrackedSkills() { localStorage.setItem(LS_TRACKED_SKILLS, JSON.stringify(state.trackedSkills)); }
+  function persistUserCustomSkills() { localStorage.setItem(LS_USER_CUSTOM_SKILLS, JSON.stringify(state.userCustomSkills)); }
+  function persistMonthBacklog() { localStorage.setItem(LS_MONTH_BACKLOG, JSON.stringify(state.monthBacklog)); }
+  function persistGoalsData() { localStorage.setItem(LS_GOALS, JSON.stringify(state.goalsData)); }
+  function persistCompletedData() { localStorage.setItem(LS_COMPLETED, JSON.stringify(state.completedData)); }
+  function persistTodoData() { localStorage.setItem(LS_TODO, JSON.stringify(state.todoData)); }
+  function saveApiKey(val) { localStorage.setItem(LS_AI_KEY, val.trim()); showToast('🔑 API Key Saved!'); }
 
-  // Build activity list for current date: defaults + month-wide + date-specific, minus hidden, sorted by saved order
-  function getActivitiesForCurrentDate() {
-    const m = state.selectedMonth?.name;
-    const d = state.selectedDay;
-    const dateKey  = `${m}-${d}`;
-    const monthActs = state.customActivities[m]        || [];
-    const dateActs  = state.customActivities[dateKey]  || [];
-    const hidden    = new Set(state.hiddenActivities[dateKey] || []);
-
-    const seen = new Set(DEFAULT_ACTIVITIES.map(a => a.name));
-    const extras = [];
-    [...monthActs, ...dateActs].forEach(a => {
-      if (!seen.has(a.name) && !hidden.has(a.name)) {
-        seen.add(a.name);
-        extras.push(a);
-      }
-    });
-    const all = [...DEFAULT_ACTIVITIES, ...extras];
-
-    // Apply saved order if exists
-    const savedOrder = state.activityOrder[dateKey];
-    if (savedOrder && savedOrder.length) {
-      const map = Object.fromEntries(all.map(a => [a.name, a]));
-      const ordered = savedOrder.filter(n => map[n]).map(n => map[n]);
-      // Add any new activities not in saved order yet
-      all.forEach(a => { if (!savedOrder.includes(a.name)) ordered.push(a); });
-      return ordered;
-    }
-    return all;
-  }
-
-  // ─── Check if a date has been explicitly saved ───
-  function isSaved(monthName, day) {
-    return state.savedDates.has(`${monthName}-${day}`);
-  }
-
-  // ─── Build list of months to show in grid ───
-  // Current month + future months of this year.
-  // Also show past months of this year IF they have saved data.
-  function getVisibleMonths() {
-    const visible = [];
-    months.forEach((m, idx) => {
-      if (idx > currentMonthIdx) {
-        // future month → always show
-        visible.push({ ...m, index: idx, isPast: false, isCurrent: false });
-      } else if (idx === currentMonthIdx) {
-        // current month → always show
-        visible.push({ ...m, index: idx, isPast: false, isCurrent: true });
-      } else {
-        // past month → show only if has saved data
-        const hasSaved = [...state.savedDates].some(key => key.startsWith(m.name + '-'));
-        if (hasSaved) visible.push({ ...m, index: idx, isPast: true, isCurrent: false });
-      }
-    });
-    return visible;
-  }
-
-  // ─── Build list of days to show for a month ───
-  // Current month : today onwards  +  any past days that were saved
-  // Past month    : only saved days
-  // Future month  : all days 1..end
-  function getVisibleDays(m) {
-    const days = [];
-    if (m.index > currentMonthIdx) {
-      // future
-      for (let d = 1; d <= m.days; d++) days.push({ day: d, isPast: false });
-    } else if (m.index === currentMonthIdx) {
-      // past saved days first (before today)
-      for (let d = 1; d < currentDay; d++) {
-        if (isSaved(m.name, d)) days.push({ day: d, isPast: true });
-      }
-      // today onwards
-      for (let d = currentDay; d <= m.days; d++) days.push({ day: d, isPast: false });
-    } else {
-      // past month — only saved
-      for (let d = 1; d <= m.days; d++) {
-        if (isSaved(m.name, d)) days.push({ day: d, isPast: true });
-      }
-    }
-    return days;
-  }
-
-  // ─────────────────────────────────────────
-  //  NAVIGATION
-  // ─────────────────────────────────────────
-  function goTo(stepId) {
-    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-    document.getElementById('step-' + stepId).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // ─────────────────────────────────────────
-  //  ONBOARDING
-  // ─────────────────────────────────────────
-  document.querySelectorAll('.chip').forEach(chip => {
-    // Restore selected state for returning users
-    if (state.subjects.includes(chip.dataset.sub)) chip.classList.add('selected');
-    chip.addEventListener('click', () => {
-      const sub = chip.dataset.sub;
-      if (state.subjects.includes(sub)) {
-        state.subjects = state.subjects.filter(s => s !== sub);
-        chip.classList.remove('selected');
-      } else {
-        state.subjects.push(sub);
-        chip.classList.add('selected');
-      }
-    });
-  });
-
-  // ─────────────────────────────────────────
-  //  ONBOARDING — level & subject system
-  // ─────────────────────────────────────────
+  // SUBJECT RESOURCE LOOKUPS
   const SUBJECT_MAP = {
-    school: [
-      'English 1st', 'English 2nd', 'Bangla 1st', 'Bangla 2nd',
-      'Higher Math', 'General Math', 'Biology 1st', 'Biology 2nd',
-      'Physics 1st', 'Physics 2nd', 'Others'
-    ],
-    college: [
-      'Physics 1st', 'Physics 2nd', 'Math 1st', 'Math 2nd',
-      'Biology 1st', 'Biology 2nd', 'Bangla 1st', 'Bangla 2nd',
-      'English 1st', 'English 2nd'
-    ],
-    admission: [
-      'Physics 1st', 'Physics 2nd', 'Math 1st', 'Math 2nd',
-      'Biology 1st', 'Biology 2nd', 'Bangla 1st', 'Bangla 2nd',
-      'English 1st', 'English 2nd'
-    ],
-    university: [] // courses entered manually, no chips
+    school: ['English 1st', 'English 2nd', 'Bangla 1st', 'Bangla 2nd', 'Higher Math', 'General Math', 'Biology 1st', 'Biology 2nd', 'Physics 1st', 'Physics 2nd', 'Others'],
+    college: ['Physics 1st', 'Physics 2nd', 'Math 1st', 'Math 2nd', 'Biology 1st', 'Biology 2nd', 'Bangla 1st', 'Bangla 2nd', 'English 1st', 'English 2nd'],
+    admission: ['Physics 1st', 'Physics 2nd', 'Math 1st', 'Math 2nd', 'Biology 1st', 'Biology 2nd', 'Bangla 1st', 'Bangla 2nd', 'English 1st', 'English 2nd'],
+    university: []
   };
 
-  state.selectedLevel = savedProfile?.level || '';
-  state.selectedDept  = savedProfile?.dept  || '';
-  state.customSubjects = savedProfile?.customSubjects || [];
+  // WORLD FUTURISTIC HIGH-PRIORITY SKILLS DATABASE
+  const SKILL_CATALOG = [
+    { id: "prompt-eng", name: "AI Prompt Engineering", category: "AI & Future Tech", priority: "High", icon: "🤖", desc: "The art of structuring inputs to get optimal outputs from large language models.", why: "Essential for 2026 as AI systems are fully integrated into all administrative and professional workflows.", resources: "YouTube: 'Prompt Engineering for Beginners' by freeCodeCamp, OpenAI developer guide." },
+    { id: "fullstack-web", name: "Full-Stack Web Development", category: "Software Development", priority: "High", icon: "💻", desc: "Building UI systems and server systems to create dynamic web applications.", why: "Web applications are the foundation of remote business operations; fullstack engineers remain in massive demand.", resources: "The Odin Project, freeCodeCamp, modern YouTube tutorials by SuperSimpleDev." },
+    { id: "cybersecurity", name: "Cybersecurity & Cryptography", category: "Cybersecurity & Cloud", priority: "High", icon: "🔒", desc: "Protecting systems, sensitive data, and network layers from breaches and unauthorized penetration.", why: "Digital identities are incredibly complex in 2026, forcing all corporations to invest heavily in modern pentesting.", resources: "NetworkChuck tutorials, John Hammond, PortSwigger Web Security Academy." },
+    { id: "ai-orchestration", name: "AI Agent & LLM Orchestration", category: "AI & Future Tech", priority: "High", icon: "⚙️", desc: "Deploying intelligent autonomous agents using technologies like LangChain, AutoGPT, and vector stores.", why: "The job market has rapidly shifted from basic prompts to robust developer tooling around agentic workflows.", resources: "YouTube: 'LangChain Tutorial' by Rabbit Hole, deeplearning.ai free courses." },
+    { id: "uiux-design", name: "UI/UX & Creative Product Design", category: "UI/UX & Creative Design", priority: "Medium", icon: "🎨", desc: "Designing wireframes, interactive flows, and user interfaces using industry standards like Figma.", why: "Digital products succeed primarily due to optimal design practices and friction-free user interaction paths.", resources: "Figma official tutorials, NNGroup articles, YouTube: Malewicz Design Academy." },
+    { id: "data-science", name: "Data Science & Analytics", category: "Business & Analytics", priority: "High", icon: "📈", desc: "Analyzing complex datasets, patterns, and charts to draw strategic automated business insights.", why: "Data-driven leadership guarantees highly predictable products; SQL, Pandas, and Python are globally essential.", resources: "StatQuest with Josh Starmer, Kaggle Learn, freeCodeCamp Data Analysis bootcamps." },
+    { id: "persuasive-speaking", name: "Persuasive Public Speaking", category: "Soft Skills & Leadership", priority: "Medium", icon: "🗣️", desc: "Structuring speeches and vocal habits to inspire, influence, and clearly lead teams.", why: "Brilliant technical skills require exceptional clear communication to secure investment and leadership alignment.", resources: "Ted Talks, YouTube: 'Charisma on Command', Toastmasters templates." },
+    { id: "python-automation", name: "Python Automation & Scripting", category: "Software Development", priority: "Medium", icon: "🐍", desc: "Writing scripts to automate file transfers, organize folders, scrape web pages, and automate spreadsheets.", why: "Eliminating trivial repeated administrative tasks elevates high-tier individual work efficiency.", resources: "Book: 'Automate the Boring Stuff with Python' by Al Sweigart." }
+  ];
 
+  // ONBOARDING ENGINE
   function selectLevel(level) {
     state.selectedLevel = level;
-    document.querySelectorAll('.level-card[data-level]').forEach(c =>
-      c.classList.toggle('selected', c.dataset.level === level));
+    document.querySelectorAll('.level-card[data-level]').forEach(c => c.classList.toggle('selected', c.dataset.level === level));
 
-    const deptGroup    = document.getElementById('deptGroup');
+    const deptGroup = document.getElementById('deptGroup');
     const subjectGroup = document.getElementById('subjectGroup');
-    const label        = document.getElementById('subjectGroupLabel');
+    const label = document.getElementById('subjectGroupLabel');
 
     if (level === 'university') {
       deptGroup.style.display = 'block';
@@ -2186,10 +1145,7 @@
 
   function selectDept(dept) {
     state.selectedDept = dept;
-    document.querySelectorAll('.level-card[data-dept]').forEach(c =>
-      c.classList.toggle('selected', c.dataset.dept === dept));
-    // University has no subject chips — user adds courses in table
-    document.getElementById('subjectGroup').style.display = 'none';
+    document.querySelectorAll('.level-card[data-dept]').forEach(c => c.classList.toggle('selected', c.dataset.dept === dept));
   }
 
   function renderOnboardingChips(subjects) {
@@ -2207,8 +1163,7 @@
       btn.onclick = () => {
         btn.classList.toggle('selected');
         if (sub === 'Others') {
-          document.getElementById('othersInputGroup').style.display =
-            btn.classList.contains('selected') ? 'block' : 'none';
+          document.getElementById('othersInputGroup').style.display = btn.classList.contains('selected') ? 'block' : 'none';
         }
       };
       container.appendChild(btn);
@@ -2222,12 +1177,12 @@
     if (state.customSubjects.includes(val)) return;
     state.customSubjects.push(val);
     input.value = '';
-    // Render custom chip
+
     const chips = document.getElementById('customSubjectChips');
     const span = document.createElement('span');
     span.className = 'chip selected';
     span.style.cursor = 'default';
-    span.innerHTML = `${val} <button onclick="removeCustomSubject('${val}', this)" style="background:none;border:none;cursor:pointer;color:inherit;font-size:13px;padding:0 0 0 4px;">✕</button>`;
+    span.innerHTML = `${val} <button onclick="removeCustomSubject('${val}', this)" class="ml-1 text-xs">✕</button>`;
     chips.appendChild(span);
   }
 
@@ -2240,159 +1195,62 @@
     const name = document.getElementById('inputName').value.trim();
     if (!name) { showToast('⚠️ Please enter your name!', '#ef4444'); return; }
     if (!state.selectedLevel) { showToast('⚠️ Please select your level!', '#ef4444'); return; }
-    if (state.selectedLevel === 'university' && !state.selectedDept) {
-      showToast('⚠️ Please select your department!', '#ef4444'); return;
-    }
+    if (state.selectedLevel === 'university' && !state.selectedDept) { showToast('⚠️ Please select your department!', '#ef4444'); return; }
 
     let subjects = [];
     if (state.selectedLevel !== 'university') {
-      subjects = [...document.querySelectorAll('#subjectChips .chip.selected')]
-        .map(c => c.dataset.sub).filter(s => s !== 'Others');
+      subjects = [...document.querySelectorAll('#subjectChips .chip.selected')].map(c => c.dataset.sub).filter(s => s !== 'Others');
       subjects = [...subjects, ...state.customSubjects];
       if (subjects.length === 0) { showToast('⚠️ Please select at least one subject!', '#ef4444'); return; }
     }
 
-    state.name     = name;
-    state.class    = state.selectedLevel === 'university'
-      ? `University · ${state.selectedDept}`
-      : state.selectedLevel.charAt(0).toUpperCase() + state.selectedLevel.slice(1);
+    state.name = name;
+    state.class = state.selectedLevel === 'university' ? `University · ${state.selectedDept}` : state.selectedLevel.charAt(0).toUpperCase() + state.selectedLevel.slice(1);
     state.subjects = subjects;
     persistProfile();
     showCalendar();
   }
 
-  // ─────────────────────────────────────────
-  //  CALENDAR VIEW (read-only)
-  // ─────────────────────────────────────────
-  state.calViewMonthIdx = new Date().getMonth();
+  // ROUTINE VS SKILLS NAVIGATION TABS
+  function switchMainTab(tab) {
+    state.activeMainTab = tab;
+    const routineBtn = document.getElementById('tab-routine');
+    const skillsBtn = document.getElementById('tab-skills');
+    const routineSec = document.getElementById('section-routine');
+    const skillsSec = document.getElementById('section-skills');
 
-  function openCalendarView() {
-    state.calViewMonthIdx = new Date().getMonth();
-    document.getElementById('calViewDetail').style.display = 'none';
-    renderCalendarView();
-    goTo('calview');
-  }
-
-  function shiftCalViewMonth(dir) {
-    state.calViewMonthIdx = (state.calViewMonthIdx + dir + 12) % 12;
-    document.getElementById('calViewDetail').style.display = 'none';
-    renderCalendarView();
-  }
-
-  function renderCalendarView() {
-    const mIdx = state.calViewMonthIdx;
-    const m    = months[mIdx];
-    const today = new Date();
-
-    document.getElementById('calViewTitle').textContent = `${m.name} ${currentYear}`;
-    const savedCount = [...state.savedDates].filter(k => k.startsWith(m.name + '-')).length;
-    document.getElementById('calViewSub').textContent =
-      savedCount ? `${savedCount} saved date${savedCount > 1 ? 's' : ''}` : 'No saved dates yet';
-
-    // Figure out what day of week month starts on (0=Sun)
-    const firstDow = new Date(currentYear, mIdx, 1).getDay();
-    const grid = document.getElementById('calViewGrid');
-    grid.innerHTML = '';
-
-    // Empty cells before day 1
-    for (let i = 0; i < firstDow; i++) {
-      const e = document.createElement('div');
-      e.className = 'cv-cell empty';
-      grid.appendChild(e);
-    }
-
-    for (let day = 1; day <= m.days; day++) {
-      const key     = `${m.name}-${day}`;
-      const hasSave = state.savedDates.has(key);
-      // Check for any table data even if not explicitly saved
-      const hasData = hasSave || Object.keys(state.tableData).some(k => k.startsWith(`${m.name}-${day}-`))
-                               || (state.completedData && state.completedData[key]?.length > 0);
-      const isToday = day === today.getDate() && mIdx === today.getMonth() && currentYear === today.getFullYear();
-
-      const cell = document.createElement('div');
-      cell.className = 'cv-cell ' + (hasData ? 'has-data' : 'normal') + (isToday ? ' today-cv' : '');
-      cell.innerHTML = `<span>${day}</span>${hasData ? '<div class="cv-dot"></div>' : ''}`;
-
-      if (hasData) {
-        cell.addEventListener('click', () => showCalViewDetail(m, day));
-      }
-      grid.appendChild(cell);
+    if (tab === 'routine') {
+      routineBtn.className = "flex-1 py-3 text-center rounded-lg text-sm font-bold transition-all duration-300 bg-primary text-white";
+      skillsBtn.className = "flex-1 py-3 text-center rounded-lg text-sm font-bold transition-all duration-300 text-gray-500 hover:text-primary";
+      routineSec.classList.remove('hidden');
+      skillsSec.classList.add('hidden');
+    } else {
+      skillsBtn.className = "flex-1 py-3 text-center rounded-lg text-sm font-bold transition-all duration-300 bg-primary text-white";
+      routineBtn.className = "flex-1 py-3 text-center rounded-lg text-sm font-bold transition-all duration-300 text-gray-500 hover:text-primary";
+      routineSec.classList.add('hidden');
+      skillsSec.classList.remove('hidden');
+      renderSkillCatalog();
+      renderTrackedSkills();
     }
   }
 
-  function showCalViewDetail(m, day) {
-    const key = `${m.name}-${day}`;
-    const detail = document.getElementById('calViewDetail');
-    const body   = document.getElementById('calViewDetailBody');
-    document.getElementById('calViewDetailDate').textContent = `📅 ${m.name} ${day}, ${currentYear}`;
-    body.innerHTML = '';
+  function switchSkillSubTab(subTab) {
+    const browseBtn = document.getElementById('skill-tab-browse');
+    const trackerBtn = document.getElementById('skill-tab-tracker');
+    const browseContent = document.getElementById('skill-content-browse');
+    const trackerContent = document.getElementById('skill-content-tracker');
 
-    // 1. Study slot data
-    const slotCount = parseInt(localStorage.getItem(`slotCount-${m.name}-${day}`) || '3');
-    const slotRows  = [];
-    state.subjects.forEach(sub => {
-      for (let slot = 1; slot <= slotCount; slot++) {
-        const k    = `${m.name}-${day}-${sub}-${slot}`;
-        const text = (state.tableData[k] || '').trim();
-        const done = state.tableData[`${k}-done`] === 'true';
-        if (text) slotRows.push({ sub, slot, text, done });
-      }
-    });
-
-    if (slotRows.length > 0) {
-      const sec = document.createElement('div');
-      sec.className = 'calview-section';
-      sec.innerHTML = `<div class="calview-section-title">📚 Study Plan</div>`;
-      slotRows.forEach(r => {
-        const row = document.createElement('div');
-        row.className = 'calview-task-row' + (r.done ? ' done-task' : '');
-        row.innerHTML = `<span class="calview-task-sub">${r.sub} · Slot ${r.slot}</span>
-          <span style="flex:1">${r.text}</span>
-          ${r.done ? '<span style="color:var(--success);font-size:14px;">✓</span>' : ''}`;
-        sec.appendChild(row);
-      });
-      body.appendChild(sec);
+    if (subTab === 'browse') {
+      browseBtn.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all bg-white text-indigo-600 shadow-sm";
+      trackerBtn.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all text-gray-500 hover:text-indigo-600";
+      browseContent.classList.remove('hidden');
+      trackerContent.classList.add('hidden');
+    } else {
+      trackerBtn.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all bg-white text-indigo-600 shadow-sm";
+      browseBtn.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all text-gray-500 hover:text-indigo-600";
+      browseContent.classList.add('hidden');
+      trackerContent.classList.remove('hidden');
     }
-
-    // 2. Completed Today
-    const completed = (state.completedData || {})[key] || [];
-    if (completed.length > 0) {
-      const sec = document.createElement('div');
-      sec.className = 'calview-section';
-      sec.innerHTML = `<div class="calview-section-title">✅ Completed Today</div>`;
-      completed.forEach(text => {
-        const row = document.createElement('div');
-        row.className = 'calview-task-row';
-        row.innerHTML = `<span style="color:var(--success)">✅</span><span>${text}</span>`;
-        sec.appendChild(row);
-      });
-      body.appendChild(sec);
-    }
-
-    // 3. To-do lists
-    const todoKeys = Object.keys((state.todoData || {})).filter(k => k.startsWith(key + '-'));
-    todoKeys.forEach(tk => {
-      const actName = tk.replace(key + '-', '');
-      const items   = state.todoData[tk] || [];
-      if (!items.length) return;
-      const sec = document.createElement('div');
-      sec.className = 'calview-section';
-      sec.innerHTML = `<div class="calview-section-title">📋 ${actName}</div>`;
-      items.forEach(item => {
-        const row = document.createElement('div');
-        row.className = 'calview-task-row' + (item.done ? ' done-task' : '');
-        row.innerHTML = `<span>${item.done ? '✓' : '○'}</span><span>${item.text}</span>`;
-        sec.appendChild(row);
-      });
-      body.appendChild(sec);
-    });
-
-    if (body.children.length === 0) {
-      body.innerHTML = `<div class="calview-empty-day">No data saved for this date.</div>`;
-    }
-
-    detail.style.display = 'block';
-    detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function showCalendar() {
@@ -2402,13 +1260,16 @@
     document.getElementById('welcomeClass').textContent = state.class;
     document.getElementById('welcomeSubjects').textContent = state.subjects.join(', ');
     document.getElementById('yearBadge').textContent = `📅 ${currentYear}`;
+    
+    // Set Gemini Key input
+    const keyBox = document.getElementById('inputApiKey');
+    if (keyBox) keyBox.value = localStorage.getItem(LS_AI_KEY) || '';
+
     renderMonthGrid();
     goTo('calendar');
   }
 
-  // ─────────────────────────────────────────
-  //  MONTH GRID
-  // ─────────────────────────────────────────
+  // MONTH GRID DISPLAY
   function renderMonthGrid() {
     const grid = document.getElementById('monthGrid');
     grid.innerHTML = '';
@@ -2419,61 +1280,89 @@
       btn.innerHTML = `
         <div class="month-icon">${m.icon}</div>
         <span>${m.name}</span>
-        ${m.isCurrent ? '<span class="month-tag current-tag">Today</span>' : ''}
-        ${m.isPast    ? '<span class="month-tag past-tag">📌 Saved</span>' : ''}
-        ${savedCount  ? `<span class="month-tag saved-count">${savedCount} saved</span>` : ''}
+        ${m.isCurrent ? '<div class="text-[9px] font-bold px-2 py-0.5 rounded bg-green-100 text-green-700 mt-2 inline-block">Today</div>' : ''}
+        ${m.isPast ? '<div class="text-[9px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-700 mt-2 inline-block">Saved</div>' : ''}
+        ${savedCount ? `<div class="text-[9px] font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700 mt-2 block">${savedCount} saved</div>` : ''}
       `;
       btn.onclick = () => {
         state.selectedMonth = m;
-        document.getElementById('optionsTitle').textContent = `${m.name} ${currentYear}`;
-        document.getElementById('optionsSub').textContent = `View all dates of ${m.name}`;
-        goTo('options');
+        // Direct Date View Workspace redirection
+        document.getElementById('weeklyTitle').textContent = `${m.name} ${currentYear} Dashboard`;
+        renderDateList();
+        renderWorkspacePanel();
+        goTo('weekly');
       };
       grid.appendChild(btn);
     });
   }
 
-  // ─────────────────────────────────────────
-  //  DATE LIST
-  // ─────────────────────────────────────────
+  // VISIBLE MONTH CALCULATOR
+  function getVisibleMonths() {
+    const visible = [];
+    months.forEach((m, idx) => {
+      if (idx >= currentMonthIdx) {
+        visible.push({ ...m, index: idx, isPast: false, isCurrent: (idx === currentMonthIdx) });
+      } else {
+        const hasSaved = [...state.savedDates].some(key => key.startsWith(m.name + '-'));
+        if (hasSaved) visible.push({ ...m, index: idx, isPast: true, isCurrent: false });
+      }
+    });
+    return visible;
+  }
+
+  // SPLIT VIEW DATE LIST
+  function getVisibleDays(m) {
+    const days = [];
+    if (m.index > currentMonthIdx) {
+      for (let d = 1; d <= m.days; d++) days.push({ day: d, isPast: false });
+    } else if (m.index === currentMonthIdx) {
+      for (let d = 1; d < currentDay; d++) {
+        if (isSaved(m.name, d)) days.push({ day: d, isPast: true });
+      }
+      for (let d = currentDay; d <= m.days; d++) days.push({ day: d, isPast: false });
+    } else {
+      for (let d = 1; d <= m.days; d++) {
+        if (isSaved(m.name, d)) days.push({ day: d, isPast: true });
+      }
+    }
+    return days;
+  }
+
+  function isSaved(monthName, day) {
+    return state.savedDates.has(`${monthName}-${day}`);
+  }
+
   function renderDateList() {
     const m = state.selectedMonth;
     const list = document.getElementById('dateList');
-    document.getElementById('weeklyTitle').textContent = `${m.name} ${currentYear} – Dates`;
     list.innerHTML = '';
-
     const days = getVisibleDays(m);
 
     if (days.length === 0) {
-      list.innerHTML = `<p style="color:var(--muted);text-align:center;padding:40px 0;">
-        No saved data for this month.</p>`;
+      list.innerHTML = `<p class="text-xs font-semibold text-gray-400 text-center py-8">No saved data for this month.</p>`;
       return;
     }
 
     days.forEach(({ day, isPast }) => {
       const saved = isSaved(m.name, day);
-      const hasUnsaved = !saved && state.subjects.some(sub =>
-        [1,2,3].some(slot => state.tableData[`${m.name}-${day}-${sub}-${slot}`])
-      );
+      const hasUnsaved = !saved && state.subjects.some(sub => [1,2,3].some(slot => state.tableData[`${m.name}-${day}-${sub}-${slot}`]));
       const isToday = (m.index === currentMonthIdx && day === currentDay);
 
       const row = document.createElement('div');
-      row.className = 'date-row' + (isPast ? ' date-row-past' : '') + (isToday ? ' date-row-today' : '');
+      row.className = 'date-row' + (isPast ? ' border-amber-200 bg-amber-50/30' : '') + (isToday ? ' border-green-300 bg-green-50/30' : '');
       row.innerHTML = `
-        <div class="date-badge ${isToday ? 'today-badge' : ''}">
+        <div class="date-badge ${isToday ? 'bg-gradient-to-br from-green-500 to-green-700' : ''}">
           ${day}
           <span class="month-abbr">${m.name.slice(0,3).toUpperCase()}</span>
         </div>
         <div class="date-info">
           <div class="title">
             My Routine
-            ${isToday  ? '<span class="tag today-tag">Today</span>' : ''}
-            ${saved    ? '<span class="tag saved-tag">✓ Saved</span>' : ''}
-            ${hasUnsaved ? '<span class="tag draft-tag">Draft</span>' : ''}
+            ${isToday ? '<span class="text-[9px] font-bold px-2 py-0.5 rounded bg-green-100 text-green-700 ml-1.5 inline-block">Today</span>' : ''}
+            ${saved ? '<span class="text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 ml-1.5 inline-block">Saved</span>' : ''}
+            ${hasUnsaved ? '<span class="text-[9px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-700 ml-1.5 inline-block">Draft</span>' : ''}
           </div>
-          <div class="sub">
-            ${isPast ? '📌 Past · ' : ''}Plan for ${m.name} ${day}, ${currentYear}
-          </div>
+          <div class="sub">Plan for ${m.name} ${day}, ${currentYear}</div>
         </div>
         <div style="display:flex;gap:8px;align-items:center;">
           <button class="btn-open" onclick="openDay(${day})">Open</button>
@@ -2484,6 +1373,634 @@
     });
   }
 
+  // MULTI-TAB WORKSPACE PANEL ROUTINES
+  function switchWorkspaceTab(tabId) {
+    state.activeWorkspaceTab = tabId;
+    const tabs = ['goals', 'progress', 'backlog', 'ai'];
+    tabs.forEach(t => {
+      const btn = document.getElementById(`ws-btn-${t}`);
+      const panel = document.getElementById(`subpanel-${t}`);
+      if (t === tabId) {
+        btn.classList.add('active');
+        panel.classList.remove('hidden');
+      } else {
+        btn.classList.remove('active');
+        panel.classList.add('hidden');
+      }
+    });
+    renderWorkspacePanel();
+  }
+
+  function renderWorkspacePanel() {
+    if (!state.selectedMonth) return;
+    const m = state.selectedMonth.name;
+
+    if (state.activeWorkspaceTab === 'goals') {
+      renderGoalsList();
+    } else if (state.activeWorkspaceTab === 'progress') {
+      renderWeekBlocks();
+    } else if (state.activeWorkspaceTab === 'backlog') {
+      renderBacklogList();
+    } else if (state.activeWorkspaceTab === 'ai') {
+      renderAIMonthStats();
+    }
+  }
+
+  // SUBPANEL 1: GOALS LOGIC
+  function setGoalType(type) {
+    state.goalType = type;
+    const m = state.selectedMonth?.name;
+    if (!m) return;
+    if (!state.goalsData[m]) state.goalsData[m] = { type, items: [] };
+    state.goalsData[m].type = type;
+    persistGoalsData();
+    updateGoalTypeButtons();
+    renderGoalsList();
+  }
+
+  function updateGoalTypeButtons() {
+    const bulletBtn = document.getElementById('ws-btn-bullet');
+    const numBtn = document.getElementById('ws-btn-number');
+    if (bulletBtn && numBtn) {
+      bulletBtn.classList.toggle('bg-primary', state.goalType === 'bullet');
+      bulletBtn.classList.toggle('text-white', state.goalType === 'bullet');
+      numBtn.classList.toggle('bg-primary', state.goalType === 'number');
+      numBtn.classList.toggle('text-white', state.goalType === 'number');
+    }
+  }
+
+  function renderGoalsList() {
+    const m = state.selectedMonth?.name;
+    if (!m) return;
+    const data = state.goalsData[m] || { type: 'bullet', items: [] };
+    state.goalType = data.type || 'bullet';
+    updateGoalTypeButtons();
+
+    const list = document.getElementById('goalsList');
+    list.innerHTML = '';
+
+    if (!data.items || data.items.length === 0) {
+      list.innerHTML = `<div class="text-center py-8 text-xs text-gray-400 font-medium">🎯 No goals set for this month yet.</div>`;
+      return;
+    }
+
+    data.items.forEach((text, idx) => {
+      const div = document.createElement('div');
+      div.className = 'goal-item';
+      const label = state.goalType === 'number' ? `${idx + 1}.` : '•';
+      div.innerHTML = `
+        <div class="goal-bullet" style="width:22px; height:22px; font-size:11px;">${label}</div>
+        <span class="goal-text" style="font-size:13px;">${text}</span>
+        <button class="goal-delete" onclick="deleteGoal(${idx})" title="Delete">✕</button>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function addGoalItem() {
+    const input = document.getElementById('goalsInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const m = state.selectedMonth?.name;
+    if (!m) return;
+    if (!state.goalsData[m]) state.goalsData[m] = { type: state.goalType, items: [] };
+    state.goalsData[m].items.push(text);
+    persistGoalsData();
+    input.value = '';
+    renderGoalsList();
+    input.focus();
+  }
+
+  function deleteGoal(idx) {
+    const m = state.selectedMonth?.name;
+    if (!m) return;
+    state.goalsData[m].items.splice(idx, 1);
+    persistGoalsData();
+    renderGoalsList();
+  }
+
+  // SUBPANEL 2: STUDY PROGRESS WEEK RENDER
+  function setProgressType(type) {
+    state.progressType = type;
+    const bulletBtn = document.getElementById('ws-btn-prog-bullet');
+    const numBtn = document.getElementById('ws-btn-prog-num');
+    if (bulletBtn && numBtn) {
+      bulletBtn.classList.toggle('bg-primary', type === 'bullet');
+      bulletBtn.classList.toggle('text-white', type === 'bullet');
+      numBtn.classList.toggle('bg-primary', type === 'number');
+      numBtn.classList.toggle('text-white', type === 'number');
+    }
+    renderWeekBlocks();
+  }
+
+  function renderWeekBlocks() {
+    const m = state.selectedMonth;
+    if (!m) return;
+    const container = document.getElementById('weekBlocks');
+    container.innerHTML = '';
+
+    const weeks = [
+      { num: 1, start: 1,  end: 7  },
+      { num: 2, start: 8,  end: 14 },
+      { num: 3, start: 15, end: 21 },
+      { num: 4, start: 22, end: m.days }
+    ];
+
+    weeks.forEach((wk, wkIdx) => {
+      const allItems = [];
+      for (let day = wk.start; day <= wk.end; day++) {
+        const key = `${m.name}-${day}`;
+        const items = state.completedData[key] || [];
+        items.forEach(text => allItems.push({ day, text }));
+      }
+
+      const block = document.createElement('div');
+      block.className = 'week-block' + (wkIdx === 0 ? ' open' : '');
+
+      const dateRangeText = `${m.name.slice(0,3)} ${wk.start}–${wk.end}`;
+      const countText = allItems.length ? `${allItems.length} completed` : '0 entries';
+
+      block.innerHTML = `
+        <div class="week-title" style="padding: 10px 14px;" onclick="this.parentElement.classList.toggle('open')">
+          <div class="week-title-left">
+            <span class="week-num" style="font-size:13px;">W${wk.num}</span>
+            <span class="week-dates" style="font-size:11px;">${dateRangeText}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="week-badge ${allItems.length ? '' : 'empty'}" style="font-size:10px; padding: 2px 8px;">${countText}</span>
+            <span class="week-chevron" style="font-size:12px;">›</span>
+          </div>
+        </div>
+        <div class="week-items" id="weekItems-${wk.num}" style="padding: 10px; gap:6px;"></div>
+      `;
+      container.appendChild(block);
+
+      const itemsDiv = block.querySelector(`#weekItems-${wk.num}`);
+      if (allItems.length === 0) {
+        itemsDiv.innerHTML = `<div class="week-empty" style="padding: 8px; font-size:11px;">No entries logged.</div>`;
+      } else {
+        let counter = 1;
+        allItems.forEach(({ day, text }) => {
+          const bullet = state.progressType === 'number' ? `${counter++}.` : '•';
+          const item = document.createElement('div');
+          item.className = 'week-item';
+          item.style.padding = '8px 10px';
+          item.innerHTML = `
+            <span class="week-item-bullet" style="font-size:11px; min-width:14px;">${bullet}</span>
+            <span class="week-item-date" style="font-size:10px; padding: 1px 6px;">${m.name.slice(0,3)} ${day}</span>
+            <span class="week-item-text" style="font-size:12px; font-weight: 500;">${text}</span>
+          `;
+          itemsDiv.appendChild(item);
+        });
+      }
+    });
+  }
+
+  // SUBPANEL 3: GLOBAL MONTHLY BACKLOG
+  function renderBacklogList() {
+    const m = state.selectedMonth?.name;
+    if (!m) return;
+    const items = state.monthBacklog[m] || [];
+    const list = document.getElementById('backlogList');
+    list.innerHTML = '';
+
+    if (items.length === 0) {
+      list.innerHTML = `<div class="text-center py-8 text-xs text-gray-400 font-medium">📋 Backlog is empty. Add tasks for entire month here!</div>`;
+      return;
+    }
+
+    items.forEach((item, idx) => {
+      const div = document.createElement('div');
+      div.className = 'flex items-center justify-between p-3 bg-gray-50 border border-gray-150 rounded-xl hover:border-indigo-300 transition-all';
+      div.innerHTML = `
+        <div class="flex items-center gap-3">
+          <button onclick="toggleBacklogItem(${idx})" class="w-5 h-5 border border-gray-350 rounded flex items-center justify-center font-bold text-xs ${item.done ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white text-transparent'}">✓</button>
+          <span class="text-xs font-semibold ${item.done ? 'line-through text-gray-400' : 'text-gray-800'}">${item.text}</span>
+        </div>
+        <button onclick="deleteBacklogItem(${idx})" class="text-gray-400 hover:text-red-500 font-bold text-xs">✕</button>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function addBacklogItem() {
+    const input = document.getElementById('backlogInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const m = state.selectedMonth?.name;
+    if (!m) return;
+    if (!state.monthBacklog[m]) state.monthBacklog[m] = [];
+    state.monthBacklog[m].push({ text, done: false });
+    persistMonthBacklog();
+    input.value = '';
+    renderBacklogList();
+    input.focus();
+  }
+
+  function toggleBacklogItem(idx) {
+    const m = state.selectedMonth?.name;
+    if (!m) return;
+    state.monthBacklog[m][idx].done = !state.monthBacklog[m][idx].done;
+    persistMonthBacklog();
+    renderBacklogList();
+  }
+
+  function deleteBacklogItem(idx) {
+    const m = state.selectedMonth?.name;
+    if (!m) return;
+    state.monthBacklog[m].splice(idx, 1);
+    persistMonthBacklog();
+    renderBacklogList();
+  }
+
+  // SUBPANEL 4: AI INSIGHTS & MONTH COACH
+  function renderAIMonthStats() {
+    const m = state.selectedMonth?.name;
+    if (!m) return;
+
+    const savedDaysCount = [...state.savedDates].filter(k => k.startsWith(m + '-')).length;
+    document.getElementById('ai-stat-saved-days').textContent = savedDaysCount;
+
+    let completedCount = 0;
+    Object.keys(state.completedData).forEach(key => {
+      if (key.startsWith(m + '-')) {
+        completedCount += (state.completedData[key] || []).length;
+      }
+    });
+    document.getElementById('ai-stat-tasks-done').textContent = completedCount;
+  }
+
+  // GEMINI API UTILITY OR COGENT STANDALONE INTERPRETER
+  async function callGemini(payload) {
+    const apiKey = localStorage.getItem(LS_AI_KEY);
+    if (!apiKey) {
+      throw new Error("No API Key configured. Defaulting to high-quality Coach output.");
+    }
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to contact Google Cloud API Servers.");
+    }
+    return response.json();
+  }
+
+  async function getAIMonthlyReview() {
+    const m = state.selectedMonth?.name;
+    if (!m) return;
+
+    const savedDaysCount = [...state.savedDates].filter(k => k.startsWith(m + '-')).length;
+    let completedCount = 0;
+    const completedSample = [];
+    
+    Object.keys(state.completedData).forEach(key => {
+      if (key.startsWith(m + '-')) {
+        const list = state.completedData[key] || [];
+        completedCount += list.length;
+        list.forEach(item => {
+          if (completedSample.length < 5) completedSample.push(`${key.split('-')[1]}th: ${item}`);
+        });
+      }
+    });
+
+    const goalsList = state.goalsData[m]?.items || [];
+    const backlogList = state.monthBacklog[m] || [];
+
+    const btn = document.getElementById('btnAIMonthReview');
+    const output = document.getElementById('aiMonthOutput');
+    
+    output.classList.remove('hidden');
+    output.innerHTML = "Thinking... Analyzing study records and computing monthly streak profile... 📊";
+    btn.disabled = true;
+    btn.innerHTML = "Analyzing Dashboard... 🔮";
+
+    const userPrompt = `Review my monthly performance for ${m} ${currentYear}.
+    - Days Completed/Saved: ${savedDaysCount} days
+    - Total Micro-Tasks Finished: ${completedCount}
+    - Some specific things I completed: ${completedSample.join(", ") || 'None logged yet'}
+    - My goals for this month were: ${goalsList.join(", ") || 'No direct goals stated'}
+    - Unfinished backlog tasks: ${backlogList.filter(t => !t.done).map(t => t.text).join(", ") || 'None'}
+    
+    Provide a highly encouraging, smart review. Focus on identifying potential strengths, recommend 1 specific adjustment to increase consistency, and suggest 1 relevant strategy to complete backlogs. Keep it compact, professional, under 150 words in English mixed with natural brief Bengali motivation.`;
+
+    const systemPrompt = "You are a friendly personal performance coach integrated into Study Partner by Ohab Johory Afad. You focus on actionability, warm encouragement, and smart reviews.";
+
+    const payload = {
+      contents: [{ parts: [{ text: userPrompt }] }],
+      systemInstruction: { parts: [{ text: systemPrompt }] }
+    };
+
+    try {
+      const result = await callGemini(payload);
+      const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (textResponse) {
+        let styledText = textResponse.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        styledText = styledText.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        styledText = styledText.replace(/\n/g, '<br>');
+        output.innerHTML = styledText;
+      } else {
+        output.innerHTML = "Unable to fetch performance insights. Write down some tasks first!";
+      }
+    } catch (err) {
+      // SMART OFFLINE RESPONSIVE FALLBACK ENGINE
+      console.warn("Falling back to smart rule-based AI generator:", err.message);
+      setTimeout(() => {
+        let localAiResponse = `📊 <strong>Coach Buddy (Local Insights Active):</strong><br><br>`;
+        if (savedDaysCount === 0) {
+          localAiResponse += `মনে হচ্ছে আপনি এখনো এই মাসে পড়াশোনার কোনো রুটিন সেভ করেননি। <strong>একটি দিন সিলেক্ট করে পড়া শুরু করে দিন!</strong> শুরু করাটাই সবচেয়ে কঠিন অংশ।`;
+        } else {
+          localAiResponse += `অসাধারণ! আপনি এই মাসে <strong>${savedDaysCount} দিন</strong> পড়াশোনা করেছেন এবং <strong>${completedCount} টি টাস্ক</strong> সফলভাবে সম্পন্ন করেছেন।<br><br>`;
+          if (goalsList.length > 0) {
+            localAiResponse += `🎯 আপনার সেট করা লক্ষ্যসমূহ খুবই চমৎকার। আপনার পড়াশোনা রিলেটেড ছোট ছোট মাইলস্টোনগুলো পূরণ করার চেষ্টা করুন।`;
+          }
+          if (backlogList.filter(t => !t.done).length > 0) {
+            localAiResponse += `<br><br>💡 <strong>Backlog Advice:</strong> আপনার এখনো কিছু কাজ বাকি আছে। চেষ্টা করুন প্রতিদিন মাত্র ১৫ মিনিট করে ব্যাকলগের কাজ শেষ করতে। <em>Consistency overcomes any hurdle!</em>`;
+          }
+        }
+        output.innerHTML = localAiResponse;
+      }, 1000);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = "<span>🔮 AI Performance Review</span> ⚡";
+    }
+  }
+
+  // SKILL ACADEMY ENGINE
+  function renderSkillCatalog() {
+    const grid = document.getElementById('skillGrid');
+    grid.innerHTML = '';
+
+    SKILL_CATALOG.forEach(skill => {
+      const isTracked = !!state.trackedSkills[skill.name];
+      const card = document.createElement('div');
+      card.className = 'bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:border-indigo-300 transition-all cursor-pointer flex flex-col justify-between';
+      card.onclick = () => openSkillDetail(skill);
+      card.innerHTML = `
+        <div>
+          <div class="flex justify-between items-start mb-3">
+            <span class="text-2xl">${skill.icon}</span>
+            <span class="text-[9px] font-extrabold px-2 py-0.5 rounded ${skill.priority === 'High' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}">${skill.priority} Priority</span>
+          </div>
+          <h3 class="font-bold text-gray-950 text-sm" style="margin-bottom:4px;">${skill.name}</h3>
+          <p class="text-[10px] text-gray-400 font-bold mb-2 uppercase tracking-wide">${skill.category}</p>
+          <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">${skill.desc}</p>
+        </div>
+        <div class="pt-4 mt-3 border-t border-gray-50 flex items-center justify-between">
+          <span class="text-[11px] font-bold text-indigo-600">View Guide & Resources →</span>
+          ${isTracked ? '<span class="text-xs">✅</span>' : ''}
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function filterSkills() {
+    const search = document.getElementById('skillSearch').value.toLowerCase();
+    const cat = document.getElementById('skillCategoryFilter').value;
+    const cards = document.getElementById('skillGrid').children;
+
+    SKILL_CATALOG.forEach((skill, idx) => {
+      const matchSearch = skill.name.toLowerCase().includes(search) || skill.desc.toLowerCase().includes(search);
+      const matchCat = (cat === 'all' || skill.category === cat);
+      if (cards[idx]) {
+        cards[idx].style.display = (matchSearch && matchCat) ? 'flex' : 'none';
+      }
+    });
+  }
+
+  // DETAIL POPUP AND ACTIONS
+  function openSkillDetail(skill) {
+    state.selectedSkill = skill;
+    document.getElementById('sd-icon').textContent = skill.icon;
+    document.getElementById('sd-name').textContent = skill.name;
+    document.getElementById('sd-category').textContent = skill.category;
+    document.getElementById('sd-priority').textContent = `${skill.priority} Priority`;
+    document.getElementById('sd-priority').className = `text-[10px] font-bold px-2 py-0.5 rounded ${skill.priority === 'High' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`;
+    
+    document.getElementById('sd-desc').textContent = skill.desc;
+    document.getElementById('sd-why').textContent = skill.why;
+    document.getElementById('sd-resources').textContent = skill.resources;
+
+    const trackBtn = document.getElementById('sd-btn-track');
+    const isTracked = !!state.trackedSkills[skill.name];
+    trackBtn.textContent = isTracked ? "Already in Tracker" : "🎯 Add to Tracker";
+    trackBtn.disabled = isTracked;
+
+    document.getElementById('skillDetailModal').classList.add('open');
+  }
+
+  function closeSkillDetailModal() {
+    document.getElementById('skillDetailModal').classList.remove('open');
+    state.selectedSkill = null;
+  }
+
+  function trackCurrentSkillFromModal() {
+    if (!state.selectedSkill) return;
+    const sName = state.selectedSkill.name;
+    if (!state.trackedSkills[sName]) {
+      state.trackedSkills[sName] = { progress: 0, notes: "", status: "Learning" };
+      persistTrackedSkills();
+      showToast(`🎯 tracking details saved for ${sName}!`);
+      renderSkillCatalog();
+      renderTrackedSkills();
+      closeSkillDetailModal();
+    }
+  }
+
+  // MY TRACKER ENGINE
+  function renderTrackedSkills() {
+    const container = document.getElementById('trackedSkillList');
+    container.innerHTML = '';
+    const trackedKeys = Object.keys(state.trackedSkills);
+    document.getElementById('trackedCount').textContent = trackedKeys.length;
+
+    if (trackedKeys.length === 0) {
+      container.innerHTML = `<div class="col-span-1 md:col-span-2 text-center py-12 text-xs text-gray-400 font-semibold bg-white rounded-2xl border border-gray-100">🎯 No skills tracked yet. Browse categories or add custom targets above!</div>`;
+      return;
+    }
+
+    trackedKeys.forEach(key => {
+      const data = state.trackedSkills[key];
+      const card = document.createElement('div');
+      card.className = 'bg-white p-5 rounded-2xl shadow-sm border border-gray-150 flex flex-col justify-between space-y-4';
+      card.innerHTML = `
+        <div class="flex justify-between items-start pb-2 border-b border-gray-100">
+          <div>
+            <h3 class="font-bold text-gray-950 text-sm">${key}</h3>
+            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 inline-block mt-1">${data.status}</span>
+          </div>
+          <button onclick="untrackSkill('${key.replace(/'/g, "\\'")}')" class="text-xs text-red-500 font-bold hover:underline">Remove</button>
+        </div>
+
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-[11px] font-bold text-gray-500">
+            <span>Learning Progress</span>
+            <span>${data.progress}%</span>
+          </div>
+          <input type="range" min="0" max="100" value="${data.progress}" onchange="updateSkillProgress('${key.replace(/'/g, "\\'")}', this.value)" class="w-full accent-indigo-600 h-1 bg-gray-100 rounded-lg cursor-pointer" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Status Settings</label>
+          <select onchange="updateSkillStatus('${key.replace(/'/g, "\\'")}', this.value)" class="w-full text-xs px-2.5 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+            <option value="Not Started" ${data.status === 'Not Started' ? 'selected' : ''}>⏳ Not Started</option>
+            <option value="Learning" ${data.status === 'Learning' ? 'selected' : ''}>📖 Learning</option>
+            <option value="Mastered" ${data.status === 'Mastered' ? 'selected' : ''}>🎓 Mastered</option>
+          </select>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">My Notes & Free Resources Used</label>
+          <textarea placeholder="Write websites, youtube channel links or progress highlights..." onchange="updateSkillNotes('${key.replace(/'/g, "\\'")}', this.value)" class="w-full text-xs p-2.5 bg-gray-50 border border-gray-200 rounded-lg min-height-[60px] max-height-[100px] outline-none">${data.notes || ''}</textarea>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function addCustomSkill() {
+    const input = document.getElementById('customSkillInput');
+    const name = input.value.trim();
+    if (!name) return;
+
+    if (!state.trackedSkills[name]) {
+      state.trackedSkills[name] = { progress: 0, notes: "", status: "Learning" };
+      persistTrackedSkills();
+      input.value = '';
+      showToast(`🎯 Added custom tracker target for "${name}"`);
+      renderTrackedSkills();
+    } else {
+      showToast('⚠️ Skill already tracked!');
+    }
+  }
+
+  function untrackSkill(name) {
+    if (state.trackedSkills[name]) {
+      delete state.trackedSkills[name];
+      persistTrackedSkills();
+      renderSkillCatalog();
+      renderTrackedSkills();
+      showToast(`🗑️ Untracked "${name}"`);
+    }
+  }
+
+  function updateSkillProgress(name, progress) {
+    if (state.trackedSkills[name]) {
+      state.trackedSkills[name].progress = parseInt(progress);
+      persistTrackedSkills();
+      renderTrackedSkills();
+    }
+  }
+
+  function updateSkillStatus(name, status) {
+    if (state.trackedSkills[name]) {
+      state.trackedSkills[name].status = status;
+      persistTrackedSkills();
+      renderTrackedSkills();
+    }
+  }
+
+  function updateSkillNotes(name, notes) {
+    if (state.trackedSkills[name]) {
+      state.trackedSkills[name].notes = notes;
+      persistTrackedSkills();
+      renderTrackedSkills();
+    }
+  }
+
+  // AI COACH DIALOG ENGINE
+  function openAICoachDialog() {
+    document.getElementById('ac-profile-level').textContent = state.class;
+    document.getElementById('aiCoachOutput').className = 'hidden bg-gray-50 border border-gray-150 p-4 rounded-xl text-xs leading-relaxed max-h-60 overflow-y-auto whitespace-pre-wrap text-gray-800 font-medium';
+    document.getElementById('aiCoachOutput').innerHTML = '';
+    document.getElementById('aiCoachModal').classList.add('open');
+  }
+
+  function closeAICoachModal() {
+    document.getElementById('aiCoachModal').classList.remove('open');
+  }
+
+  async function askCoachQuestion(topic) {
+    const output = document.getElementById('aiCoachOutput');
+    output.classList.remove('hidden');
+    output.innerHTML = "Coach is thinking... Analyzing modern labor statistics... 🔮";
+
+    let prompt = "";
+    if (topic === 'recommend') {
+      prompt = `Recommend the absolute best futuristic skill for my academic profile: Level is ${state.selectedLevel}, Subjects: ${state.subjects.join(", ") || 'No static academic parameters'}. Specify why and suggest 3 high quality free learning channels. Keep under 130 words.`;
+    } else if (topic === 'trends') {
+      prompt = `What are the top 3 highest-income digital skills that are essential in 2026 to 2030? Highlight how to secure high-paying remote roles. Keep under 130 words in English mixed with brief natural Bengali.`;
+    } else if (topic === 'time') {
+      prompt = `Suggest 3 highly actionable time management methods for students to balance academic routines and self-directed skill tracking. Keep under 120 words.`;
+    }
+
+    const systemPrompt = "You are a professional futuristic career advisor buddied into Study Partner by Ohab Johory Afad. You give concise, highly motivating recommendations in English with natural short warm Bengali expressions.";
+
+    const payload = {
+      contents: [{ parts: [{ text: prompt }] }],
+      systemInstruction: { parts: [{ text: systemPrompt }] }
+    };
+
+    try {
+      const result = await callGemini(payload);
+      const resp = result.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (resp) {
+        let text = resp.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/\n/g, '<br>');
+        output.innerHTML = text;
+      } else {
+        output.innerHTML = "Cannot retrieve AI Career trends. Learn Prompt Engineering or Web Dev!";
+      }
+    } catch (err) {
+      console.warn("AI Key error, triggering mock Coach guidance:", err.message);
+      setTimeout(() => {
+        let localGuidance = `🤖 <strong>Coach Buddy Guidance (Offline Backup):</strong><br><br>`;
+        if (topic === 'recommend') {
+          localGuidance += `আপনার প্রোফাইল <strong>(${state.class})</strong> বিবেচনা করে আমি আপনাকে <strong>AI Prompt Engineering</strong> অথবা <strong>Full-Stack Web Development</strong> শেখার পরামর্শ দিচ্ছি।<br><br>💡 <strong>Free Sourses:</strong> YouTube-এ <em>freeCodeCamp</em> অথবা <em>Programming Hero</em> চ্যানেলের ফ্রি প্লেলিস্ট দিয়ে শুরু করতে পারেন!`;
+        } else if (topic === 'trends') {
+          localGuidance += `🚀 <strong>Futuristic High-Income Trends:</strong><br>১. AI Agent Orchestration (LangChain)<br>২. Cloud Security & Pentesting<br>৩. Data Engineering<br><br>গ্লোবাল প্ল্যাটফর্মগুলোতে এসব কাজের ডিমান্ড প্রচুর।`;
+        } else {
+          localGuidance += `⏰ <strong>Time Management Tips:</strong><br>১. <em>Time Blocking:</em> পড়ালেখার পাশাপাশি স্কিল ট্র্যাকিংয়ের জন্য প্রতিদিন নির্দিষ্ট ১ ঘণ্টা ফিক্স করুন।<br>২. <em>Pomodoro Tech:</em> ২৫ মিনিট পড়াশোনার পর ৫ মিনিট রিল্যাক্স করুন।`;
+        }
+        output.innerHTML = localGuidance;
+      }, 800);
+    }
+  }
+
+  async function sendCustomCoachQuery() {
+    const input = document.getElementById('aiCoachCustomQuery');
+    const query = input.value.trim();
+    if (!query) return;
+
+    const output = document.getElementById('aiCoachOutput');
+    output.classList.remove('hidden');
+    output.innerHTML = "Coach is thinking... Analyzing query context... 🧠";
+    input.value = '';
+
+    const payload = {
+      contents: [{ parts: [{ text: `${query} (Academic Context: ${state.class})` }] }],
+      systemInstruction: { parts: [{ text: "You are a warm friendly career coach integrated into Study Partner. Keep answers professional and brief under 140 words, naturally mixing English and Bengali." }] }
+    };
+
+    try {
+      const result = await callGemini(payload);
+      const resp = result.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (resp) {
+        output.innerHTML = resp.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+      } else {
+        output.innerHTML = "No response. Ask again!";
+      }
+    } catch (e) {
+      setTimeout(() => {
+        output.innerHTML = `🤖 <strong>Coach Buddy Response:</strong><br><br>"${query}" সম্পর্কে দারুণ প্রশ্ন! ভবিষ্যৎ প্রযুক্তির সাথে নিজেকে খাপ খাইয়ে নিতে রানিং ট্র্যাকার ও নোট-বুক আপডেট করা শুরু করুন। <em>Consistency is the superpower!</em>`;
+      }, 800);
+    }
+  }
+
+  // ROUTINE ENGINE: OPEN DAY & DATE CLEAR
   function openDay(day) {
     state.selectedDay = day;
     const m = state.selectedMonth;
@@ -2497,41 +2014,32 @@
     const m = state.selectedMonth.name;
     const dateKey = `${m}-${day}`;
 
-    // 1. Remove from savedDates
     state.savedDates.delete(dateKey);
     persistSavedDates();
 
-    // 2. Remove tableData keys for this date (all subjects, all slots, all checkboxes)
     Object.keys(state.tableData).forEach(k => {
       if (k.startsWith(`${m}-${day}-`)) delete state.tableData[k];
     });
     persistTableData();
 
-    // 3. Remove completedData for this date
-    if (state.completedData) {
+    if (state.completedData[dateKey]) {
       delete state.completedData[dateKey];
       persistCompletedData();
     }
 
-    // 4. Remove todoData for this date
-    if (state.todoData) {
-      Object.keys(state.todoData).forEach(k => {
-        if (k.startsWith(dateKey + '-')) delete state.todoData[k];
-      });
-      persistTodoData();
-    }
+    Object.keys(state.todoData).forEach(k => {
+      if (k.startsWith(dateKey + '-')) delete state.todoData[k];
+    });
+    persistTodoData();
 
-    // 5. Remove slot count for this date
     localStorage.removeItem(`slotCount-${m}-${day}`);
 
-    // 6. Remove activity order for this date
-    if (state.activityOrder) {
+    if (state.activityOrder[dateKey]) {
       delete state.activityOrder[dateKey];
       persistActivityOrder();
     }
 
-    // 7. Remove hidden activities for this date
-    if (state.hiddenActivities) {
+    if (state.hiddenActivities[dateKey]) {
       delete state.hiddenActivities[dateKey];
       persistHiddenActivities();
     }
@@ -2539,11 +2047,38 @@
     showToast(`🗑️ ${m} ${day}-এর সব data মুছে গেছে`);
     renderDateList();
     renderMonthGrid();
+    renderWorkspacePanel();
   }
 
-  // ─────────────────────────────────────────
-  //  ACTIVITY LIST
-  // ─────────────────────────────────────────
+  // DAY VIEW ACTIVITIES RENDER
+  function getActivitiesForCurrentDate() {
+    const m = state.selectedMonth?.name;
+    const d = state.selectedDay;
+    const dateKey = `${m}-${d}`;
+    const monthActs = state.customActivities[m] || [];
+    const dateActs = state.customActivities[dateKey] || [];
+    const hidden = new Set(state.hiddenActivities[dateKey] || []);
+
+    const seen = new Set(DEFAULT_ACTIVITIES.map(a => a.name));
+    const extras = [];
+    [...monthActs, ...dateActs].forEach(a => {
+      if (!seen.has(a.name) && !hidden.has(a.name)) {
+        seen.add(a.name);
+        extras.push(a);
+      }
+    });
+    const all = [...DEFAULT_ACTIVITIES, ...extras];
+
+    const savedOrder = state.activityOrder[dateKey];
+    if (savedOrder && savedOrder.length) {
+      const map = Object.fromEntries(all.map(a => [a.name, a]));
+      const ordered = savedOrder.filter(n => map[n]).map(n => map[n]);
+      all.forEach(a => { if (!savedOrder.includes(a.name)) ordered.push(a); });
+      return ordered;
+    }
+    return all;
+  }
+
   function renderActivityList() {
     const list = document.getElementById('activityList');
     list.innerHTML = '';
@@ -2557,46 +2092,37 @@
       div.dataset.idx = idx;
       const isDefault = DEFAULT_ACTIVITIES.some(a => a.name === act.name);
       div.innerHTML = `
-        <span class="drag-handle" title="Drag to reorder">⠿</span>
+        <span class="drag-handle" style="cursor: grab;">⠿</span>
         <div class="left">
           <div class="activity-icon">${act.icon}</div>
           <span class="name">${act.name}</span>
         </div>
         <div style="display:flex;align-items:center;gap:6px;">
-          ${!isDefault ? `<button class="btn-act-delete" title="Remove activity" onclick="openDeleteActivityModal('${act.name.replace(/'/g,"\\'")}', event)">✕</button>` : ''}
+          ${!isDefault ? `<button class="btn-act-delete" title="Remove activity" onclick="openDeleteActivityModal('${act.name.replace(/'/g, "\\'")}', event)">✕</button>` : ''}
           <span class="arrow">›</span>
         </div>
       `;
 
       div.addEventListener('click', () => {
-        if (div.classList.contains('dragging')) return;
         if (act.name === 'Studies') openStudyTable();
         else openTodoPage(act);
       });
 
       div.addEventListener('dragstart', e => {
         dragSrcIdx = idx;
-        setTimeout(() => div.classList.add('dragging'), 0);
-        e.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => div.classList.add('opacity-40'), 0);
       });
       div.addEventListener('dragend', () => {
-        div.classList.remove('dragging');
-        list.querySelectorAll('.activity-card').forEach(c => c.classList.remove('drag-over'));
+        div.classList.remove('opacity-40');
       });
-      div.addEventListener('dragover', e => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        list.querySelectorAll('.activity-card').forEach(c => c.classList.remove('drag-over'));
-        if (idx !== dragSrcIdx) div.classList.add('drag-over');
-      });
-      div.addEventListener('dragleave', () => div.classList.remove('drag-over'));
+      div.addEventListener('dragover', e => e.preventDefault());
       div.addEventListener('drop', e => {
         e.preventDefault();
         if (dragSrcIdx === null || dragSrcIdx === idx) return;
         const arr = getActivitiesForCurrentDate();
         const moved = arr.splice(dragSrcIdx, 1)[0];
         arr.splice(idx, 0, moved);
-        // Save new order
+        
         const dateKey = `${state.selectedMonth.name}-${state.selectedDay}`;
         state.activityOrder[dateKey] = arr.map(a => a.name);
         persistActivityOrder();
@@ -2608,166 +2134,19 @@
     });
   }
 
-  // ─────────────────────────────────────────
-  //  ADD ACTIVITY MODAL
-  // ─────────────────────────────────────────
-  function openAddModal() {
-    const m = state.selectedMonth;
-    const d = state.selectedDay;
-    document.getElementById('newActivityInput').value = '';
-    document.getElementById('scopeDateLabel').textContent  = `${m.name} ${d} only`;
-    document.getElementById('scopeMonthLabel').textContent = `All of ${m.name}`;
-    document.getElementById('specificDatePicker').style.display = 'none';
-    state.selectedSpecificDates = [];
-    document.getElementById('addModal').classList.add('open');
-    setTimeout(() => document.getElementById('newActivityInput').focus(), 100);
-  }
-  function closeAddModal() {
-    document.getElementById('addModal').classList.remove('open');
-    state.selectedSpecificDates = [];
-  }
-
-  function showSpecificDatePicker() {
-    const m = state.selectedMonth;
-    state.selectedSpecificDates = [];
-    document.getElementById('pickerMonthName').textContent = `${m.name.toUpperCase()} ${currentYear}`;
-    const grid = document.getElementById('datePickerGrid');
-    grid.innerHTML = '';
-    const today = new Date();
-    const monthIdx = months.findIndex(mo => mo.name === m.name);
-
-    for (let day = 1; day <= m.days; day++) {
-      const btn = document.createElement('div');
-      btn.className = 'dp-day';
-      btn.textContent = day;
-      const dateObj = new Date(currentYear, monthIdx, day);
-      const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      if (dateObj < todayDate) btn.classList.add('past');
-      if (day === today.getDate() && monthIdx === today.getMonth() && currentYear === today.getFullYear())
-        btn.classList.add('today');
-      btn.addEventListener('click', () => {
-        btn.classList.toggle('selected');
-        if (btn.classList.contains('selected')) {
-          if (!state.selectedSpecificDates.includes(day)) state.selectedSpecificDates.push(day);
-        } else {
-          state.selectedSpecificDates = state.selectedSpecificDates.filter(d => d !== day);
-        }
-      });
-      grid.appendChild(btn);
-    }
-    document.getElementById('specificDatePicker').style.display = 'block';
-  }
-
-  function confirmAddActivity(scope) {
-    const val = document.getElementById('newActivityInput').value.trim();
-    if (!val) { showToast('⚠️ Please enter an activity name!', '#ef4444'); return; }
-    const icons = ['🎨','⚽','🎵','🏋️','🎯','📷','🌿','🎮'];
-    const icon  = icons[Math.floor(Math.random() * icons.length)];
-    const newAct = { id: Date.now(), name: val, icon };
-    const m = state.selectedMonth.name;
-    const d = state.selectedDay;
-
-    if (scope === 'specific') {
-      const dates = state.selectedSpecificDates || [];
-      if (dates.length === 0) { showToast('⚠️ Please select at least one date!', '#ef4444'); return; }
-      dates.forEach(day => {
-        const key = `${m}-${day}`;
-        if (!state.customActivities[key]) state.customActivities[key] = [];
-        if (!state.customActivities[key].some(a => a.name === val))
-          state.customActivities[key].push({...newAct, id: Date.now() + day});
-      });
-      persistCustomActivities();
-      renderActivityList();
-      closeAddModal();
-      showToast(`✅ "${val}" added to ${dates.length} date${dates.length > 1 ? 's' : ''}!`);
-      return;
-    }
-
-    const key = scope === 'month' ? m : `${m}-${d}`;
-    if (!state.customActivities[key]) state.customActivities[key] = [];
-    if (!state.customActivities[key].some(a => a.name === val))
-      state.customActivities[key].push(newAct);
-    persistCustomActivities();
-    renderActivityList();
-    closeAddModal();
-    const scopeLabel = scope === 'month' ? `all of ${m}` : `${m} ${d} only`;
-    showToast(`✅ "${val}" added for ${scopeLabel}!`);
-  }
-  document.getElementById('addModal').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('addModal')) closeAddModal();
-  });
-
-  // ─────────────────────────────────────────
-  //  DELETE ACTIVITY
-  // ─────────────────────────────────────────
-  state._deleteActName = null;
-
-  function openDeleteActivityModal(name, event) {
-    event.stopPropagation();
-    const m = state.selectedMonth;
-    const d = state.selectedDay;
-    state._deleteActName = name;
-    document.getElementById('deleteActName').textContent = name;
-    document.getElementById('deleteScopeDateLabel').textContent  = `${m.name} ${d} only`;
-    document.getElementById('deleteScopeMonthLabel').textContent = `All of ${m.name}`;
-    document.getElementById('deleteActModal').classList.add('open');
-  }
-
-  function closeDeleteActModal() {
-    document.getElementById('deleteActModal').classList.remove('open');
-    state._deleteActName = null;
-  }
-
-  function confirmDeleteActivity(scope) {
-    const name = state._deleteActName;
-    const m    = state.selectedMonth.name;
-    const d    = state.selectedDay;
-
-    if (scope === 'date') {
-      // Remove from date-specific key only
-      const dateKey = `${m}-${d}`;
-      if (state.customActivities[dateKey]) {
-        state.customActivities[dateKey] = state.customActivities[dateKey].filter(a => a.name !== name);
-      }
-      showToast(`🗑️ "${name}" removed from ${m} ${d}`);
-    } else {
-      // Remove from month key AND all date keys of this month
-      if (state.customActivities[m]) {
-        state.customActivities[m] = state.customActivities[m].filter(a => a.name !== name);
-      }
-      Object.keys(state.customActivities).forEach(key => {
-        if (key.startsWith(m + '-')) {
-          state.customActivities[key] = state.customActivities[key].filter(a => a.name !== name);
-        }
-      });
-      showToast(`🗑️ "${name}" removed from all of ${m}`);
-    }
-
-    persistCustomActivities();
-    closeDeleteActModal();
-    renderActivityList();
-  }
-
-  document.getElementById('deleteActModal').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('deleteActModal')) closeDeleteActModal();
-  });
-
-  // ─────────────────────────────────────────
-  //  STUDY TABLE
-  // ─────────────────────────────────────────
+  // ROUTINE: STUDY PLAN SLOT TABLE
   function openStudyTable() {
     const m = state.selectedMonth;
     const d = state.selectedDay;
-    document.getElementById('tableDate').textContent  = `${m.name} ${d}, ${currentYear}`;
+    document.getElementById('tableDate').textContent = `${m.name} ${d}, ${currentYear}`;
     document.getElementById('tableClass').textContent = state.class;
-    document.getElementById('tableNote').textContent  = `* Data is unique to ${m.name} ${d}`;
+    document.getElementById('tableNote').textContent = `* Data is unique to ${m.name} ${d}`;
     const slotKey = `slotCount-${m.name}-${d}`;
     state.slotCount = parseInt(localStorage.getItem(slotKey) || '3');
 
     const isUni = state.selectedLevel === 'university';
-    // Show/hide add/remove row buttons for university
     document.getElementById('uniRowControls').style.display = isUni ? 'flex' : 'none';
-    document.getElementById('btnAddSlot').textContent   = isUni ? '+ Column' : '+ Add Slot';
+    document.getElementById('btnAddSlot').textContent = isUni ? '+ Column' : '+ Add Slot';
     document.getElementById('btnRemoveSlot').textContent = isUni ? '− Column' : '− Remove Slot';
 
     if (isUni) {
@@ -2787,12 +2166,11 @@
     localStorage.setItem(slotKey, state.slotCount);
     const isUni = state.selectedLevel === 'university';
 
-    // Update thead
     const head = document.getElementById('studyTableHead');
     if (isUni) {
       let headHtml = '<th style="min-width:140px;">Course Title</th>';
       for (let s = 1; s <= state.slotCount; s++) headHtml += `<th>Column ${s}</th>`;
-      headHtml += '<th style="width:40px;"></th>'; // delete row col
+      headHtml += '<th style="width:40px;"></th>';
       head.innerHTML = headHtml;
     } else {
       let headHtml = '<th>Subject</th>';
@@ -2800,7 +2178,6 @@
       head.innerHTML = headHtml;
     }
 
-    // Update tbody
     const tbody = document.getElementById('studyTableBody');
     tbody.innerHTML = '';
 
@@ -2814,10 +2191,10 @@
             oninput="saveUniRowTitle(${rowIdx}, this.value)" />
         </td>`;
         for (let slot = 1; slot <= state.slotCount; slot++) {
-          const key      = `${rowKey}-slot${slot}`;
+          const key = `${rowKey}-slot${slot}`;
           const checkKey = `${key}-done`;
-          const val      = (state.tableData[key] || '').replace(/</g,'&lt;');
-          const isDone   = state.tableData[checkKey] === 'true';
+          const val = (state.tableData[key] || '').replace(/</g,'&lt;');
+          const isDone = state.tableData[checkKey] === 'true';
           html += `<td class="slot-cell ${isDone ? 'slot-done' : ''}">
             <textarea placeholder="Notes..."
               oninput="saveCell('${key}', this.value)"
@@ -2844,10 +2221,10 @@
         const tr = document.createElement('tr');
         let html = `<td class="subject-cell"><span class="subject-pill">${sub}</span></td>`;
         for (let slot = 1; slot <= state.slotCount; slot++) {
-          const key      = `${m.name}-${d}-${sub}-${slot}`;
+          const key = `${m.name}-${d}-${sub}-${slot}`;
           const checkKey = `${key}-done`;
-          const val      = (state.tableData[key] || '').replace(/</g,'&lt;');
-          const isDone   = state.tableData[checkKey] === 'true';
+          const val = (state.tableData[key] || '').replace(/</g,'&lt;');
+          const isDone = state.tableData[checkKey] === 'true';
           html += `<td class="slot-cell ${isDone ? 'slot-done' : ''}">
             <textarea placeholder="Write notes for ${sub}..."
               oninput="saveCell('${key}', this.value)"
@@ -2867,12 +2244,14 @@
       });
     }
 
-    // Slot controls
-    document.getElementById('slotCountLabel').textContent = isUni
-      ? `${state.slotCount} / 5 columns`
-      : `${state.slotCount} / 5 slots`;
-    document.getElementById('btnAddSlot').disabled    = state.slotCount >= 5;
+    document.getElementById('slotCountLabel').textContent = isUni ? `${state.slotCount} / 5 columns` : `${state.slotCount} / 5 slots`;
+    document.getElementById('btnAddSlot').disabled = state.slotCount >= 5;
     document.getElementById('btnRemoveSlot').disabled = state.slotCount <= 1;
+  }
+
+  function saveCell(key, value) {
+    state.tableData[key] = value;
+    persistTableData();
   }
 
   function saveUniRowTitle(rowIdx, val) {
@@ -2910,9 +2289,9 @@
     renderStudyTable();
   }
 
-  function saveCell(key, value) {
-    state.tableData[key] = value;
-    persistTableData();
+  // COMPLETED TODAY LOGGER
+  function getCompletedKey() {
+    return `${state.selectedMonth.name}-${state.selectedDay}`;
   }
 
   function toggleSlotDone(key, isDone) {
@@ -2923,19 +2302,15 @@
     const text = (state.tableData[key] || '').trim();
 
     if (isDone && text) {
-      // Add to Completed Today
       const compKey = getCompletedKey();
       if (!state.completedData[compKey]) state.completedData[compKey] = [];
-      // Use "Subject – Slot text" as label, avoid duplicates
-      const label = text;
-      if (!state.completedData[compKey].includes(label)) {
-        state.completedData[compKey].push(label);
+      if (!state.completedData[compKey].includes(text)) {
+        state.completedData[compKey].push(text);
         persistCompletedData();
         renderCompletedList();
         showToast(`✅ Added to Completed Today!`);
       }
     } else if (!isDone && text) {
-      // Remove from Completed Today
       const compKey = getCompletedKey();
       if (state.completedData[compKey]) {
         state.completedData[compKey] = state.completedData[compKey].filter(i => i !== text);
@@ -2943,34 +2318,16 @@
         renderCompletedList();
       }
     }
-
-    // Re-render table to update disabled state and styling
     renderStudyTable();
   }
 
-  // ─────────────────────────────────────────
-  //  COMPLETED TODAY
-  // ─────────────────────────────────────────
-  const LS_COMPLETED = 'sp_completedData';
-  const savedCompletedData = JSON.parse(localStorage.getItem(LS_COMPLETED) || '{}');
-  state.completedData = savedCompletedData; // { "March-10": ["item1", "item2",...] }
-
-  function persistCompletedData() {
-    localStorage.setItem(LS_COMPLETED, JSON.stringify(state.completedData));
-  }
-
-  function getCompletedKey() {
-    return `${state.selectedMonth.name}-${state.selectedDay}`;
-  }
-
   function renderCompletedList() {
-    const key   = getCompletedKey();
+    const key = getCompletedKey();
     const items = state.completedData[key] || [];
-    const list  = document.getElementById('completedList');
+    const list = document.getElementById('completedList');
     list.innerHTML = '';
 
-    document.getElementById('completedCount').textContent =
-      items.length === 0 ? '0 items' : `${items.length} item${items.length > 1 ? 's' : ''}`;
+    document.getElementById('completedCount').textContent = items.length === 0 ? '0 items' : `${items.length} item${items.length > 1 ? 's' : ''}`;
 
     if (items.length === 0) {
       list.innerHTML = `<div class="completed-empty">Nothing logged yet — add what you finished today! 📚</div>`;
@@ -2991,7 +2348,7 @@
 
   function addCompletedItem() {
     const input = document.getElementById('completedInput');
-    const text  = input.value.trim();
+    const text = input.value.trim();
     if (!text) return;
     const key = getCompletedKey();
     if (!state.completedData[key]) state.completedData[key] = [];
@@ -3009,21 +2366,25 @@
     renderCompletedList();
   }
 
-  // ─────────────────────────────────────────
-  //  TO-DO LIST
-  // ─────────────────────────────────────────
-  const LS_TODO = 'sp_todoData';
-  const savedTodoData = JSON.parse(localStorage.getItem(LS_TODO) || '{}');
-  state.todoData = savedTodoData;  // { "MonthName-day-ActivityName": [{text, done},...] }
-
-  function persistTodoData() {
-    localStorage.setItem(LS_TODO, JSON.stringify(state.todoData));
-  }
-
-  function getTodoKey() {
+  // SAVE TODAY'S ENTIRE PLAN
+  function savePlan() {
     const m = state.selectedMonth.name;
     const d = state.selectedDay;
-    return `${m}-${d}-${state.currentActivity.name}`;
+    state.savedDates.add(`${m}-${d}`);
+    persistSavedDates();
+    persistTableData();
+    showToast(`✅ Plan for ${m} ${d} has been saved!`);
+    setTimeout(() => {
+      renderDateList();
+      renderMonthGrid();   
+      renderWorkspacePanel();
+      goTo('weekly');
+    }, 1200);
+  }
+
+  // TO-DO ENGINE
+  function getTodoKey() {
+    return `${state.selectedMonth.name}-${state.selectedDay}-${state.currentActivity.name}`;
   }
 
   function openTodoPage(act) {
@@ -3045,10 +2406,7 @@
     list.innerHTML = '';
 
     if (items.length === 0) {
-      list.innerHTML = `<div class="todo-empty">
-        <span class="icon">📝</span>
-        No tasks yet. Add your first task above!
-      </div>`;
+      list.innerHTML = `<div class="todo-empty"><span class="icon">📝</span>No tasks yet. Add your first task above!</div>`;
     } else {
       items.forEach((item, idx) => {
         const div = document.createElement('div');
@@ -3104,210 +2462,11 @@
 
   function saveTodo() {
     persistTodoData();
-    const act = state.currentActivity;
-    showToast(`✅ ${act.name} list saved!`);
+    showToast(`✅ ${state.currentActivity.name} list saved!`);
     setTimeout(() => goTo('day-items'), 1200);
   }
 
-  // ─────────────────────────────────────────
-  //  MONTHLY GOALS
-  // ─────────────────────────────────────────
-  const LS_GOALS = 'sp_goalsData';
-  const savedGoalsData = JSON.parse(localStorage.getItem(LS_GOALS) || '{}');
-  state.goalsData = savedGoalsData;  // { "MonthName": { type: 'bullet'|'number', items: [str,...] } }
-  state.goalType = 'bullet';
-
-  function persistGoalsData() {
-    localStorage.setItem(LS_GOALS, JSON.stringify(state.goalsData));
-  }
-
-  function openMonthlyGoals() {
-    const m = state.selectedMonth;
-    document.getElementById('goalsMonthLabel').textContent = `${m.name} ${currentYear}`;
-    // Load saved type
-    const saved = state.goalsData[m.name];
-    state.goalType = saved?.type || 'bullet';
-    updateGoalTypeButtons();
-    renderGoalsList();
-    goTo('goals');
-  }
-
-  function setGoalType(type) {
-    state.goalType = type;
-    const m = state.selectedMonth;
-    if (!state.goalsData[m.name]) state.goalsData[m.name] = { type, items: [] };
-    state.goalsData[m.name].type = type;
-    persistGoalsData();
-    updateGoalTypeButtons();
-    renderGoalsList();
-  }
-
-  function updateGoalTypeButtons() {
-    document.getElementById('btnBullet').classList.toggle('active', state.goalType === 'bullet');
-    document.getElementById('btnNumber').classList.toggle('active', state.goalType === 'number');
-  }
-
-  function renderGoalsList() {
-    const m = state.selectedMonth;
-    const data = state.goalsData[m.name] || { type: 'bullet', items: [] };
-    const list = document.getElementById('goalsList');
-    list.innerHTML = '';
-
-    if (data.items.length === 0) {
-      list.innerHTML = `<div class="goals-empty">
-        <span class="icon">🎯</span>
-        No goals yet. Add your first goal above!
-      </div>`;
-      return;
-    }
-
-    data.items.forEach((text, idx) => {
-      const div = document.createElement('div');
-      div.className = 'goal-item';
-      const label = state.goalType === 'number' ? `${idx + 1}.` : '•';
-      div.innerHTML = `
-        <div class="goal-bullet">${label}</div>
-        <span class="goal-text">${text}</span>
-        <button class="goal-delete" onclick="deleteGoal(${idx})" title="Delete">✕</button>
-      `;
-      list.appendChild(div);
-    });
-  }
-
-  function addGoalItem() {
-    const input = document.getElementById('goalsInput');
-    const text = input.value.trim();
-    if (!text) return;
-    const m = state.selectedMonth;
-    if (!state.goalsData[m.name]) state.goalsData[m.name] = { type: state.goalType, items: [] };
-    state.goalsData[m.name].items.push(text);
-    persistGoalsData();
-    input.value = '';
-    renderGoalsList();
-    input.focus();
-  }
-
-  function deleteGoal(idx) {
-    const m = state.selectedMonth;
-    state.goalsData[m.name].items.splice(idx, 1);
-    persistGoalsData();
-    renderGoalsList();
-  }
-
-  function saveGoals() {
-    persistGoalsData();
-    showToast(`✅ Goals for ${state.selectedMonth.name} saved!`);
-    setTimeout(() => goTo('options'), 1200);
-  }
-
-  // ─────────────────────────────────────────
-  //  STUDY PROGRESS
-  // ─────────────────────────────────────────
-  state.progressType = 'bullet';
-
-  function openStudyProgress() {
-    const m = state.selectedMonth;
-    document.getElementById('progressMonthLabel').textContent = `${m.name} ${currentYear} — Week-wise completed studies`;
-    state.progressType = 'bullet';
-    document.getElementById('btnProgBullet').classList.add('active');
-    document.getElementById('btnProgNumber').classList.remove('active');
-    renderWeekBlocks();
-    goTo('progress');
-  }
-
-  function setProgressType(type) {
-    state.progressType = type;
-    document.getElementById('btnProgBullet').classList.toggle('active', type === 'bullet');
-    document.getElementById('btnProgNumber').classList.toggle('active', type === 'number');
-    renderWeekBlocks();
-  }
-
-  function renderWeekBlocks() {
-    const m   = state.selectedMonth;
-    const container = document.getElementById('weekBlocks');
-    container.innerHTML = '';
-
-    // Build 4 weeks (week 4 goes to end of month)
-    const weeks = [
-      { num: 1, start: 1,  end: 7  },
-      { num: 2, start: 8,  end: 14 },
-      { num: 3, start: 15, end: 21 },
-      { num: 4, start: 22, end: m.days }
-    ];
-
-    weeks.forEach((wk, wkIdx) => {
-      // Gather all completed items for days in this week
-      const allItems = [];
-      for (let day = wk.start; day <= wk.end; day++) {
-        const key   = `${m.name}-${day}`;
-        const items = (state.completedData || {})[key] || [];
-        items.forEach(text => allItems.push({ day, text }));
-      }
-
-      const block = document.createElement('div');
-      block.className = 'week-block' + (wkIdx === 0 ? ' open' : '');
-
-      const dateRangeText = `${m.name} ${wk.start} – ${m.name} ${wk.end}`;
-      const countText = allItems.length ? `${allItems.length} completed` : 'No entries';
-
-      block.innerHTML = `
-        <div class="week-title" onclick="this.parentElement.classList.toggle('open')">
-          <div class="week-title-left">
-            <span class="week-num">Week ${wk.num}</span>
-            <span class="week-dates">${dateRangeText}</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span class="week-badge ${allItems.length ? '' : 'empty'}">${countText}</span>
-            <span class="week-chevron">›</span>
-          </div>
-        </div>
-        <div class="week-items" id="weekItems-${wk.num}"></div>
-      `;
-      container.appendChild(block);
-
-      // Fill items
-      const itemsDiv = block.querySelector(`#weekItems-${wk.num}`);
-      if (allItems.length === 0) {
-        itemsDiv.innerHTML = `<div class="week-empty">Nothing completed in this week yet.</div>`;
-      } else {
-        let counter = 1;
-        allItems.forEach(({ day, text }) => {
-          const bullet = state.progressType === 'number' ? `${counter++}.` : '•';
-          const item = document.createElement('div');
-          item.className = 'week-item';
-          item.innerHTML = `
-            <span class="week-item-bullet">${bullet}</span>
-            <span class="week-item-date">${m.name.slice(0,3)} ${day}</span>
-            <span class="week-item-text">${text}</span>
-          `;
-          itemsDiv.appendChild(item);
-        });
-      }
-    });
-  }
-
-  function savePlan() {
-    const m = state.selectedMonth.name;
-    const d = state.selectedDay;
-    // Mark this date as explicitly saved
-    state.savedDates.add(`${m}-${d}`);
-    persistSavedDates();
-    persistTableData();
-    showToast(`✅ Plan for ${m} ${d} has been saved!`);
-    setTimeout(() => {
-      renderDateList();
-      renderMonthGrid();   // refresh saved-count badges
-      goTo('weekly');
-    }, 1200);
-  }
-
-  // ─────────────────────────────────────────
-  //  TOAST
-  // ─────────────────────────────────────────
-  let toastTimer;
-  // ─────────────────────────────────────────
-  //  SYNC — EXPORT / IMPORT
-  // ─────────────────────────────────────────
+  // BACKUP EXPORT & IMPORT UTILITIES
   function openSyncModal() {
     switchSyncTab('export');
     document.getElementById('exportCodeBox').value = '';
@@ -3315,9 +2474,11 @@
     document.getElementById('btnCopyCode').disabled = true;
     document.getElementById('syncModal').classList.add('open');
   }
+
   function closeSyncModal() {
     document.getElementById('syncModal').classList.remove('open');
   }
+
   function switchSyncTab(tab) {
     document.getElementById('panelExport').classList.toggle('active', tab === 'export');
     document.getElementById('panelImport').classList.toggle('active', tab === 'import');
@@ -3325,8 +2486,7 @@
     document.getElementById('tabImport').classList.toggle('active', tab === 'import');
   }
 
-  function getAllData() {
-    // Collect every localStorage key belonging to this app
+  function generateExportCode() {
     const data = {};
     const prefix = ['sp_', 'slotCount-'];
     for (let i = 0; i < localStorage.length; i++) {
@@ -3335,13 +2495,7 @@
         data[k] = localStorage.getItem(k);
       }
     }
-    return data;
-  }
-
-  function generateExportCode() {
-    const data = getAllData();
     const json = JSON.stringify(data);
-    // Base64 encode so it's a single copyable string
     const code = btoa(unescape(encodeURIComponent(json)));
     document.getElementById('exportCodeBox').value = code;
     document.getElementById('btnCopyCode').disabled = false;
@@ -3350,13 +2504,9 @@
 
   function copyExportCode() {
     const box = document.getElementById('exportCodeBox');
-    navigator.clipboard.writeText(box.value).then(() => {
-      showToast('📋 Code copied to clipboard!');
-    }).catch(() => {
-      box.select();
-      document.execCommand('copy');
-      showToast('📋 Code copied!');
-    });
+    box.select();
+    document.execCommand('copy');
+    showToast('📋 Code copied!');
   }
 
   function importData() {
@@ -3365,7 +2515,6 @@
     try {
       const json = decodeURIComponent(escape(atob(code)));
       const data = JSON.parse(json);
-      // Clear existing app data
       const prefix = ['sp_', 'slotCount-'];
       const keysToRemove = [];
       for (let i = 0; i < localStorage.length; i++) {
@@ -3373,7 +2522,6 @@
         if (prefix.some(p => k.startsWith(p))) keysToRemove.push(k);
       }
       keysToRemove.forEach(k => localStorage.removeItem(k));
-      // Write imported data
       Object.entries(data).forEach(([k, v]) => localStorage.setItem(k, v));
       showToast('✅ Data imported! Reloading...');
       closeSyncModal();
@@ -3383,13 +2531,7 @@
     }
   }
 
-  document.getElementById('syncModal').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('syncModal')) closeSyncModal();
-  });
-
-  // ─────────────────────────────────────────
-  //  EDIT SUBJECTS MODAL
-  // ─────────────────────────────────────────
+  // MODAL OVERLAYS AND POPUPS CONTROLLERS
   function openSubjectModal() {
     if (state.selectedLevel === 'university') {
       showToast('University users manage courses in the study table!', '#6366f1');
@@ -3406,7 +2548,6 @@
       btn.onclick = () => btn.classList.toggle('selected');
       container.appendChild(btn);
     });
-    // Show custom subjects
     state.customSubjects.forEach(sub => {
       const btn = document.createElement('button');
       btn.className = 'chip selected';
@@ -3420,12 +2561,13 @@
     });
     document.getElementById('subjectModal').classList.add('open');
   }
+
   function closeSubjectModal() {
     document.getElementById('subjectModal').classList.remove('open');
   }
+
   function saveSubjectModal() {
-    const selected = [...document.querySelectorAll('#subjectModalChips .chip.selected')]
-      .map(c => c.dataset.sub);
+    const selected = [...document.querySelectorAll('#subjectModalChips .chip.selected')].map(c => c.dataset.sub);
     if (selected.length === 0) {
       showToast('⚠️ Please select at least one subject!', '#ef4444');
       return;
@@ -3435,10 +2577,124 @@
     closeSubjectModal();
     showToast('✅ Subjects updated!');
   }
-  document.getElementById('subjectModal').addEventListener('click', e => {
-    if (e.target === document.getElementById('subjectModal')) closeSubjectModal();
-  });
 
+  // ACTIVITY CREATORS AND DELETERS MODALS
+  function openAddModal() {
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    document.getElementById('newActivityInput').value = '';
+    document.getElementById('scopeDateLabel').textContent = `${m.name} ${d} only`;
+    document.getElementById('scopeMonthLabel').textContent = `All of ${m.name}`;
+    document.getElementById('specificDateSelectorDiv').classList.add('hidden'); // Reset specific date view
+    document.getElementById('addModal').classList.add('open');
+  }
+
+  function closeAddModal() {
+    document.getElementById('addModal').classList.remove('open');
+    document.getElementById('specificDateSelectorDiv').classList.add('hidden');
+  }
+
+  function toggleSpecificDateSelector() {
+    const div = document.getElementById('specificDateSelectorDiv');
+    div.classList.toggle('hidden');
+    const input = document.getElementById('addSpecificDateInput');
+    if (!input.value) {
+      // Set to today's date format (YYYY-MM-DD)
+      const local = new Date();
+      const year = local.getFullYear();
+      const month = String(local.getMonth() + 1).padStart(2, '0');
+      const day = String(local.getDate()).padStart(2, '0');
+      input.value = `${year}-${month}-${day}`;
+    }
+  }
+
+  function confirmAddActivity(scope) {
+    const val = document.getElementById('newActivityInput').value.trim();
+    if (!val) { showToast('⚠️ Please enter an activity name!', '#ef4444'); return; }
+    const icons = ['🎨','⚽','🎵','🏋️','🎯','📷','🌿','🎮'];
+    const icon = icons[Math.floor(Math.random() * icons.length)];
+    const newAct = { id: Date.now(), name: val, icon };
+
+    const m = state.selectedMonth.name;
+    const d = state.selectedDay;
+    
+    let key = '';
+    let targetLabel = '';
+
+    if (scope === 'date') {
+      key = `${m}-${d}`;
+      targetLabel = `${m} ${d} only`;
+    } else if (scope === 'month') {
+      key = m;
+      targetLabel = `all of ${m}`;
+    } else if (scope === 'specific') {
+      const dateVal = document.getElementById('addSpecificDateInput').value;
+      if (!dateVal) { showToast('⚠️ Please pick a specific date first!', '#ef4444'); return; }
+      const parsed = new Date(dateVal);
+      if (isNaN(parsed.getTime())) { showToast('⚠️ Invalid date format!', '#ef4444'); return; }
+      
+      const monthName = months[parsed.getMonth()].name;
+      const dayNum = parsed.getDate();
+      key = `${monthName}-${dayNum}`;
+      targetLabel = `${monthName} ${dayNum}`;
+    }
+
+    if (!state.customActivities[key]) state.customActivities[key] = [];
+    if (!state.customActivities[key].some(a => a.name === val)) {
+      state.customActivities[key].push(newAct);
+    }
+    persistCustomActivities();
+    renderActivityList();
+    closeAddModal();
+    showToast(`✅ "${val}" added for ${targetLabel}!`);
+  }
+
+  state._deleteActName = null;
+  function openDeleteActivityModal(name, event) {
+    event.stopPropagation();
+    const m = state.selectedMonth;
+    const d = state.selectedDay;
+    state._deleteActName = name;
+    document.getElementById('deleteActName').textContent = name;
+    document.getElementById('deleteScopeDateLabel').textContent = `${m.name} ${d} only`;
+    document.getElementById('deleteScopeMonthLabel').textContent = `All of ${m.name}`;
+    document.getElementById('deleteActModal').classList.add('open');
+  }
+
+  function closeDeleteActModal() {
+    document.getElementById('deleteActModal').classList.remove('open');
+    state._deleteActName = null;
+  }
+
+  function confirmDeleteActivity(scope) {
+    const name = state._deleteActName;
+    const m = state.selectedMonth.name;
+    const d = state.selectedDay;
+
+    if (scope === 'date') {
+      const dateKey = `${m}-${d}`;
+      if (state.customActivities[dateKey]) {
+        state.customActivities[dateKey] = state.customActivities[dateKey].filter(a => a.name !== name);
+      }
+    } else {
+      if (state.customActivities[m]) {
+        state.customActivities[m] = state.customActivities[m].filter(a => a.name !== name);
+      }
+      Object.keys(state.customActivities).forEach(key => {
+        if (key.startsWith(m + '-')) {
+          state.customActivities[key] = state.customActivities[key].filter(a => a.name !== name);
+        }
+      });
+    }
+
+    persistCustomActivities();
+    closeDeleteActModal();
+    renderActivityList();
+    showToast(`🗑️ "${name}" removed successfully.`);
+  }
+
+  // TOAST DISPLAY AND GLOBAL EVENTS REGISTER
+  let toastTimer;
   function showToast(msg, bg = '') {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -3448,23 +2704,19 @@
     toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ─────────────────────────────────────────
-  //  BOOT  — skip onboarding for returning users
-  // ─────────────────────────────────────────
+  function goTo(stepId) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step-' + stepId).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // APPLICATION BOOTSTRAPER
   (function boot() {
     if (savedProfile && savedProfile.name && savedProfile.class && savedProfile.level) {
-      state.selectedLevel   = savedProfile.level   || '';
-      state.selectedDept    = savedProfile.dept    || '';
-      state.customSubjects  = savedProfile.customSubjects || [];
+      state.selectedLevel = savedProfile.level || '';
+      state.selectedDept = savedProfile.dept || '';
+      state.customSubjects = savedProfile.customSubjects || [];
       showCalendar();
     }
   })();
-
-  // Wire up options → weekly
-  document.querySelector('.option-card-primary').addEventListener('click', () => {
-    renderDateList();
-    goTo('weekly');
-  });
 </script>
-</body>
-</html>
