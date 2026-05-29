@@ -183,7 +183,7 @@
   }
 
   /* SYNC ENGINE TABS */
-  .sync-tabs { display: flex; border: 2px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+  .sync-tabs { display: flex; border: 2px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
   .sync-tab {
     flex: 1; padding: 10px; background: var(--bg); border: none;
     font-family: inherit; font-size: 13px; font-weight: 700; color: var(--muted);
@@ -193,17 +193,17 @@
   .sync-panel { display: none; }
   .sync-panel.active { display: block; }
   .sync-code-box {
-    width: 100%; min-height: 100px; max-height: 160px; padding: 12px;
+    width: 100%; min-height: 80px; max-height: 120px; padding: 12px;
     border: 2px solid var(--border); border-radius: 12px; font-family: monospace;
-    font-size: 12px; resize: none; background: #f9fafb; color: var(--text);
+    font-size: 11px; resize: none; background: #f9fafb; color: var(--text);
     outline: none; word-break: break-all; margin-bottom: 12px;
   }
   .sync-info {
-    font-size: 12px; color: var(--muted); background: #f0f2ff;
-    border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; line-height: 1.6;
+    font-size: 11px; color: var(--muted); background: #f0f2ff;
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; line-height: 1.6;
   }
 
-  /* STUDY MONTH VIEW (NEW INTEGRATION) */
+  /* STUDY MONTH VIEW */
   #step-calendar .inner { max-width: 960px; margin: 40px auto 0; padding: 0 16px; }
   .welcome-bar {
     display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;
@@ -796,22 +796,41 @@
   </div>
 </div>
 
-<!-- MODAL: Sync / Export / Import -->
+<!-- MODAL: Sync / Export / Import / File Backups -->
 <div class="modal-overlay" id="syncModal">
-  <div class="modal" style="max-width:420px;">
-    <h3>⇅ Sync Data</h3>
+  <div class="modal" style="max-width:440px;">
+    <h3 class="flex items-center gap-2">⇅ Sync & Storage Manager</h3>
+    
+    <!-- LIVE STORAGE USAGE INDICATOR -->
+    <div class="mb-4 p-3 bg-slate-50 rounded-xl border border-slate-200">
+      <div class="flex justify-between text-[11px] font-bold text-slate-600 mb-1">
+        <span id="storageUsageLabel">Calculating storage size...</span>
+        <span>Limit: 5 MB</span>
+      </div>
+      <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+        <div id="storageUsageBar" class="bg-indigo-600 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+    </div>
+
     <div class="sync-tabs">
-      <button class="sync-tab active" id="tabExport" onclick="switchSyncTab('export')">📤 Export</button>
-      <button class="sync-tab" id="tabImport" onclick="switchSyncTab('import')">📥 Import</button>
+      <button class="sync-tab active" id="tabExport" onclick="switchSyncTab('export')">📤 Export & Backup</button>
+      <button class="sync-tab" id="tabImport" onclick="switchSyncTab('import')">📥 Import & Restore</button>
     </div>
 
     <!-- EXPORT PANEL -->
     <div class="sync-panel active" id="panelExport">
       <div class="sync-info">
-        <strong>How to sync:</strong><br>
-        1. Click "Generate Code" below<br>
-        2. Copy the code and save it (WhatsApp, Notes, etc.)<br>
-        3. On your other device, paste it in the Import tab
+        <strong>📂 Local File Backup (Recommended):</strong><br>
+        আপনার সম্পূর্ণ ডেটা সুরক্ষিত রাখতে নিচে ক্লিক করে একটি ব্যাকআপ ফাইল ডাউনলোড করে ফোনে বা ড্রাইভে রেখে দিন।
+      </div>
+      
+      <button class="btn w-full justify-center mb-4 text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-md flex items-center gap-2" onclick="exportToFile()">
+        💾 Save as Backup File (.json)
+      </button>
+
+      <div class="sync-info">
+        <strong>⚡ Manual Code Sync:</strong><br>
+        অন্য ডিভাইসে ডেটা নিতে কোড জেনারেট করে কপি করে নিন।
       </div>
       <button class="btn btn-primary w-full justify-center mb-3" onclick="generateExportCode()">
         🔄 Generate Code
@@ -832,11 +851,21 @@
     <!-- IMPORT PANEL -->
     <div class="sync-panel" id="panelImport">
       <div class="sync-info">
-        <strong>⚠️ Warning:</strong> Importing will <strong>replace</strong> all current data on this device. Make sure to export first if needed!
+        <strong>📂 Restore from File:</strong><br>
+        পূর্বে ডাউনলোড করা ব্যাকআপ ফাইলটি এখানে সিলেক্ট করে আপনার সমস্ত ডেটা রিস্টোর করুন।
       </div>
-      <textarea class="sync-code-box" id="importCodeBox" placeholder="Paste your export code here..."></textarea>
+
+      <div class="mb-4">
+        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Select Backup File (.json)</label>
+        <input type="file" id="backupFileInput" accept=".json" onchange="importFromFile(event)" class="w-full text-xs bg-slate-50 border border-slate-200 p-2 rounded-lg cursor-pointer focus:outline-none" />
+      </div>
+
+      <div class="sync-info">
+        <strong>⚠️ Warning:</strong> ইমপোর্ট করলে ব্রাউজারের সমস্ত বর্তমান রুটিন ও ডেটা <strong>রিপ্লেস</strong> হয়ে যাবে।
+      </div>
+      <textarea class="sync-code-box" id="importCodeBox" placeholder="অথবা এখানে টেক্সট কোড পেস্ট করুন..."></textarea>
       <button class="btn btn-primary w-full justify-center" onclick="importData()">
-        📥 Import & Apply
+        📥 Paste & Apply Code
       </button>
     </div>
 
@@ -1101,7 +1130,6 @@
   function persistTodoData() { localStorage.setItem(LS_TODO, JSON.stringify(state.todoData)); }
   function saveApiKey(val) { localStorage.setItem(LS_AI_KEY, val.trim()); showToast('🔑 API Key Saved!'); }
 
-  // SUBJECT RESOURCE LOOKUPS
   const SUBJECT_MAP = {
     school: ['English 1st', 'English 2nd', 'Bangla 1st', 'Bangla 2nd', 'Higher Math', 'General Math', 'Biology 1st', 'Biology 2nd', 'Physics 1st', 'Physics 2nd', 'Others'],
     college: ['Physics 1st', 'Physics 2nd', 'Math 1st', 'Math 2nd', 'Biology 1st', 'Biology 2nd', 'Bangla 1st', 'Bangla 2nd', 'English 1st', 'English 2nd'],
@@ -1109,7 +1137,6 @@
     university: []
   };
 
-  // WORLD FUTURISTIC HIGH-PRIORITY SKILLS DATABASE
   const SKILL_CATALOG = [
     { id: "prompt-eng", name: "AI Prompt Engineering", category: "AI & Future Tech", priority: "High", icon: "🤖", desc: "The art of structuring inputs to get optimal outputs from large language models.", why: "Essential for 2026 as AI systems are fully integrated into all administrative and professional workflows.", resources: "YouTube: 'Prompt Engineering for Beginners' by freeCodeCamp, OpenAI developer guide." },
     { id: "fullstack-web", name: "Full-Stack Web Development", category: "Software Development", priority: "High", icon: "💻", desc: "Building UI systems and server systems to create dynamic web applications.", why: "Web applications are the foundation of remote business operations; fullstack engineers remain in massive demand.", resources: "The Odin Project, freeCodeCamp, modern YouTube tutorials by SuperSimpleDev." },
@@ -1121,7 +1148,6 @@
     { id: "python-automation", name: "Python Automation & Scripting", category: "Software Development", priority: "Medium", icon: "🐍", desc: "Writing scripts to automate file transfers, organize folders, scrape web pages, and automate spreadsheets.", why: "Eliminating trivial repeated administrative tasks elevates high-tier individual work efficiency.", resources: "Book: 'Automate the Boring Stuff with Python' by Al Sweigart." }
   ];
 
-  // ONBOARDING ENGINE
   function selectLevel(level) {
     state.selectedLevel = level;
     document.querySelectorAll('.level-card[data-level]').forEach(c => c.classList.toggle('selected', c.dataset.level === level));
@@ -1269,7 +1295,6 @@
     goTo('calendar');
   }
 
-  // MONTH GRID DISPLAY
   function renderMonthGrid() {
     const grid = document.getElementById('monthGrid');
     grid.innerHTML = '';
@@ -1296,7 +1321,6 @@
     });
   }
 
-  // VISIBLE MONTH CALCULATOR
   function getVisibleMonths() {
     const visible = [];
     months.forEach((m, idx) => {
@@ -1310,7 +1334,6 @@
     return visible;
   }
 
-  // SPLIT VIEW DATE LIST
   function getVisibleDays(m) {
     const days = [];
     if (m.index > currentMonthIdx) {
@@ -1373,7 +1396,6 @@
     });
   }
 
-  // MULTI-TAB WORKSPACE PANEL ROUTINES
   function switchWorkspaceTab(tabId) {
     state.activeWorkspaceTab = tabId;
     const tabs = ['goals', 'progress', 'backlog', 'ai'];
@@ -1479,7 +1501,6 @@
     renderGoalsList();
   }
 
-  // SUBPANEL 2: STUDY PROGRESS WEEK RENDER
   function setProgressType(type) {
     state.progressType = type;
     const bulletBtn = document.getElementById('ws-btn-prog-bullet');
@@ -1613,7 +1634,6 @@
     renderBacklogList();
   }
 
-  // SUBPANEL 4: AI INSIGHTS & MONTH COACH
   function renderAIMonthStats() {
     const m = state.selectedMonth?.name;
     if (!m) return;
@@ -1630,7 +1650,6 @@
     document.getElementById('ai-stat-tasks-done').textContent = completedCount;
   }
 
-  // GEMINI API UTILITY OR COGENT STANDALONE INTERPRETER
   async function callGemini(payload) {
     const apiKey = localStorage.getItem(LS_AI_KEY);
     if (!apiKey) {
@@ -1706,7 +1725,6 @@
         output.innerHTML = "Unable to fetch performance insights. Write down some tasks first!";
       }
     } catch (err) {
-      // SMART OFFLINE RESPONSIVE FALLBACK ENGINE
       console.warn("Falling back to smart rule-based AI generator:", err.message);
       setTimeout(() => {
         let localAiResponse = `📊 <strong>Coach Buddy (Local Insights Active):</strong><br><br>`;
@@ -1729,7 +1747,6 @@
     }
   }
 
-  // SKILL ACADEMY ENGINE
   function renderSkillCatalog() {
     const grid = document.getElementById('skillGrid');
     grid.innerHTML = '';
@@ -1772,7 +1789,6 @@
     });
   }
 
-  // DETAIL POPUP AND ACTIONS
   function openSkillDetail(skill) {
     state.selectedSkill = skill;
     document.getElementById('sd-icon').textContent = skill.icon;
@@ -1802,7 +1818,7 @@
     if (!state.selectedSkill) return;
     const sName = state.selectedSkill.name;
     if (!state.trackedSkills[sName]) {
-      state.trackedSkills[sName] = { progress: 0, notes: "", status: "Learning" };
+      state.trackedSkills[sName] = { progress: 0, notes: "", status: "Learning", driveLink: "" };
       persistTrackedSkills();
       showToast(`🎯 tracking details saved for ${sName}!`);
       renderSkillCatalog();
@@ -1811,7 +1827,77 @@
     }
   }
 
-  // MY TRACKER ENGINE
+  function extractDriveFolderId(url) {
+    if (!url) return null;
+    const matchFolders = url.match(/\/folders\/([a-zA-Z0-9-_]{25,})/);
+    if (matchFolders) return matchFolders[1];
+    const matchId = url.match(/[?&]id=([a-zA-Z0-9-_]{25,})/);
+    if (matchId) return matchId[1];
+    return null;
+  }
+
+  function toggleInlineDriveView(idx) {
+    if (!state.inlineDriveViews) state.inlineDriveViews = {};
+    state.inlineDriveViews[idx] = !state.inlineDriveViews[idx];
+    renderTrackedSkills();
+  }
+
+  // Auto-carrying list symbols (•, 1., [ ]) on pressing Enter inside notes
+  function handleNoteKeyDown(textarea, event, skillName) {
+    if (event.key === 'Enter') {
+      const start = textarea.selectionStart;
+      const text = textarea.value;
+      const lineStart = text.lastIndexOf('\n', start - 1) + 1;
+      const currentLine = text.substring(lineStart, start);
+      
+      let prefix = "";
+      if (currentLine.startsWith('• ')) {
+        prefix = '• ';
+      } else if (currentLine.startsWith('[ ] ')) {
+        prefix = '[ ] ';
+      } else if (currentLine.match(/^\d+\.\s/)) {
+        const match = currentLine.match(/^(\d+)\.\s/);
+        const num = parseInt(match[1]);
+        prefix = `${num + 1}. `;
+      }
+      
+      if (prefix) {
+        event.preventDefault();
+        const newText = text.substring(0, start) + '\n' + prefix + text.substring(start);
+        textarea.value = newText;
+        textarea.selectionStart = textarea.selectionEnd = start + 1 + prefix.length;
+        updateSkillNotes(skillName, textarea.value);
+      }
+    }
+  }
+
+  function insertFormatSymbol(skillName, type) {
+    const textarea = document.getElementById(`notes-area-${skillName.replace(/\s+/g, '-')}`);
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selectedText = text.substring(start, end);
+    
+    let replacement = "";
+    if (type === 'bullet') {
+      replacement = `• ${selectedText}`;
+    } else if (type === 'number') {
+      replacement = `1. ${selectedText}`;
+    } else if (type === 'todo') {
+      replacement = `[ ] ${selectedText}`;
+    } else if (type === 'bold') {
+      replacement = `**${selectedText}**`;
+    } else if (type === 'clear') {
+      replacement = selectedText.replace(/^[•\s\d.\[\]]+\s?/gm, '').replace(/\*\*/g, '');
+    }
+    
+    textarea.value = text.substring(0, start) + replacement + text.substring(end);
+    textarea.focus();
+    textarea.selectionStart = textarea.selectionEnd = start + replacement.length;
+    updateSkillNotes(skillName, textarea.value);
+  }
+
   function renderTrackedSkills() {
     const container = document.getElementById('trackedSkillList');
     container.innerHTML = '';
@@ -1823,8 +1909,14 @@
       return;
     }
 
-    trackedKeys.forEach(key => {
+    trackedKeys.forEach((key, idx) => {
       const data = state.trackedSkills[key];
+      const escapedKey = key.replace(/'/g, "\\'");
+      const elementIdSafe = key.replace(/\s+/g, '-');
+      const hasDriveLink = !!data.driveLink;
+      const driveFolderId = extractDriveFolderId(data.driveLink);
+      const isShowingInline = state.inlineDriveViews && !!state.inlineDriveViews[idx];
+      
       const card = document.createElement('div');
       card.className = 'bg-white p-5 rounded-2xl shadow-sm border border-gray-150 flex flex-col justify-between space-y-4';
       card.innerHTML = `
@@ -1833,7 +1925,7 @@
             <h3 class="font-bold text-gray-950 text-sm">${key}</h3>
             <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 inline-block mt-1">${data.status}</span>
           </div>
-          <button onclick="untrackSkill('${key.replace(/'/g, "\\'")}')" class="text-xs text-red-500 font-bold hover:underline">Remove</button>
+          <button onclick="untrackSkill('${escapedKey}')" class="text-xs text-red-500 font-bold hover:underline">Remove</button>
         </div>
 
         <div class="space-y-1.5">
@@ -1841,12 +1933,12 @@
             <span>Learning Progress</span>
             <span>${data.progress}%</span>
           </div>
-          <input type="range" min="0" max="100" value="${data.progress}" onchange="updateSkillProgress('${key.replace(/'/g, "\\'")}', this.value)" class="w-full accent-indigo-600 h-1 bg-gray-100 rounded-lg cursor-pointer" />
+          <input type="range" min="0" max="100" value="${data.progress}" onchange="updateSkillProgress('${escapedKey}', this.value)" class="w-full accent-indigo-600 h-1 bg-gray-100 rounded-lg cursor-pointer" />
         </div>
 
         <div class="space-y-1">
           <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Status Settings</label>
-          <select onchange="updateSkillStatus('${key.replace(/'/g, "\\'")}', this.value)" class="w-full text-xs px-2.5 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+          <select onchange="updateSkillStatus('${escapedKey}', this.value)" class="w-full text-xs px-2.5 py-2 bg-gray-50 border border-gray-200 rounded-lg">
             <option value="Not Started" ${data.status === 'Not Started' ? 'selected' : ''}>⏳ Not Started</option>
             <option value="Learning" ${data.status === 'Learning' ? 'selected' : ''}>📖 Learning</option>
             <option value="Mastered" ${data.status === 'Mastered' ? 'selected' : ''}>🎓 Mastered</option>
@@ -1854,12 +1946,106 @@
         </div>
 
         <div class="space-y-1">
-          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">My Notes & Free Resources Used</label>
-          <textarea placeholder="Write websites, youtube channel links or progress highlights..." onchange="updateSkillNotes('${key.replace(/'/g, "\\'")}', this.value)" class="w-full text-xs p-2.5 bg-gray-50 border border-gray-200 rounded-lg min-height-[60px] max-height-[100px] outline-none">${data.notes || ''}</textarea>
+          <div class="flex items-center justify-between">
+            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">My Notes & Custom Checklist</label>
+            <span class="text-[8px] text-gray-400 font-semibold">Tip: Enter carries lists!</span>
+          </div>
+          
+          <!-- Rich Text Formatting Toolbar -->
+          <div class="flex flex-wrap gap-1 bg-gray-100 p-1 rounded-t-lg border border-gray-200 border-b-0">
+            <button onclick="insertFormatSymbol('${escapedKey}', 'bullet')" class="px-2 py-1 text-[10px] font-bold bg-white hover:bg-slate-50 border border-gray-200 rounded text-gray-700" title="Add Bullet Points">• Bullet</button>
+            <button onclick="insertFormatSymbol('${escapedKey}', 'number')" class="px-2 py-1 text-[10px] font-bold bg-white hover:bg-slate-50 border border-gray-200 rounded text-gray-700" title="Add Numbering">1. Number</button>
+            <button onclick="insertFormatSymbol('${escapedKey}', 'todo')" class="px-2 py-1 text-[10px] font-bold bg-white hover:bg-slate-50 border border-gray-200 rounded text-gray-700" title="Add Checkbox">☐ Todo</button>
+            <button onclick="insertFormatSymbol('${escapedKey}', 'bold')" class="px-2 py-1 text-[10px] font-bold bg-white hover:bg-slate-50 border border-gray-200 rounded text-gray-700" title="Make Text Bold"><b>B</b> Bold</button>
+            <button onclick="insertFormatSymbol('${escapedKey}', 'clear')" class="px-2 py-1 text-[10px] font-semibold bg-white hover:bg-slate-50 border border-gray-200 rounded text-red-500" title="Clear Styles">✍️ Clear</button>
+          </div>
+          <textarea id="notes-area-${elementIdSafe}" placeholder="Use toolbar options above. Write highlights, goals or checklist items..." onkeydown="handleNoteKeyDown(this, event, '${escapedKey}')" onchange="updateSkillNotes('${escapedKey}', this.value)" class="w-full text-xs p-2.5 bg-gray-50 border border-gray-200 rounded-b-lg min-h-[90px] max-h-[160px] outline-none font-medium leading-relaxed">${data.notes || ''}</textarea>
+        </div>
+
+        <!-- NEWLY INTEGRATED GOOGLE DRIVE INTERFACE PANEL -->
+        <div class="space-y-1 pt-3 border-t border-gray-100">
+          <label class="text-[9px] font-bold text-indigo-700 uppercase tracking-wider block flex items-center justify-between">
+            <span>📂 Google Drive Workspace <span class="text-gray-400 font-normal normal-case">(shared folder)</span></span>
+            ${hasDriveLink && driveFolderId ? `<span class="text-[9px] text-green-600 font-bold">✓ ID Extracted</span>` : ''}
+          </label>
+          
+          ${hasDriveLink ? `
+            <div class="space-y-2">
+              <div class="flex gap-1.5 flex-wrap">
+                <!-- Inline Viewer Toggle -->
+                ${driveFolderId ? `
+                  <button onclick="toggleInlineDriveView(${idx})" class="flex-1 py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-1">
+                    ${isShowingInline ? '🙈 Hide In-App Viewer' : '👁️ Show In-App Viewer'}
+                  </button>
+                ` : ''}
+                <!-- Fallback New Tab Redirect -->
+                <a href="${data.driveLink}" target="_blank" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all border border-slate-200 flex items-center justify-center gap-1">
+                  🌐 Open in New Tab
+                </a>
+                <!-- Edit Settings -->
+                <button onclick="toggleDriveInput(${idx}, true)" class="px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-500 font-bold text-xs rounded-xl transition-all border border-slate-100" title="Change Google Drive Link">
+                  ⚙️ Change
+                </button>
+              </div>
+
+              <!-- Inline Google Drive Iframe embed -->
+              ${isShowingInline && driveFolderId ? `
+                <div class="mt-2.5 w-full border border-gray-200 rounded-xl overflow-hidden h-72 shadow-inner relative bg-white">
+                  <div class="absolute top-0 inset-x-0 bg-slate-50 border-b border-gray-150 p-2 text-[10px] text-gray-500 flex justify-between items-center">
+                    <span class="font-bold">📁 In-App Folder Viewer</span>
+                    <a href="${data.driveLink}" target="_blank" class="text-primary font-bold hover:underline">Full Screen ↗</a>
+                  </div>
+                  <iframe src="https://drive.google.com/embeddedfolderview?id=${driveFolderId}#grid" class="w-full h-full pt-8 border-none" allow="autoplay"></iframe>
+                </div>
+              ` : ''}
+            </div>
+          ` : `
+            <button onclick="toggleDriveInput(${idx}, true)" class="w-full py-2.5 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border-2 border-dashed border-indigo-200 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5">
+              ➕ Connect Google Drive Folder
+            </button>
+          `}
+
+          <!-- Hidden Input Interface to add/edit drive link -->
+          <div id="drive-input-container-${idx}" class="hidden mt-2.5 p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+            <p class="text-[10px] text-gray-500 font-semibold leading-relaxed">
+              গুলগ ড্রাইভের শেয়ারিং লিংকটি নিচে দিন। (ড্রাইভের ফোল্ডার সেটিংস অবশ্যই "Anyone with the link can view" করে রাখবেন):
+            </p>
+            <input type="text" id="drive-input-${idx}" placeholder="https://drive.google.com/drive/folders/..." value="${data.driveLink || ''}" class="w-full text-xs px-3 py-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 font-medium" />
+            <div class="flex gap-2 justify-end">
+              <button onclick="toggleDriveInput(${idx}, false)" class="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-[10px] font-bold rounded-lg transition-all">Cancel</button>
+              <button onclick="saveDriveLink('${escapedKey}', ${idx})" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-lg transition-all">Save Link</button>
+            </div>
+          </div>
         </div>
       `;
       container.appendChild(card);
     });
+  }
+
+  function toggleDriveInput(idx, show) {
+    const container = document.getElementById(`drive-input-container-${idx}`);
+    if (show) {
+      container.classList.remove('hidden');
+    } else {
+      container.classList.add('hidden');
+    }
+  }
+
+  function saveDriveLink(key, idx) {
+    const input = document.getElementById(`drive-input-${idx}`);
+    const link = input.value.trim();
+
+    if (link && !link.startsWith('http://') && !link.startsWith('https://')) {
+      showToast('⚠️ Please enter a valid URL starting with http:// or https://', '#ef4444');
+      return;
+    }
+
+    if (state.trackedSkills[key]) {
+      state.trackedSkills[key].driveLink = link;
+      persistTrackedSkills();
+      renderTrackedSkills();
+      showToast('🔗 Google Drive Link Connected Successfully!');
+    }
   }
 
   function addCustomSkill() {
@@ -1868,7 +2054,7 @@
     if (!name) return;
 
     if (!state.trackedSkills[name]) {
-      state.trackedSkills[name] = { progress: 0, notes: "", status: "Learning" };
+      state.trackedSkills[name] = { progress: 0, notes: "", status: "Learning", driveLink: "" };
       persistTrackedSkills();
       input.value = '';
       showToast(`🎯 Added custom tracker target for "${name}"`);
@@ -1908,13 +2094,10 @@
     if (state.trackedSkills[name]) {
       state.trackedSkills[name].notes = notes;
       persistTrackedSkills();
-      renderTrackedSkills();
     }
   }
 
-  // AI COACH DIALOG ENGINE
   function openAICoachDialog() {
-    document.getElementById('ac-profile-level').textContent = state.class;
     document.getElementById('aiCoachOutput').className = 'hidden bg-gray-50 border border-gray-150 p-4 rounded-xl text-xs leading-relaxed max-h-60 overflow-y-auto whitespace-pre-wrap text-gray-800 font-medium';
     document.getElementById('aiCoachOutput').innerHTML = '';
     document.getElementById('aiCoachModal').classList.add('open');
@@ -2000,7 +2183,6 @@
     }
   }
 
-  // ROUTINE ENGINE: OPEN DAY & DATE CLEAR
   function openDay(day) {
     state.selectedDay = day;
     const m = state.selectedMonth;
@@ -2050,7 +2232,6 @@
     renderWorkspacePanel();
   }
 
-  // DAY VIEW ACTIVITIES RENDER
   function getActivitiesForCurrentDate() {
     const m = state.selectedMonth?.name;
     const d = state.selectedDay;
@@ -2289,7 +2470,6 @@
     renderStudyTable();
   }
 
-  // COMPLETED TODAY LOGGER
   function getCompletedKey() {
     return `${state.selectedMonth.name}-${state.selectedDay}`;
   }
@@ -2366,7 +2546,6 @@
     renderCompletedList();
   }
 
-  // SAVE TODAY'S ENTIRE PLAN
   function savePlan() {
     const m = state.selectedMonth.name;
     const d = state.selectedDay;
@@ -2466,12 +2645,79 @@
     setTimeout(() => goTo('day-items'), 1200);
   }
 
-  // BACKUP EXPORT & IMPORT UTILITIES
+  function updateStorageUsage() {
+    let totalBytes = 0;
+    const prefix = ['sp_', 'slotCount-'];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (prefix.some(p => k.startsWith(p))) {
+        totalBytes += (localStorage.getItem(k).length + k.length) * 2; // UTF-16 characters = 2 bytes
+      }
+    }
+    const totalKB = (totalBytes / 1024).toFixed(2);
+    const limitKB = 5120; // 5MB standard browser limit
+    const percent = ((totalKB / limitKB) * 100).toFixed(2);
+    
+    const usageLabel = document.getElementById('storageUsageLabel');
+    const usageBar = document.getElementById('storageUsageBar');
+    if (usageLabel && usageBar) {
+      usageLabel.textContent = `Used: ${totalKB} KB / ${limitKB} KB (${percent}%)`;
+      usageBar.style.width = `${Math.min(percent, 100)}%`;
+    }
+  }
+
+  function exportToFile() {
+    const data = {};
+    const prefix = ['sp_', 'slotCount-'];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (prefix.some(p => k.startsWith(p))) {
+        data[k] = localStorage.getItem(k);
+      }
+    }
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href",     dataStr);
+    downloadAnchor.setAttribute("download", `study_partner_backup_${new Date().toISOString().slice(0,10)}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    showToast('💾 Backup File Downloaded successfully!');
+    updateStorageUsage();
+  }
+
+  function importFromFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const data = JSON.parse(e.target.result);
+        const prefix = ['sp_', 'slotCount-'];
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (prefix.some(p => k.startsWith(p))) keysToRemove.push(k);
+        }
+        keysToRemove.forEach(k => localStorage.removeItem(k));
+        Object.entries(data).forEach(([k, v]) => localStorage.setItem(k, v));
+        showToast('✅ Data loaded from file! Reloading app...');
+        closeSyncModal();
+        setTimeout(() => location.reload(), 1500);
+      } catch (err) {
+        showToast('❌ Invalid backup file format!', '#ef4444');
+      }
+    };
+    reader.readAsText(file);
+  }
+
   function openSyncModal() {
     switchSyncTab('export');
     document.getElementById('exportCodeBox').value = '';
     document.getElementById('importCodeBox').value = '';
     document.getElementById('btnCopyCode').disabled = true;
+    document.getElementById('backupFileInput').value = ''; // Reset file input
+    updateStorageUsage(); // Update current storage usage status
     document.getElementById('syncModal').classList.add('open');
   }
 
@@ -2578,7 +2824,6 @@
     showToast('✅ Subjects updated!');
   }
 
-  // ACTIVITY CREATORS AND DELETERS MODALS
   function openAddModal() {
     const m = state.selectedMonth;
     const d = state.selectedDay;
@@ -2599,7 +2844,6 @@
     div.classList.toggle('hidden');
     const input = document.getElementById('addSpecificDateInput');
     if (!input.value) {
-      // Set to today's date format (YYYY-MM-DD)
       const local = new Date();
       const year = local.getFullYear();
       const month = String(local.getMonth() + 1).padStart(2, '0');
@@ -2693,7 +2937,6 @@
     showToast(`🗑️ "${name}" removed successfully.`);
   }
 
-  // TOAST DISPLAY AND GLOBAL EVENTS REGISTER
   let toastTimer;
   function showToast(msg, bg = '') {
     const t = document.getElementById('toast');
@@ -2720,3 +2963,5 @@
     }
   })();
 </script>
+</body>
+</html>
