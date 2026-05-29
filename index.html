@@ -418,6 +418,27 @@
   .btn-scope:hover { border-color: var(--primary); background: var(--primary-light); }
   .btn-scope-danger:hover { border-color: var(--danger); background: #fee2e2; }
 
+  .sync-scroll-container {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-bottom: 8px;
+  }
+  .sync-scroll-container::-webkit-scrollbar {
+    width: 6px;
+  }
+  .sync-scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .sync-scroll-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 99px;
+  }
+  .sync-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
   .slot-controls { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; background: #f0f2ff; border-top: 1px solid #c7d2fe; gap: 12px; flex-wrap: wrap; }
   #slotCountLabel { font-size: 13px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 5px 14px; border-radius: 99px; }
   .btn-slot-add { padding: 8px 16px; border: none; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.18s; background: var(--primary); color: #fff; }
@@ -798,11 +819,11 @@
 
 <!-- MODAL: Sync / Export / Import / File Backups -->
 <div class="modal-overlay" id="syncModal">
-  <div class="modal" style="max-width:440px;">
-    <h3 class="flex items-center gap-2">⇅ Sync & Storage Manager</h3>
+  <div class="modal" style="max-width:440px; max-height: 90vh; display: flex; flex-direction: column; padding: 24px; overflow: hidden;">
+    <h3 class="flex items-center gap-2 shrink-0" style="margin-bottom: 12px;">⇅ Sync & Storage Manager</h3>
     
     <!-- LIVE STORAGE USAGE INDICATOR -->
-    <div class="mb-4 p-3 bg-slate-50 rounded-xl border border-slate-200">
+    <div class="mb-3 p-3 bg-slate-50 rounded-xl border border-slate-200 shrink-0">
       <div class="flex justify-between text-[11px] font-bold text-slate-600 mb-1">
         <span id="storageUsageLabel">Calculating storage size...</span>
         <span>Limit: 5 MB</span>
@@ -812,64 +833,66 @@
       </div>
     </div>
 
-    <div class="sync-tabs">
+    <div class="sync-tabs shrink-0" style="margin-bottom: 12px;">
       <button class="sync-tab active" id="tabExport" onclick="switchSyncTab('export')">📤 Export & Backup</button>
       <button class="sync-tab" id="tabImport" onclick="switchSyncTab('import')">📥 Import & Restore</button>
     </div>
 
-    <!-- EXPORT PANEL -->
-    <div class="sync-panel active" id="panelExport">
-      <div class="sync-info">
-        <strong>📂 Local File Backup (Recommended):</strong><br>
-        আপনার সম্পূর্ণ ডেটা সুরক্ষিত রাখতে নিচে ক্লিক করে একটি ব্যাকআপ ফাইল ডাউনলোড করে ফোনে বা ড্রাইভে রেখে দিন।
-      </div>
-      
-      <button class="btn w-full justify-center mb-4 text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-md flex items-center gap-2" onclick="exportToFile()">
-        💾 Save as Backup File (.json)
-      </button>
+    <div class="sync-scroll-container">
+      <!-- EXPORT PANEL -->
+      <div class="sync-panel active" id="panelExport">
+        <div class="sync-info">
+          <strong>📂 Local File Backup (Recommended):</strong><br>
+          আপনার সম্পূর্ণ ডেটা সুরক্ষিত রাখতে নিচে ক্লিক করে একটি ব্যাকআপ ফাইল ডাউনলোড করে ফোনে বা ড্রাইভে রেখে দিন।
+        </div>
+        
+        <button class="btn w-full justify-center mb-4 text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-md flex items-center gap-2" onclick="exportToFile()">
+          💾 Save as Backup File (.json)
+        </button>
 
-      <div class="sync-info">
-        <strong>⚡ Manual Code Sync:</strong><br>
-        অন্য ডিভাইসে ডেটা নিতে কোড জেনারেট করে কপি করে নিন।
-      </div>
-      <button class="btn btn-primary w-full justify-center mb-3" onclick="generateExportCode()">
-        🔄 Generate Code
-      </button>
-      <textarea class="sync-code-box" id="exportCodeBox" placeholder="Your export code will appear here..." readonly></textarea>
-      <button class="btn w-full justify-center" id="btnCopyCode" style="background:#f0fdf4;color:#059669;font-weight:700;" onclick="copyExportCode()" disabled>
-        📋 Copy Code
-      </button>
+        <div class="sync-info">
+          <strong>⚡ Manual Code Sync:</strong><br>
+          অন্য ডিভাইসে ডেটা নিতে কোড জেনারেট করে কপি করে নিন।
+        </div>
+        <button class="btn btn-primary w-full justify-center mb-3" onclick="generateExportCode()">
+          🔄 Generate Code
+        </button>
+        <textarea class="sync-code-box" id="exportCodeBox" placeholder="Your export code will appear here..." readonly></textarea>
+        <button class="btn w-full justify-center" id="btnCopyCode" style="background:#f0fdf4;color:#059669;font-weight:700;" onclick="copyExportCode()" disabled>
+          📋 Copy Code
+        </button>
 
-      <!-- Optional Gemini API Key configuration inside Sync pane -->
-      <div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--border);">
-        <label class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">🔮 Optional: Gemini API Key</label>
-        <input type="password" id="inputApiKey" placeholder="AI-এর জন্য Gemini API Key লিখুন (ঐচ্ছিক)" class="w-full mt-1.5 p-2.5 text-xs bg-indigo-50/50 border border-indigo-200 rounded-lg focus:outline-none focus:border-primary" onchange="saveApiKey(this.value)" />
-        <p class="text-[9px] text-gray-400 mt-1">রিয়েল-টাইম কাস্টম AI এনালাইসিস পেতে আপনার নিজের ফ্রি API Key সেট করতে পারেন।</p>
+        <!-- Optional Gemini API Key configuration inside Sync pane -->
+        <div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--border);">
+          <label class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">🔮 Optional: Gemini API Key</label>
+          <input type="password" id="inputApiKey" placeholder="AI-এর জন্য Gemini API Key লিখুন (ঐচ্ছিক)" class="w-full mt-1.5 p-2.5 text-xs bg-indigo-50/50 border border-indigo-200 rounded-lg focus:outline-none focus:border-primary" onchange="saveApiKey(this.value)" />
+          <p class="text-[9px] text-gray-400 mt-1">রিয়েল-টাইম কাস্টম AI এনালাইসিস পেতে আপনার নিজের ফ্রি API Key সেট করতে পারেন।</p>
+        </div>
+      </div>
+
+      <!-- IMPORT PANEL -->
+      <div class="sync-panel" id="panelImport">
+        <div class="sync-info">
+          <strong>📂 Restore from File:</strong><br>
+          পূর্বে ডাউনলোড করা ব্যাকআপ ফাইলটি এখানে সিলেক্ট করে আপনার সমস্ত ডেটা রিস্টোর করুন।
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Select Backup File (.json)</label>
+          <input type="file" id="backupFileInput" accept=".json" onchange="importFromFile(event)" class="w-full text-xs bg-slate-50 border border-slate-200 p-2 rounded-lg cursor-pointer focus:outline-none" />
+        </div>
+
+        <div class="sync-info">
+          <strong>⚠️ Warning:</strong> ইমপোর্ট করলে ব্রাউজারের সমস্ত বর্তমান রুটিন ও ডেটা <strong>রিপ্লেস</strong> হয়ে যাবে।
+        </div>
+        <textarea class="sync-code-box" id="importCodeBox" placeholder="অথবা এখানে টেক্সট কোড পেস্ট করুন..."></textarea>
+        <button class="btn btn-primary w-full justify-center mb-2" onclick="importData()">
+          📥 Paste & Apply Code
+        </button>
       </div>
     </div>
 
-    <!-- IMPORT PANEL -->
-    <div class="sync-panel" id="panelImport">
-      <div class="sync-info">
-        <strong>📂 Restore from File:</strong><br>
-        পূর্বে ডাউনলোড করা ব্যাকআপ ফাইলটি এখানে সিলেক্ট করে আপনার সমস্ত ডেটা রিস্টোর করুন।
-      </div>
-
-      <div class="mb-4">
-        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Select Backup File (.json)</label>
-        <input type="file" id="backupFileInput" accept=".json" onchange="importFromFile(event)" class="w-full text-xs bg-slate-50 border border-slate-200 p-2 rounded-lg cursor-pointer focus:outline-none" />
-      </div>
-
-      <div class="sync-info">
-        <strong>⚠️ Warning:</strong> ইমপোর্ট করলে ব্রাউজারের সমস্ত বর্তমান রুটিন ও ডেটা <strong>রিপ্লেস</strong> হয়ে যাবে।
-      </div>
-      <textarea class="sync-code-box" id="importCodeBox" placeholder="অথবা এখানে টেক্সট কোড পেস্ট করুন..."></textarea>
-      <button class="btn btn-primary w-full justify-center" onclick="importData()">
-        📥 Paste & Apply Code
-      </button>
-    </div>
-
-    <button class="btn w-full justify-center mt-3" style="background:#f3f4f6;color:#374151;" onclick="closeSyncModal()">Close</button>
+    <button class="btn w-full justify-center mt-3 shrink-0" style="background:#f3f4f6;color:#374151;" onclick="closeSyncModal()">Close</button>
   </div>
 </div>
 
