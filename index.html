@@ -26,7 +26,7 @@
 </script>
 <style>
   :root {
-    --bg: #f0f2ff;
+    --bg: #f5f7ff;
     --surface: #ffffff;
     --primary: #4f46e5;
     --primary-dark: #3730a3;
@@ -37,9 +37,9 @@
     --border: #e5e7eb;
     --success: #10b981;
     --danger: #ef4444;
-    --radius: 18px;
-    --shadow: 0 4px 24px rgba(79,70,229,0.10);
-    --shadow-lg: 0 8px 40px rgba(79,70,229,0.18);
+    --radius: 20px;
+    --shadow: 0 4px 24px rgba(79,70,229,0.06);
+    --shadow-lg: 0 10px 40px rgba(79,70,229,0.12);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -55,7 +55,7 @@
     position: fixed;
     top: -200px; right: -200px;
     width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
@@ -64,7 +64,7 @@
     position: fixed;
     bottom: -200px; left: -200px;
     width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
@@ -115,7 +115,7 @@
 
   /* ONBOARDING DESIGN */
   #step-onboarding .inner {
-    max-width: 480px; margin: 48px auto 0; padding: 0 16px;
+    max-width: 520px; margin: 48px auto 0; padding: 0 16px;
   }
   .onboarding-header { text-align: center; margin-bottom: 32px; }
   .onboarding-header .emoji {
@@ -142,8 +142,8 @@
   .level-card:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
   .level-card.selected { border-color: var(--primary); background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(79,70,229,0.35); }
 
-  /* STEPS */
-  .step { display: none; animation: fadeUp 0.35s ease; }
+  /* STEPS WITH SCROLL CLEARANCE */
+  .step { display: none; animation: fadeUp 0.35s ease; padding-bottom: 120px; }
   .step.active { display: block; }
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(18px); }
@@ -183,7 +183,7 @@
   }
 
   /* SYNC ENGINE TABS */
-  .sync-tabs { display: flex; border: 2px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+  .sync-tabs { display: flex; border: 2px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
   .sync-tab {
     flex: 1; padding: 10px; background: var(--bg); border: none;
     font-family: inherit; font-size: 13px; font-weight: 700; color: var(--muted);
@@ -193,18 +193,18 @@
   .sync-panel { display: none; }
   .sync-panel.active { display: block; }
   .sync-code-box {
-    width: 100%; min-height: 80px; max-height: 120px; padding: 12px;
+    width: 100%; min-height: 100px; max-height: 160px; padding: 12px;
     border: 2px solid var(--border); border-radius: 12px; font-family: monospace;
-    font-size: 11px; resize: none; background: #f9fafb; color: var(--text);
+    font-size: 12px; resize: none; background: #f9fafb; color: var(--text);
     outline: none; word-break: break-all; margin-bottom: 12px;
   }
   .sync-info {
-    font-size: 11px; color: var(--muted); background: #f0f2ff;
-    border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; line-height: 1.6;
+    font-size: 12px; color: var(--muted); background: #f0f2ff;
+    border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; line-height: 1.6;
   }
 
   /* STUDY MONTH VIEW */
-  #step-calendar .inner { max-width: 960px; margin: 40px auto 0; padding: 0 16px; }
+  #step-calendar .inner { max-width: 1080px; margin: 40px auto 0; padding: 0 16px; }
   .welcome-bar {
     display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -216,7 +216,7 @@
     background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
     padding: 8px 16px; border-radius: 99px; font-size: 13px; font-weight: 700; white-space: nowrap;
   }
-  .month-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+  .month-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
   .month-card {
     background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
     padding: 24px 14px; cursor: pointer; text-align: center; transition: all 0.22s; box-shadow: var(--shadow);
@@ -263,40 +263,12 @@
   }
   .workspace-tab-btn.active { background: var(--primary-light); color: var(--primary); }
 
-  /* DAY ITEMS */
-  #step-day-items .inner { max-width: 440px; margin: 48px auto 0; padding: 0 16px; }
-  .day-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
-  .day-header h2 { font-size: 26px; font-weight: 800; }
-  .day-header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
-  .btn-add {
-    width: 40px; height: 40px; background: #d1fae5; color: #059669; border: none;
-    border-radius: 50%; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.18s; flex-shrink: 0;
-  }
-  .btn-add:hover { background: #059669; color: #fff; }
-  .activity-list { display: flex; flex-direction: column; gap: 12px; }
-  .activity-card {
-    width: 100%; background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
-    padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-family: inherit; transition: all 0.2s;
-  }
-  .activity-card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
-  .activity-card .left { display: flex; align-items: center; gap: 14px; }
-  .activity-icon {
-    width: 42px; height: 42px; background: var(--primary-light); color: var(--primary);
-    border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;
-  }
-  .activity-card .name { font-weight: 700; font-size: 15px; color: var(--text); }
-  .btn-act-delete {
-    background: none; border: none; color: #d1d5db; font-size: 14px; cursor: pointer;
-    width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; flex-shrink: 0;
-  }
-  .btn-act-delete:hover { color: var(--danger); background: #fee2e2; }
+  /* DAY ITEMS - PREMIUM WIDE GRID */
+  #step-day-items .inner { max-width: 1080px; margin: 40px auto 0; padding: 0 16px; }
 
-  /* DRAG AND DROP HANDLES */
-  .drag-handle { color: #d1d5db; font-size: 18px; cursor: grab; padding: 4px 6px 4px 0; line-height: 1; flex-shrink: 0; }
-
-  /* STUDY TABLE */
-  #step-table .inner { max-width: 960px; margin: 32px auto 0; padding: 0 16px; }
-  .table-wrapper { background: var(--surface); border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); overflow: hidden; }
+  /* STUDY TABLE WITH STICKY ACTION FOOTER */
+  #step-table .inner { max-width: 1120px; margin: 32px auto 0; padding: 0 16px; }
+  .table-wrapper { background: var(--surface); border-radius: 24px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); overflow: hidden; position: relative; }
   .table-header {
     background: linear-gradient(135deg, var(--primary-dark), var(--primary)); padding: 24px 28px;
     display: flex; align-items: flex-end; justify-content: space-between; color: #fff;
@@ -305,13 +277,13 @@
   .table-header p { font-size: 13px; opacity: 0.7; margin-top: 4px; }
   .class-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 700; }
   .study-table-scroll { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; min-width: 540px; }
+  table { width: 100%; border-collapse: collapse; min-width: 640px; }
   thead tr { background: #eef2ff; border-bottom: 2px solid #c7d2fe; }
   th { padding: 16px 14px; font-size: 11px; font-weight: 800; color: var(--primary-dark); letter-spacing: 0.1em; text-transform: uppercase; text-align: center; border-right: 1px solid #c7d2fe; }
   tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
   tbody tr:hover { background: #f5f7ff; }
   td { border-right: 1px solid var(--border); vertical-align: top; }
-  td.subject-cell { padding: 0; font-weight: 800; font-size: 13px; color: var(--text); background: #f9fafb; text-align: center; vertical-align: middle; border-right: 2px solid var(--border); min-width: 110px; }
+  td.subject-cell { padding: 0; font-weight: 800; font-size: 13px; color: var(--text); background: #f9fafb; text-align: center; vertical-align: middle; border-right: 2px solid var(--border); min-width: 140px; }
   .subject-pill { display: inline-block; padding: 6px 14px; background: var(--primary-light); color: var(--primary-dark); border-radius: 99px; font-size: 12px; font-weight: 800; }
   td.slot-cell { padding: 6px; }
   textarea {
@@ -328,8 +300,44 @@
   .slot-checkbox-label { display: flex; align-items: center; gap: 7px; cursor: pointer; font-size: 12px; font-weight: 700; color: var(--muted); }
   .slot-checkbox { width: 16px; height: 16px; accent-color: var(--success); cursor: pointer; flex-shrink: 0; }
 
-  .table-footer { padding: 20px 28px; background: #f5f7ff; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  .btn-save { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: 14px; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(79,70,229,0.35); }
+  /* VIEWPORT STICKY TABLE FOOTER */
+  .table-footer {
+    position: sticky;
+    bottom: 0;
+    padding: 20px 28px;
+    background: rgba(245, 247, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    z-index: 30;
+    box-shadow: 0 -8px 25px rgba(0,0,0,0.06);
+  }
+  
+  /* PREMIUM GREEN GROWING SAVE BUTTONS */
+  .btn-save { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 10px; 
+    padding: 14px 32px; 
+    background: linear-gradient(135deg, #10b981, #059669); 
+    color: #fff; 
+    border: none; 
+    border-radius: 14px; 
+    font-family: inherit; 
+    font-size: 15px; 
+    font-weight: 800; 
+    cursor: pointer; 
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35); 
+    transition: all 0.22s ease-in-out;
+  }
+  .btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
+  }
 
   /* BACK BTN */
   .back-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--primary); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 20px; padding: 0; }
@@ -344,10 +352,12 @@
   .btn-completed-add { padding: 12px 18px; background: linear-gradient(135deg, var(--success), #059669); color: #fff; border: none; border-radius: 12px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
   .completed-list { display: flex; flex-direction: column; gap: 8px; }
   .completed-item { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #d1fae5; border-left: 4px solid var(--success); border-radius: 12px; padding: 12px 16px; }
+  .completed-del { background: none; border: none; color: #a1a1aa; cursor: pointer; font-size: 14px; margin-left: auto; transition: color 0.2s; }
+  .completed-del:hover { color: var(--danger); }
   .completed-empty { text-align: center; padding: 20px 0; color: #a5b4fc; font-size: 13px; font-weight: 600; }
 
-  /* TO-DO LIST STYLE */
-  #step-todo .inner { max-width: 560px; margin: 40px auto 0; padding: 0 16px; }
+  /* TO-DO LIST STYLE & STICKY BTN */
+  #step-todo .inner { max-width: 560px; margin: 40px auto 0; padding: 0 16px; position: relative; }
   .todo-header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: var(--radius); padding: 24px 28px; color: #fff; margin-bottom: 24px; box-shadow: var(--shadow-lg); display: flex; align-items: center; justify-content: space-between; }
   .todo-add-row { display: flex; gap: 10px; margin-bottom: 20px; }
   .todo-add-row input { flex: 1; padding: 13px 16px; border: 2px solid var(--border); border-radius: 12px; font-family: inherit; font-size: 14px; color: var(--text); background: var(--surface); outline: none; }
@@ -363,7 +373,30 @@
   .todo-stats { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; font-size: 13px; font-weight: 600; color: var(--muted); }
   .todo-progress { height: 6px; background: var(--border); border-radius: 99px; margin-bottom: 20px; overflow: hidden; }
   .todo-progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--success)); border-radius: 99px; transition: width 0.4s ease; }
-  .todo-save-btn { width: 100%; margin-top: 24px; padding: 15px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: var(--radius); font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; }
+  
+  /* STICKY TO-DO SAVE BUTTON */
+  .todo-save-btn { 
+    position: sticky;
+    bottom: 16px;
+    width: 100%; 
+    margin-top: 32px; 
+    padding: 15px; 
+    background: linear-gradient(135deg, #10b981, #059669); 
+    color: #fff; 
+    border: none; 
+    border-radius: var(--radius); 
+    font-family: inherit; 
+    font-size: 15px; 
+    font-weight: 800; 
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    transition: all 0.22s ease-in-out;
+    z-index: 30;
+  }
+  .todo-save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
+  }
 
   /* WEEK BREAKDOWN DISPLAY */
   .week-block { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); margin-bottom: 16px; overflow: hidden; }
@@ -386,15 +419,24 @@
   .goal-text { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
   .goal-delete { background: none; border: none; color: #d1d5db; font-size: 16px; cursor: pointer; }
 
-  /* TOAST MESSAGE */
+  /* TOAST MESSAGE - INVISIBLE BY DEFAULT */
   .toast {
-    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
+    position: fixed; bottom: 32px; left: 50%; 
+    transform: translateX(-50%) translateY(40px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
     background: linear-gradient(135deg, var(--success), #059669); color: #fff;
     padding: 14px 28px; border-radius: 99px; font-weight: 700; font-size: 15px;
     box-shadow: 0 8px 28px rgba(16,185,129,0.35); z-index: 999;
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); white-space: nowrap;
   }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.show { 
+    transform: translateX(-50%) translateY(0); 
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
 
   /* MODAL */
   .modal-overlay {
@@ -417,27 +459,6 @@
   }
   .btn-scope:hover { border-color: var(--primary); background: var(--primary-light); }
   .btn-scope-danger:hover { border-color: var(--danger); background: #fee2e2; }
-
-  .sync-scroll-container {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    padding-right: 8px;
-    margin-bottom: 8px;
-  }
-  .sync-scroll-container::-webkit-scrollbar {
-    width: 6px;
-  }
-  .sync-scroll-container::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .sync-scroll-container::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 99px;
-  }
-  .sync-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-  }
 
   .slot-controls { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; background: #f0f2ff; border-top: 1px solid #c7d2fe; gap: 12px; flex-wrap: wrap; }
   #slotCountLabel { font-size: 13px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 5px 14px; border-radius: 99px; }
@@ -472,12 +493,12 @@
         </div>
 
         <div class="form-group">
-          <label>Your Name</label>
-          <input type="text" id="inputName" placeholder="Enter your name..." />
+          <label class="block text-sm font-bold text-gray-700 mb-1.5">Your Name</label>
+          <input type="text" id="inputName" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors" placeholder="Enter your name..." />
         </div>
 
         <div class="form-group">
-          <label>Select Your Level</label>
+          <label class="block text-sm font-bold text-gray-700 mb-1.5">Select Your Level</label>
           <div class="level-grid" id="levelGrid">
             <button class="level-card" data-level="school"    onclick="selectLevel('school')">🏫<span>School</span></button>
             <button class="level-card" data-level="college"   onclick="selectLevel('college')">🏛️<span>College</span></button>
@@ -487,7 +508,7 @@
         </div>
 
         <div class="form-group" id="deptGroup" style="display:none;">
-          <label>Select Your Department</label>
+          <label class="block text-sm font-bold text-gray-700 mb-1.5">Select Your Department</label>
           <div class="level-grid" id="deptGrid">
             <button class="level-card" data-dept="CSE"        onclick="selectDept('CSE')">💻<span>CSE</span></button>
             <button class="level-card" data-dept="EEE"        onclick="selectDept('EEE')">⚡<span>EEE</span></button>
@@ -496,23 +517,23 @@
         </div>
 
         <div class="form-group" id="subjectGroup" style="display:none;">
-          <label id="subjectGroupLabel">Select Your Subjects</label>
+          <label id="subjectGroupLabel" class="block text-sm font-bold text-gray-700 mb-1.5">Select Your Subjects</label>
           <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;" id="subjectChips"></div>
           <div id="othersInputGroup" style="display:none;margin-top:12px;">
-            <input type="text" id="othersSubjectInput" placeholder="Type subject name and press Enter..."
+            <input type="text" id="othersSubjectInput" class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors text-sm" placeholder="Type subject name and press Enter..."
               onkeydown="if(event.key==='Enter'){addOthersSubject();event.preventDefault();}" />
             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;" id="customSubjectChips"></div>
           </div>
         </div>
 
-        <button class="btn btn-primary w-full justify-center" onclick="submitOnboarding()">
+        <button class="btn btn-primary w-full justify-center mt-6" onclick="submitOnboarding()">
           Next Step →
         </button>
       </div>
     </div>
   </div>
 
-  <!-- STEP: CALENDAR (HOME PAGE WITH DUAL NAV TABS) -->
+  <!-- STEP: CALENDAR -->
   <div class="step" id="step-calendar">
     <div class="inner">
       <div class="welcome-bar">
@@ -523,19 +544,42 @@
         <div class="year-badge" id="yearBadge">📅 2026</div>
       </div>
 
+      <!-- PREMIUM ACTIVITY ALERTS & REMINDERS PANEL -->
+      <div class="bg-white rounded-3xl p-6 shadow-md border border-gray-150 mb-8 overflow-hidden relative">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-full -mr-10 -mt-10 opacity-40"></div>
+        
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-gray-100 mb-4 gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center text-xl shadow-inner">🔔</div>
+            <div>
+              <h3 class="font-extrabold text-gray-950 text-base">শিডিউল করা অ্যাক্টিভিটি এবং রিমাইন্ডারস</h3>
+              <p class="text-xs text-gray-400">আপনার গুরুত্বপূর্ণ তারিখ ও সিলেক্টেড কাজের বিবরণী</p>
+            </div>
+          </div>
+          <button onclick="openFullScheduleModal()" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold rounded-xl transition-all shadow-sm flex items-center gap-1">
+            🖥️ Full Screen View
+          </button>
+        </div>
+        
+        <!-- Activity Alerts Container -->
+        <div id="reminderContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[250px] overflow-y-auto pr-2">
+          <!-- Populated by Javascript -->
+        </div>
+      </div>
+
       <!-- DUAL TABS FOR APP NAVIGATION -->
       <div class="flex border-b border-gray-200 mb-6 bg-white rounded-xl p-1.5 shadow-md">
         <button id="tab-routine" onclick="switchMainTab('routine')" class="flex-1 py-3 text-center rounded-lg text-sm font-bold transition-all duration-300 bg-primary text-white">
           📅 Study Routine Planner
         </button>
         <button id="tab-skills" onclick="switchMainTab('skills')" class="flex-1 py-3 text-center rounded-lg text-sm font-bold transition-all duration-300 text-gray-500 hover:text-primary">
-          🚀 AI Skill Academy
+          🚀 AI Skill Tracker
         </button>
       </div>
 
       <!-- MAIN ROUTINE SECTION -->
       <div id="section-routine">
-        <p class="section-title">Select a Month</p>
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Select a Month</p>
         <div class="month-grid" id="monthGrid"></div>
       </div>
 
@@ -553,44 +597,31 @@
           </div>
         </div>
 
-        <div class="flex gap-2 bg-gray-100 p-1 rounded-xl w-fit border border-gray-200">
-          <button id="skill-tab-browse" onclick="switchSkillSubTab('browse')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all bg-white text-indigo-600 shadow-sm">Browse Skills</button>
-          <button id="skill-tab-tracker" onclick="switchSkillSubTab('tracker')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-gray-500 hover:text-indigo-600">My Tracker (<span id="trackedCount">0</span>)</button>
-        </div>
-
-        <div id="skill-content-browse" class="space-y-4">
-          <div class="flex flex-col sm:flex-row gap-3">
-            <input type="text" id="skillSearch" placeholder="Search skills..." oninput="filterSkills()" class="flex-1 text-xs px-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500" />
-            <select id="skillCategoryFilter" onchange="filterSkills()" class="text-xs px-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 font-semibold text-gray-600">
-              <option value="all">All Categories</option>
-              <option value="AI & Future Tech">🤖 AI & Future Tech</option>
-              <option value="Software Development">💻 Software Development</option>
-              <option value="Cybersecurity & Cloud">🔒 Cybersecurity & Cloud</option>
-              <option value="UI/UX & Creative Design">🎨 UI/UX & Creative Design</option>
-              <option value="Business & Analytics">📈 Business & Analytics</option>
-              <option value="Soft Skills & Leadership">🤝 Soft Skills & Leadership</option>
-            </select>
+        <!-- TRACKER WRAPPER -->
+        <div id="skill-content-tracker" class="space-y-4">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-2 border-b border-gray-200 gap-2">
+            <div>
+              <h3 class="font-extrabold text-gray-950 text-base">🎯 My Skill Tracker (<span id="trackedCount">0</span>)</h3>
+              <p class="text-xs text-gray-400 mt-0.5">আপনার টার্গেট করা স্কিলগুলো এখানে সাজিয়ে রাখুন এবং নিয়মিত অগ্রগতি ট্র্যাক করুন</p>
+            </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="skillGrid"></div>
-        </div>
 
-        <div id="skill-content-tracker" class="hidden space-y-4">
-          <div class="bg-indigo-50/50 border border-indigo-100 p-4 rounded-xl flex flex-col sm:flex-row gap-3 items-end">
+          <div class="bg-indigo-50/50 border border-indigo-100 p-5 rounded-2xl flex flex-col sm:flex-row gap-3 items-end shadow-sm">
             <div class="flex-1 w-full">
-              <label class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider">Add Custom Skill to Track</label>
-              <input type="text" id="customSkillInput" placeholder="Write skill name, e.g. Node.js, Video Editing..." class="w-full mt-1.5 text-xs px-3 py-2.5 bg-white border border-indigo-200 rounded-lg focus:outline-none focus:border-indigo-500" />
+              <label class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">Add Custom Skill to Track</label>
+              <input type="text" id="customSkillInput" placeholder="Write skill name, e.g. Prompt Engineering, Node.js, Video Editing..." class="w-full mt-1.5 text-xs px-3 py-2.5 bg-white border border-indigo-200 rounded-lg focus:outline-none focus:border-indigo-500 font-semibold" />
             </div>
             <button onclick="addCustomSkill()" class="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition-all shadow-md">
               + Add to Track
             </button>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="trackedSkillList"></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="trackedSkillList"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP: DATE WORKSPACE & SIDEBAR (DIRECT FROM MONTH CARD) -->
+  <!-- STEP: DATE WORKSPACE -->
   <div class="step" id="step-weekly">
     <div class="inner">
       <button class="back-btn" onclick="goTo('calendar')">← Back to Months</button>
@@ -665,7 +696,7 @@
           <div id="subpanel-ai" class="hidden space-y-4">
             <div class="pb-2 border-b border-gray-100">
               <h3 class="font-bold text-gray-950 flex items-center gap-2">🧠 AI Month Analytics & Coach</h3>
-              <p class="text-[10px] text-gray-400 mt-0.5">আপনার পড়াশোনার অগ্রগতি অ্যানালাইসিস করতে AI কোচের সাহায্য নিন</p>
+              <p class="text-[10px] text-gray-400 mt-0.5">আপনার পড়াশোনার অগ্রগতি এনালাইসিস করতে AI কোচের সাহায্য নিন</p>
             </div>
 
             <div class="grid grid-cols-2 gap-3 bg-gray-50 p-3 rounded-xl border border-gray-150">
@@ -700,15 +731,21 @@
   <!-- STEP: DAY ITEMS -->
   <div class="step" id="step-day-items">
     <div class="inner">
-      <button class="back-btn" onclick="goTo('weekly')">← Back to Dates</button>
-      <div class="day-header">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
-          <h2 id="dayTitle"></h2>
-          <p>Select an activity</p>
+          <button class="back-btn mb-1" onclick="goTo('weekly')">← Back to Dates</button>
+          <h2 id="dayTitle" class="text-2xl font-extrabold text-gray-950"></h2>
+          <p class="text-xs text-gray-400 mt-1">আপনার প্রয়োজনীয় অ্যাক্টিভিটি সিলেক্ট করুন অথবা নতুন কাজের ট্যাগ তৈরি করুন</p>
         </div>
-        <button class="btn-add" onclick="openAddModal()" title="Add new">+</button>
+        <button class="px-5 py-2.5 bg-indigo-600 text-white font-bold text-xs rounded-xl hover:bg-indigo-700 shadow-lg transition-all flex items-center gap-1.5" onclick="openAddModal()" title="Add new">
+          <span>+ Add Activity</span> ⚡
+        </button>
       </div>
-      <div class="activity-list" id="activityList"></div>
+      
+      <!-- Modern Beautiful Grid for Activities -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="activityList">
+        <!-- Dynamically Rendered Cards with drag/drop handles -->
+      </div>
     </div>
   </div>
 
@@ -766,8 +803,9 @@
           <div class="completed-list" id="completedList"></div>
         </div>
 
+        <!-- STICKY VIEWPORT FOOTER CONTAINER -->
         <div class="table-footer">
-          <p id="tableNote">* Data is unique to this specific date</p>
+          <p id="tableNote" class="text-xs text-gray-500 font-semibold">* Data is unique to this specific date</p>
           <button class="btn-save" onclick="savePlan()">
             ✅ SAVE TODAY'S PLAN
           </button>
@@ -789,7 +827,7 @@
       </div>
       <div class="todo-add-row">
         <input type="text" id="todoInput" placeholder="Add a new task..." onkeydown="if(event.key==='Enter') addTodoItem()" />
-        <button class="btn-todo-add" onclick="addTodoItem()">+ Add</button>
+        <button class="btn-todo-add" onclick="addTodoItem()">+</button>
       </div>
       <div class="todo-stats">
         <span id="todoStatsText">0 of 0 completed</span>
@@ -807,7 +845,7 @@
 <!-- MODAL: Edit Subjects -->
 <div class="modal-overlay" id="subjectModal">
   <div class="modal" style="max-width:440px;">
-    <h3>✏ edit; Edit Subjects</h3>
+    <h3>✏️ Edit Subjects</h3>
     <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Select or deselect your subjects</p>
     <div class="chips" id="subjectModalChips" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
     <div class="modal-btns" style="margin-top:20px;">
@@ -817,82 +855,51 @@
   </div>
 </div>
 
-<!-- MODAL: Sync / Export / Import / File Backups -->
+<!-- MODAL: Sync / Export / Import -->
 <div class="modal-overlay" id="syncModal">
-  <div class="modal" style="max-width:440px; max-height: 90vh; display: flex; flex-direction: column; padding: 24px; overflow: hidden;">
-    <h3 class="flex items-center gap-2 shrink-0" style="margin-bottom: 12px;">⇅ Sync & Storage Manager</h3>
-    
-    <!-- LIVE STORAGE USAGE INDICATOR -->
-    <div class="mb-3 p-3 bg-slate-50 rounded-xl border border-slate-200 shrink-0">
-      <div class="flex justify-between text-[11px] font-bold text-slate-600 mb-1">
-        <span id="storageUsageLabel">Calculating storage size...</span>
-        <span>Limit: 5 MB</span>
+  <div class="modal" style="max-width:420px;">
+    <h3>⇅ Sync Data</h3>
+    <div class="sync-tabs">
+      <button class="sync-tab active" id="tabExport" onclick="switchSyncTab('export')">📤 Export</button>
+      <button class="sync-tab" id="tabImport" onclick="switchSyncTab('import')">📥 Import</button>
+    </div>
+
+    <!-- EXPORT PANEL -->
+    <div class="sync-panel active" id="panelExport">
+      <div class="sync-info">
+        <strong>How to sync:</strong><br>
+        1. Click "Generate Code" below<br>
+        2. Copy the code and save it (WhatsApp, Notes, etc.)<br>
+        3. On your other device, paste it in the Import tab
       </div>
-      <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-        <div id="storageUsageBar" class="bg-indigo-600 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+      <button class="btn btn-primary w-full justify-center mb-3" onclick="generateExportCode()">
+        🔄 Generate Code
+      </button>
+      <textarea class="sync-code-box" id="exportCodeBox" placeholder="Your export code will appear here..." readonly></textarea>
+      <button class="btn w-full justify-center" id="btnCopyCode" style="background:#f0fdf4;color:#059669;font-weight:700;" onclick="copyExportCode()" disabled>
+        📋 Copy Code
+      </button>
+
+      <!-- Optional Gemini API Key configuration inside Sync pane -->
+      <div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--border);">
+        <label class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">🔮 Optional: Gemini API Key</label>
+        <input type="password" id="inputApiKey" placeholder="AI-এর জন্য Gemini API Key লিখুন (ঐচ্ছিক)" class="w-full mt-1.5 p-2.5 text-xs bg-indigo-50/50 border border-indigo-200 rounded-lg focus:outline-none focus:border-primary" onchange="saveApiKey(this.value)" />
+        <p class="text-[9px] text-gray-400 mt-1">রিয়েল-টাইম কাস্টম AI এনালাইসিস পেতে আপনার নিজের ফ্রি API Key সেট করতে পারেন।</p>
       </div>
     </div>
 
-    <div class="sync-tabs shrink-0" style="margin-bottom: 12px;">
-      <button class="sync-tab active" id="tabExport" onclick="switchSyncTab('export')">📤 Export & Backup</button>
-      <button class="sync-tab" id="tabImport" onclick="switchSyncTab('import')">📥 Import & Restore</button>
+    <!-- IMPORT PANEL -->
+    <div class="sync-panel" id="panelImport">
+      <div class="sync-info">
+        <strong>⚠️ Warning:</strong> Importing will <strong>replace</strong> all current data on this device. Make sure to export first if needed!
+      </div>
+      <textarea class="sync-code-box" id="importCodeBox" placeholder="Paste your export code here..."></textarea>
+      <button class="btn btn-primary w-full justify-center" onclick="importData()">
+        📥 Import & Apply
+      </button>
     </div>
 
-    <div class="sync-scroll-container">
-      <!-- EXPORT PANEL -->
-      <div class="sync-panel active" id="panelExport">
-        <div class="sync-info">
-          <strong>📂 Local File Backup (Recommended):</strong><br>
-          আপনার সম্পূর্ণ ডেটা সুরক্ষিত রাখতে নিচে ক্লিক করে একটি ব্যাকআপ ফাইল ডাউনলোড করে ফোনে বা ড্রাইভে রেখে দিন।
-        </div>
-        
-        <button class="btn w-full justify-center mb-4 text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-md flex items-center gap-2" onclick="exportToFile()">
-          💾 Save as Backup File (.json)
-        </button>
-
-        <div class="sync-info">
-          <strong>⚡ Manual Code Sync:</strong><br>
-          অন্য ডিভাইসে ডেটা নিতে কোড জেনারেট করে কপি করে নিন।
-        </div>
-        <button class="btn btn-primary w-full justify-center mb-3" onclick="generateExportCode()">
-          🔄 Generate Code
-        </button>
-        <textarea class="sync-code-box" id="exportCodeBox" placeholder="Your export code will appear here..." readonly></textarea>
-        <button class="btn w-full justify-center" id="btnCopyCode" style="background:#f0fdf4;color:#059669;font-weight:700;" onclick="copyExportCode()" disabled>
-          📋 Copy Code
-        </button>
-
-        <!-- Optional Gemini API Key configuration inside Sync pane -->
-        <div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--border);">
-          <label class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">🔮 Optional: Gemini API Key</label>
-          <input type="password" id="inputApiKey" placeholder="AI-এর জন্য Gemini API Key লিখুন (ঐচ্ছিক)" class="w-full mt-1.5 p-2.5 text-xs bg-indigo-50/50 border border-indigo-200 rounded-lg focus:outline-none focus:border-primary" onchange="saveApiKey(this.value)" />
-          <p class="text-[9px] text-gray-400 mt-1">রিয়েল-টাইম কাস্টম AI এনালাইসিস পেতে আপনার নিজের ফ্রি API Key সেট করতে পারেন।</p>
-        </div>
-      </div>
-
-      <!-- IMPORT PANEL -->
-      <div class="sync-panel" id="panelImport">
-        <div class="sync-info">
-          <strong>📂 Restore from File:</strong><br>
-          পূর্বে ডাউনলোড করা ব্যাকআপ ফাইলটি এখানে সিলেক্ট করে আপনার সমস্ত ডেটা রিস্টোর করুন।
-        </div>
-
-        <div class="mb-4">
-          <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Select Backup File (.json)</label>
-          <input type="file" id="backupFileInput" accept=".json" onchange="importFromFile(event)" class="w-full text-xs bg-slate-50 border border-slate-200 p-2 rounded-lg cursor-pointer focus:outline-none" />
-        </div>
-
-        <div class="sync-info">
-          <strong>⚠️ Warning:</strong> ইমপোর্ট করলে ব্রাউজারের সমস্ত বর্তমান রুটিন ও ডেটা <strong>রিপ্লেস</strong> হয়ে যাবে।
-        </div>
-        <textarea class="sync-code-box" id="importCodeBox" placeholder="অথবা এখানে টেক্সট কোড পেস্ট করুন..."></textarea>
-        <button class="btn btn-primary w-full justify-center mb-2" onclick="importData()">
-          📥 Paste & Apply Code
-        </button>
-      </div>
-    </div>
-
-    <button class="btn w-full justify-center mt-3 shrink-0" style="background:#f3f4f6;color:#374151;" onclick="closeSyncModal()">Close</button>
+    <button class="btn w-full justify-center mt-3" style="background:#f3f4f6;color:#374151;" onclick="closeSyncModal()">Close</button>
   </div>
 </div>
 
@@ -901,8 +908,8 @@
   <div class="modal" style="max-width: 440px;">
     <h3>➕ Add New Activity</h3>
     <div class="form-group">
-      <label>Activity Name</label>
-      <input type="text" id="newActivityInput" placeholder="e.g. Sports, Art..." />
+      <label class="block text-sm font-semibold text-gray-755 mb-1">Activity Name</label>
+      <input type="text" id="newActivityInput" class="w-full px-3 py-2 border-2 border-gray-200 rounded-xl focus:border-primary focus:outline-none" placeholder="e.g. Sports, Art, Coding..." />
     </div>
     <p style="font-size:13px;color:var(--muted);margin-bottom:12px;font-weight:600;">Apply to:</p>
     <div class="grid grid-cols-3 gap-2 mb-2" id="scopeBtns">
@@ -918,15 +925,23 @@
       </button>
       <button class="btn-scope" onclick="toggleSpecificDateSelector()">
         <span class="scope-icon">📍</span>
-        <span class="scope-label text-[11px] font-bold">Specific Date</span>
-        <span class="scope-sub text-[9px]">Pick Calendar</span>
+        <span class="scope-label text-[11px] font-bold">Specific Dates</span>
+        <span class="scope-sub text-[9px]">Select Multiple</span>
       </button>
     </div>
 
-    <!-- Hidden Specific Date Picker Block -->
-    <div id="specificDateSelectorDiv" class="hidden mt-4 p-3 bg-indigo-50/50 border border-indigo-100 rounded-xl space-y-2">
-      <label class="text-[9px] font-bold text-indigo-700 uppercase tracking-wider block">Choose Calendar Date</label>
-      <input type="date" id="addSpecificDateInput" class="w-full text-xs px-3 py-2 bg-white border border-indigo-200 rounded-lg focus:outline-none focus:border-indigo-500 font-semibold" />
+    <!-- Hidden Specific Multi-Date Picker Block -->
+    <div id="specificDateSelectorDiv" class="hidden mt-4 p-3 bg-indigo-50/50 border border-indigo-100 rounded-xl space-y-3">
+      <label class="text-[9px] font-bold text-indigo-700 uppercase tracking-wider block">Add Calendar Dates</label>
+      <div class="flex gap-2">
+        <input type="date" id="addSpecificDateInput" class="flex-1 text-xs px-3 py-2 bg-white border border-indigo-200 rounded-lg focus:outline-none focus:border-indigo-500 font-semibold" />
+      </div>
+      
+      <!-- List of currently chosen dates as chips -->
+      <div id="selectedDatesChipsList" class="flex flex-wrap gap-1.5 max-h-[100px] overflow-y-auto p-1 bg-white/40 rounded-lg border border-indigo-100">
+        <!-- Javascript renders chips inside this container -->
+      </div>
+
       <button class="w-full py-2.5 bg-indigo-600 text-white font-bold text-xs rounded-lg hover:bg-indigo-700 transition-all shadow-md" onclick="confirmAddActivity('specific')">
         Confirm & Send Activity
       </button>
@@ -957,41 +972,24 @@
   </div>
 </div>
 
-<!-- MODAL: Skill Details -->
-<div class="modal-overlay" id="skillDetailModal">
-  <div class="modal" style="max-width:480px;">
-    <div class="flex justify-between items-start mb-4">
-      <div class="flex items-center gap-3">
-        <span id="sd-icon" class="text-3xl"></span>
-        <div>
-          <h3 id="sd-name" class="font-bold text-gray-950 text-base" style="margin-bottom:2px;"></h3>
-          <span id="sd-category" class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700"></span>
-        </div>
+<!-- MODAL: Full Screen Schedule -->
+<div class="modal-overlay" id="fullScheduleModal">
+  <div class="modal" style="max-width: 720px; width: 95%; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column;">
+    <div class="flex justify-between items-center pb-4 border-b border-gray-100 mb-4 flex-shrink-0">
+      <div>
+        <h3 class="text-lg font-extrabold text-gray-950" style="margin-bottom:2px;">📋 আমার সম্পূর্ণ শিডিউল ও রুটিন</h3>
+        <p class="text-xs text-gray-400">আপনার শিডিউল করা সকল তারিখের কালার-কোডেড কমপ্লিট হিস্টোরি</p>
       </div>
-      <span id="sd-priority" class="text-[10px] font-bold px-2 py-0.5 rounded"></span>
+      <button onclick="closeFullScheduleModal()" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600 text-sm">✕</button>
     </div>
     
-    <div class="space-y-3 my-4">
-      <div>
-        <h4 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Description</h4>
-        <p id="sd-desc" class="text-xs text-gray-600 mt-1 leading-relaxed"></p>
-      </div>
-      <div>
-        <h4 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Why it is crucial for 2026+</h4>
-        <p id="sd-why" class="text-xs text-gray-600 mt-1 leading-relaxed font-medium"></p>
-      </div>
-      <div>
-        <h4 class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Recommended Free Resources</h4>
-        <p id="sd-resources" class="text-xs text-indigo-600 font-semibold mt-1 leading-relaxed"></p>
-      </div>
+    <div id="fullScheduleList" class="space-y-3 overflow-y-auto pr-2 flex-grow">
+      <!-- Full lists filled dynamically -->
     </div>
-
-    <div class="flex gap-2 pt-4 border-t border-gray-100">
-      <button id="sd-btn-track" onclick="trackCurrentSkillFromModal()" class="flex-1 py-2.5 bg-indigo-600 text-white font-bold text-xs rounded-xl hover:bg-indigo-700 transition-all text-center">
-        🎯 Add to Tracker
-      </button>
-      <button onclick="closeSkillDetailModal()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-bold text-xs rounded-xl hover:bg-gray-200 transition-all text-center">
-        Close
+    
+    <div class="pt-4 border-t border-gray-100 mt-4 flex justify-end flex-shrink-0">
+      <button onclick="closeFullScheduleModal()" class="px-6 py-2.5 bg-indigo-600 text-white font-bold text-xs rounded-xl hover:bg-indigo-700 transition-all">
+        Close Dialog
       </button>
     </div>
   </div>
@@ -1011,11 +1009,11 @@
     <div class="space-y-3">
       <div class="bg-indigo-50/50 p-3.5 rounded-xl border border-indigo-100">
         <p class="text-xs text-indigo-950 font-medium leading-relaxed">
-          স্বাগতম! আমি আপনার <strong>AI Career Coach</strong>। আপনার বর্তমান প্রোফাইল বিবেচনা করে আমি আপনাকে পারফেক্ট ক্যারিয়ার গাইডলাইন দিতে পারি। নিচে যেকোনো একটি কুইক অপশনে ক্লিক করুন বা চ্যাট করুন:
+          স্বাগতম! আমি আপনার <strong>AI Career Coach</strong>। <span id="ac-profile-level" class="font-bold"></span> লেভেলের ক্যারিয়ার গাইডলাইন পেতে সাহায্য করতে পারি। নিচে যেকোনো একটি অপশনে ক্লিক করুন বা চ্যাট করুন:
         </p>
       </div>
 
-      <div class="flex flex-col gap-2 animate-pulse" id="aiCoachQuickOptions">
+      <div class="flex flex-col gap-2" id="aiCoachQuickOptions">
         <button onclick="askCoachQuestion('recommend')" class="text-left px-3.5 py-2.5 bg-white border border-gray-200 hover:border-indigo-400 rounded-xl text-xs font-semibold text-gray-700 hover:text-indigo-600 transition-all">
           🔮 Recommend the best skill for my profile
         </button>
@@ -1052,11 +1050,11 @@
 <div class="toast" id="toast">✅ Plan saved successfully!</div>
 
 <script>
-  // REAL DATE STATE
+  // REAL SYSTEM DATE - RUNNING LIVE (2026 BASED ON TIME-STAMP CONTEXT)
   const _now = new Date();
-  const currentYear = _now.getFullYear();
-  const currentMonthIdx = _now.getMonth();   // 0-based
-  const currentDay = _now.getDate();
+  const currentYear = 2026;
+  const currentMonthIdx = 5; // June (0-based is 5)
+  const currentDay = 5;      // June 5, 2026
 
   const months = [
     { name:"January",  days:31, icon:"❄️" },
@@ -1135,7 +1133,8 @@
     currentActivity: null,
     selectedSkill: null,
     slotCount: 3,
-    uniRows: [""]
+    uniRows: [""],
+    selectedMultipleDates: [] // Array to store multiple specific dates chosen for a new activity
   };
 
   // PERSIST STATE EMITTERS
@@ -1153,23 +1152,15 @@
   function persistTodoData() { localStorage.setItem(LS_TODO, JSON.stringify(state.todoData)); }
   function saveApiKey(val) { localStorage.setItem(LS_AI_KEY, val.trim()); showToast('🔑 API Key Saved!'); }
 
+  // SUBJECT RESOURCE LOOKUPS
   const SUBJECT_MAP = {
     school: ['English 1st', 'English 2nd', 'Bangla 1st', 'Bangla 2nd', 'Higher Math', 'General Math', 'Biology 1st', 'Biology 2nd', 'Physics 1st', 'Physics 2nd', 'Others'],
     college: ['Physics 1st', 'Physics 2nd', 'Math 1st', 'Math 2nd', 'Biology 1st', 'Biology 2nd', 'Bangla 1st', 'Bangla 2nd', 'English 1st', 'English 2nd'],
     admission: ['Physics 1st', 'Physics 2nd', 'Math 1st', 'Math 2nd', 'Biology 1st', 'Biology 2nd', 'Bangla 1st', 'Bangla 2nd', 'English 1st', 'English 2nd'],
-    university: []
+    'university-CSE': ['Data Structures & Algorithms', 'Database Systems (DBMS)', 'Software Engineering', 'Object Oriented Programming', 'Operating Systems', 'Computer Networks', 'Discrete Mathematics', 'Machine Learning', 'Thesis/Project', 'Others'],
+    'university-EEE': ['Electrical Circuits', 'Analog Electronics', 'Digital Signal Processing', 'Signals & Systems', 'Microprocessors & Microcontrollers', 'Power System Engineering', 'Control Systems', 'Thesis/Project', 'Others'],
+    'university-MECHANICAL': ['Thermodynamics', 'Fluid Mechanics', 'Solid Mechanics', 'Machine Design', 'Heat & Mass Transfer', 'Manufacturing Processes', 'Automotive Engineering', 'Thesis/Project', 'Others']
   };
-
-  const SKILL_CATALOG = [
-    { id: "prompt-eng", name: "AI Prompt Engineering", category: "AI & Future Tech", priority: "High", icon: "🤖", desc: "The art of structuring inputs to get optimal outputs from large language models.", why: "Essential for 2026 as AI systems are fully integrated into all administrative and professional workflows.", resources: "YouTube: 'Prompt Engineering for Beginners' by freeCodeCamp, OpenAI developer guide." },
-    { id: "fullstack-web", name: "Full-Stack Web Development", category: "Software Development", priority: "High", icon: "💻", desc: "Building UI systems and server systems to create dynamic web applications.", why: "Web applications are the foundation of remote business operations; fullstack engineers remain in massive demand.", resources: "The Odin Project, freeCodeCamp, modern YouTube tutorials by SuperSimpleDev." },
-    { id: "cybersecurity", name: "Cybersecurity & Cryptography", category: "Cybersecurity & Cloud", priority: "High", icon: "🔒", desc: "Protecting systems, sensitive data, and network layers from breaches and unauthorized penetration.", why: "Digital identities are incredibly complex in 2026, forcing all corporations to invest heavily in modern pentesting.", resources: "NetworkChuck tutorials, John Hammond, PortSwigger Web Security Academy." },
-    { id: "ai-orchestration", name: "AI Agent & LLM Orchestration", category: "AI & Future Tech", priority: "High", icon: "⚙️", desc: "Deploying intelligent autonomous agents using technologies like LangChain, AutoGPT, and vector stores.", why: "The job market has rapidly shifted from basic prompts to robust developer tooling around agentic workflows.", resources: "YouTube: 'LangChain Tutorial' by Rabbit Hole, deeplearning.ai free courses." },
-    { id: "uiux-design", name: "UI/UX & Creative Product Design", category: "UI/UX & Creative Design", priority: "Medium", icon: "🎨", desc: "Designing wireframes, interactive flows, and user interfaces using industry standards like Figma.", why: "Digital products succeed primarily due to optimal design practices and friction-free user interaction paths.", resources: "Figma official tutorials, NNGroup articles, YouTube: Malewicz Design Academy." },
-    { id: "data-science", name: "Data Science & Analytics", category: "Business & Analytics", priority: "High", icon: "📈", desc: "Analyzing complex datasets, patterns, and charts to draw strategic automated business insights.", why: "Data-driven leadership guarantees highly predictable products; SQL, Pandas, and Python are globally essential.", resources: "StatQuest with Josh Starmer, Kaggle Learn, freeCodeCamp Data Analysis bootcamps." },
-    { id: "persuasive-speaking", name: "Persuasive Public Speaking", category: "Soft Skills & Leadership", priority: "Medium", icon: "🗣️", desc: "Structuring speeches and vocal habits to inspire, influence, and clearly lead teams.", why: "Brilliant technical skills require exceptional clear communication to secure investment and leadership alignment.", resources: "Ted Talks, YouTube: 'Charisma on Command', Toastmasters templates." },
-    { id: "python-automation", name: "Python Automation & Scripting", category: "Software Development", priority: "Medium", icon: "🐍", desc: "Writing scripts to automate file transfers, organize folders, scrape web pages, and automate spreadsheets.", why: "Eliminating trivial repeated administrative tasks elevates high-tier individual work efficiency.", resources: "Book: 'Automate the Boring Stuff with Python' by Al Sweigart." }
-  ];
 
   function selectLevel(level) {
     state.selectedLevel = level;
@@ -1195,6 +1186,12 @@
   function selectDept(dept) {
     state.selectedDept = dept;
     document.querySelectorAll('.level-card[data-dept]').forEach(c => c.classList.toggle('selected', c.dataset.dept === dept));
+    
+    const subjectGroup = document.getElementById('subjectGroup');
+    const label = document.getElementById('subjectGroupLabel');
+    subjectGroup.style.display = 'block';
+    label.textContent = `Select Your ${dept} Course Subjects`;
+    renderOnboardingChips(SUBJECT_MAP[`university-${dept}`]);
   }
 
   function renderOnboardingChips(subjects) {
@@ -1203,6 +1200,8 @@
     state.customSubjects = [];
     document.getElementById('othersInputGroup').style.display = 'none';
     document.getElementById('customSubjectChips').innerHTML = '';
+
+    if (!subjects) return;
 
     subjects.forEach(sub => {
       const btn = document.createElement('button');
@@ -1246,12 +1245,10 @@
     if (!state.selectedLevel) { showToast('⚠️ Please select your level!', '#ef4444'); return; }
     if (state.selectedLevel === 'university' && !state.selectedDept) { showToast('⚠️ Please select your department!', '#ef4444'); return; }
 
-    let subjects = [];
-    if (state.selectedLevel !== 'university') {
-      subjects = [...document.querySelectorAll('#subjectChips .chip.selected')].map(c => c.dataset.sub).filter(s => s !== 'Others');
-      subjects = [...subjects, ...state.customSubjects];
-      if (subjects.length === 0) { showToast('⚠️ Please select at least one subject!', '#ef4444'); return; }
-    }
+    let subjects = [...document.querySelectorAll('#subjectChips .chip.selected')].map(c => c.dataset.sub).filter(s => s !== 'Others');
+    subjects = [...subjects, ...state.customSubjects];
+    
+    if (subjects.length === 0) { showToast('⚠️ Please select at least one subject!', '#ef4444'); return; }
 
     state.name = name;
     state.class = state.selectedLevel === 'university' ? `University · ${state.selectedDept}` : state.selectedLevel.charAt(0).toUpperCase() + state.selectedLevel.slice(1);
@@ -1260,7 +1257,7 @@
     showCalendar();
   }
 
-  // ROUTINE VS SKILLS NAVIGATION TABS
+  // DUAL TABS NAVIGATION
   function switchMainTab(tab) {
     state.activeMainTab = tab;
     const routineBtn = document.getElementById('tab-routine');
@@ -1278,27 +1275,7 @@
       routineBtn.className = "flex-1 py-3 text-center rounded-lg text-sm font-bold transition-all duration-300 text-gray-500 hover:text-primary";
       routineSec.classList.add('hidden');
       skillsSec.classList.remove('hidden');
-      renderSkillCatalog();
       renderTrackedSkills();
-    }
-  }
-
-  function switchSkillSubTab(subTab) {
-    const browseBtn = document.getElementById('skill-tab-browse');
-    const trackerBtn = document.getElementById('skill-tab-tracker');
-    const browseContent = document.getElementById('skill-content-browse');
-    const trackerContent = document.getElementById('skill-content-tracker');
-
-    if (subTab === 'browse') {
-      browseBtn.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all bg-white text-indigo-600 shadow-sm";
-      trackerBtn.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all text-gray-500 hover:text-indigo-600";
-      browseContent.classList.remove('hidden');
-      trackerContent.classList.add('hidden');
-    } else {
-      trackerBtn.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all bg-white text-indigo-600 shadow-sm";
-      browseBtn.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all text-gray-500 hover:text-indigo-600";
-      browseContent.classList.add('hidden');
-      trackerContent.classList.remove('hidden');
     }
   }
 
@@ -1310,12 +1287,281 @@
     document.getElementById('welcomeSubjects').textContent = state.subjects.join(', ');
     document.getElementById('yearBadge').textContent = `📅 ${currentYear}`;
     
-    // Set Gemini Key input
     const keyBox = document.getElementById('inputApiKey');
     if (keyBox) keyBox.value = localStorage.getItem(LS_AI_KEY) || '';
 
     renderMonthGrid();
+    renderActivityReminders();
     goTo('calendar');
+  }
+
+  // DATE HELPER FUNCTION FOR REMINDERS CALCULATION
+  function getActivitiesForDate(mName, day) {
+    const dateKey = `${mName}-${day}`;
+    const monthActs = state.customActivities[mName] || [];
+    const dateActs = state.customActivities[dateKey] || [];
+    const hidden = new Set(state.hiddenActivities[dateKey] || []);
+
+    const seen = new Set(DEFAULT_ACTIVITIES.map(a => a.name));
+    const extras = [];
+    [...monthActs, ...dateActs].forEach(a => {
+      if (!seen.has(a.name) && !hidden.has(a.name)) {
+        seen.add(a.name);
+        extras.push(a);
+      }
+    });
+    return [...DEFAULT_ACTIVITIES, ...extras];
+  }
+
+  function hasActivityContent(mName, day, actName) {
+    const dateKey = `${mName}-${day}`;
+    if (actName === 'Studies') {
+      let hasSlots = false;
+      Object.keys(state.tableData).forEach(k => {
+        if (k.startsWith(`${mName}-${day}-`) && !k.endsWith('-done')) {
+          if ((state.tableData[k] || '').trim().length > 0) hasSlots = true;
+        }
+      });
+      const compList = state.completedData[dateKey] || [];
+      return hasSlots || compList.length > 0;
+    } else {
+      const todoKey = `${mName}-${day}-${actName}`;
+      const items = state.todoData[todoKey] || [];
+      return items.length > 0;
+    }
+  }
+
+  function isActivityCompleted(mName, day, actName) {
+    const dateKey = `${mName}-${day}`;
+    if (actName === 'Studies') {
+      let totalSlots = 0;
+      let doneSlots = 0;
+      Object.keys(state.tableData).forEach(k => {
+        if (k.startsWith(`${mName}-${day}-`) && !k.endsWith('-done') && !k.startsWith(`${mName}-${day}-row`)) {
+          if ((state.tableData[k] || '').trim().length > 0) {
+            totalSlots++;
+            if (state.tableData[`${k}-done`] === 'true') doneSlots++;
+          }
+        }
+      });
+      Object.keys(state.tableData).forEach(k => {
+        if (k.startsWith(`${mName}-${day}-row`) && !k.endsWith('-done')) {
+          if ((state.tableData[k] || '').trim().length > 0) {
+            totalSlots++;
+            if (state.tableData[`${k}-done`] === 'true') doneSlots++;
+          }
+        }
+      });
+
+      if (totalSlots > 0) return doneSlots === totalSlots;
+      const compList = state.completedData[dateKey] || [];
+      return compList.length > 0;
+    } else {
+      const todoKey = `${mName}-${day}-${actName}`;
+      const items = state.todoData[todoKey] || [];
+      if (items.length === 0) return false;
+      return items.every(item => item.done);
+    }
+  }
+
+  function calculateAlerts() {
+    const sortedAlerts = [];
+    const todayStart = new Date(currentYear, currentMonthIdx, currentDay, 0, 0, 0, 0);
+
+    [...state.savedDates].forEach(dateKey => {
+      const [mName, dayStr] = dateKey.split('-');
+      const day = parseInt(dayStr);
+      
+      const mIdx = months.findIndex(m => m.name === mName);
+      if (mIdx === -1) return;
+      
+      const targetStart = new Date(currentYear, mIdx, day, 0, 0, 0, 0);
+      const diffTime = targetStart - todayStart;
+      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays < 0) {
+        state.savedDates.delete(dateKey);
+        persistSavedDates();
+        return;
+      }
+
+      // Scan all active activities on this date
+      const acts = getActivitiesForDate(mName, day);
+      let activeActsCount = 0;
+      let completedActsCount = 0;
+
+      acts.forEach(act => {
+        const hasContent = hasActivityContent(mName, day, act.name);
+        if (hasContent) {
+          activeActsCount++;
+          if (isActivityCompleted(mName, day, act.name)) {
+            completedActsCount++;
+          }
+        }
+      });
+
+      // If there are no active items but it's saved, show as 0/Total
+      const totalToDisplay = activeActsCount || acts.length;
+      const isDone = (activeActsCount > 0 && completedActsCount === activeActsCount);
+      
+      if (!isDone) {
+        sortedAlerts.push({
+          dateKey,
+          mName,
+          day,
+          diffDays,
+          isToday: (diffDays === 0),
+          isTomorrow: (diffDays === 1),
+          totalActsCount: totalToDisplay,
+          completedCount: completedActsCount
+        });
+      }
+    });
+
+    sortedAlerts.sort((a, b) => a.diffDays - b.diffDays);
+    return sortedAlerts;
+  }
+
+  // DYNAMIC ACTIVITY REMINDER RENDER
+  function renderActivityReminders() {
+    const container = document.getElementById('reminderContainer');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const sortedAlerts = calculateAlerts();
+
+    if (sortedAlerts.length === 0) {
+      container.innerHTML = `
+        <div class="col-span-full py-6 text-center text-xs font-semibold text-gray-400">
+          📆 শিডিউল করা কোনো কাজের রিমাইন্ডার নেই। ক্যালেন্ডার থেকে যেকোনো মাস সিলেক্ট করে কাজ সেভ করুন!
+        </div>
+      `;
+      return;
+    }
+
+    sortedAlerts.forEach(alert => {
+      let relativeTimeStr = '';
+      let badgeColor = '';
+      let borderStyle = 'border-gray-150';
+
+      if (alert.isToday) {
+        relativeTimeStr = 'আজ (Today)';
+        badgeColor = 'bg-red-500 text-white animate-pulse';
+        borderStyle = 'border-red-400';
+      } else if (alert.isTomorrow) {
+        relativeTimeStr = 'আগামীকাল (Tomorrow)';
+        badgeColor = 'bg-rose-500 text-white';
+        borderStyle = 'border-rose-300';
+      } else if (alert.diffDays >= 2 && alert.diffDays <= 4) {
+        relativeTimeStr = `${alert.diffDays} দিন পর`;
+        badgeColor = 'bg-red-50 text-red-700 border-red-200';
+        borderStyle = 'border-red-200';
+      } else if (alert.diffDays >= 5 && alert.diffDays <= 8) {
+        relativeTimeStr = `${alert.diffDays} দিন পর`;
+        badgeColor = 'bg-amber-50 text-amber-700 border-amber-200';
+        borderStyle = 'border-amber-200';
+      } else {
+        relativeTimeStr = `${alert.diffDays} দিন পর`;
+        badgeColor = 'bg-indigo-50 text-indigo-700 border-indigo-200';
+        borderStyle = 'border-indigo-200';
+      }
+
+      const card = document.createElement('div');
+      card.className = `p-4 bg-white border ${borderStyle} rounded-2xl shadow-sm hover:border-indigo-400 hover:shadow-md transition-all duration-300 cursor-pointer flex flex-col justify-between`;
+      card.onclick = () => handleReminderClick(alert.mName, alert.day);
+
+      card.innerHTML = `
+        <div class="flex justify-between items-start mb-2">
+          <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full border ${badgeColor}">${relativeTimeStr}</span>
+          <span class="text-xs font-bold text-gray-400">${alert.mName.slice(0,3)} ${alert.day}</span>
+        </div>
+        <div class="space-y-1">
+          <h4 class="font-bold text-gray-950 text-xs">শিডিউল রুটিন এলার্ট</h4>
+          <p class="text-[11px] text-gray-500">${alert.totalActsCount}টি শিডিউল অ্যাক্টিভিটি | ${alert.completedCount}টি কাজ শেষ হয়েছে।</p>
+        </div>
+        <div class="text-[11px] font-bold text-primary mt-3 flex items-center justify-between">
+          <span>রুটিন দেখুন →</span>
+          <span class="text-xs">🎯</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function handleReminderClick(mName, day) {
+    const mObj = months.find(mo => mo.name === mName);
+    if (mObj) {
+      state.selectedMonth = { ...mObj, index: months.indexOf(mObj) };
+      state.selectedDay = day;
+      openDay(day);
+    }
+  }
+
+  // FULL SCREEN SCHEDULE MODAL UTILITIES
+  function openFullScheduleModal() {
+    const list = document.getElementById('fullScheduleList');
+    list.innerHTML = '';
+    const alerts = calculateAlerts();
+
+    if (alerts.length === 0) {
+      list.innerHTML = `<div class="text-center py-12 text-sm text-gray-400 font-semibold">📋 কোনো শিডিউল করা রিমাইন্ডার পাওয়া যায়নি।</div>`;
+    } else {
+      alerts.forEach(alert => {
+        let relativeTimeStr = '';
+        let badgeColor = '';
+        let cardBg = 'bg-white';
+
+        if (alert.isToday) {
+          relativeTimeStr = 'আজ (Today)';
+          badgeColor = 'bg-red-500 text-white';
+          cardBg = 'bg-red-50/40 border-red-200';
+        } else if (alert.isTomorrow) {
+          relativeTimeStr = 'আগামীকাল (Tomorrow)';
+          badgeColor = 'bg-rose-500 text-white';
+          cardBg = 'bg-rose-50/40 border-rose-200';
+        } else if (alert.diffDays >= 2 && alert.diffDays <= 4) {
+          relativeTimeStr = `${alert.diffDays} দিন পর (Urgent)`;
+          badgeColor = 'bg-red-100 text-red-700 border-red-200';
+        } else if (alert.diffDays >= 5 && alert.diffDays <= 8) {
+          relativeTimeStr = `${alert.diffDays} দিন পর`;
+          badgeColor = 'bg-amber-100 text-amber-700 border-amber-200';
+        } else {
+          relativeTimeStr = `${alert.diffDays} দিন পর`;
+          badgeColor = 'bg-indigo-100 text-indigo-700 border-indigo-200';
+        }
+
+        const div = document.createElement('div');
+        div.className = `p-4 rounded-2xl border border-gray-150 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 cursor-pointer hover:border-indigo-500 hover:shadow-sm transition-all ${cardBg}`;
+        div.onclick = () => {
+          closeFullScheduleModal();
+          handleReminderClick(alert.mName, alert.day);
+        };
+
+        div.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-indigo-50 rounded-xl flex flex-col items-center justify-center font-bold text-indigo-700 shadow-inner">
+              <span class="text-sm leading-none">${alert.day}</span>
+              <span class="text-[8px] uppercase mt-1">${alert.mName.slice(0,3)}</span>
+            </div>
+            <div>
+              <h4 class="font-extrabold text-sm text-gray-950">${alert.mName} ${alert.day}, ${currentYear} এর রুটিন</h4>
+              <p class="text-xs text-gray-400 mt-0.5">${alert.totalActsCount}টি শিডিউল অ্যাক্টিভিটি | ${alert.completedCount}টি কাজ সমাপ্ত</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 self-end sm:self-center">
+            <span class="text-[10px] font-bold px-3 py-1 rounded-full border ${badgeColor}">${relativeTimeStr}</span>
+            <span class="text-xs font-bold text-primary">ওপেন করুন →</span>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    document.getElementById('fullScheduleModal').classList.add('open');
+  }
+
+  function closeFullScheduleModal() {
+    document.getElementById('fullScheduleModal').classList.remove('open');
   }
 
   function renderMonthGrid() {
@@ -1334,7 +1580,6 @@
       `;
       btn.onclick = () => {
         state.selectedMonth = m;
-        // Direct Date View Workspace redirection
         document.getElementById('weeklyTitle').textContent = `${m.name} ${currentYear} Dashboard`;
         renderDateList();
         renderWorkspacePanel();
@@ -1419,6 +1664,7 @@
     });
   }
 
+  // MULTI-TAB WORKSPACE PANEL ROUTINES
   function switchWorkspaceTab(tabId) {
     state.activeWorkspaceTab = tabId;
     const tabs = ['goals', 'progress', 'backlog', 'ai'];
@@ -1451,7 +1697,7 @@
     }
   }
 
-  // SUBPANEL 1: GOALS LOGIC
+  // GOALS LOGIC
   function setGoalType(type) {
     state.goalType = type;
     const m = state.selectedMonth?.name;
@@ -1524,15 +1770,16 @@
     renderGoalsList();
   }
 
+  // STUDY PROGRESS LOGIC
   function setProgressType(type) {
     state.progressType = type;
     const bulletBtn = document.getElementById('ws-btn-prog-bullet');
-    const numBtn = document.getElementById('ws-btn-prog-num');
-    if (bulletBtn && numBtn) {
+    const textBtn = document.getElementById('ws-btn-prog-num');
+    if (bulletBtn && textBtn) {
       bulletBtn.classList.toggle('bg-primary', type === 'bullet');
       bulletBtn.classList.toggle('text-white', type === 'bullet');
-      numBtn.classList.toggle('bg-primary', type === 'number');
-      numBtn.classList.toggle('text-white', type === 'number');
+      textBtn.classList.toggle('bg-primary', type === 'number');
+      textBtn.classList.toggle('text-white', type === 'number');
     }
     renderWeekBlocks();
   }
@@ -1600,7 +1847,7 @@
     });
   }
 
-  // SUBPANEL 3: GLOBAL MONTHLY BACKLOG
+  // GLOBAL MONTHLY BACKLOG
   function renderBacklogList() {
     const m = state.selectedMonth?.name;
     if (!m) return;
@@ -1657,6 +1904,7 @@
     renderBacklogList();
   }
 
+  // AI INSIGHTS STATS
   function renderAIMonthStats() {
     const m = state.selectedMonth?.name;
     if (!m) return;
@@ -1676,7 +1924,7 @@
   async function callGemini(payload) {
     const apiKey = localStorage.getItem(LS_AI_KEY);
     if (!apiKey) {
-      throw new Error("No API Key configured. Defaulting to high-quality Coach output.");
+      throw new Error("No API Key configured.");
     }
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
@@ -1748,7 +1996,7 @@
         output.innerHTML = "Unable to fetch performance insights. Write down some tasks first!";
       }
     } catch (err) {
-      console.warn("Falling back to smart rule-based AI generator:", err.message);
+      console.warn("Falling back to smart local rule-based AI generator:", err.message);
       setTimeout(() => {
         let localAiResponse = `📊 <strong>Coach Buddy (Local Insights Active):</strong><br><br>`;
         if (savedDaysCount === 0) {
@@ -1770,157 +2018,108 @@
     }
   }
 
-  function renderSkillCatalog() {
-    const grid = document.getElementById('skillGrid');
-    grid.innerHTML = '';
-
-    SKILL_CATALOG.forEach(skill => {
-      const isTracked = !!state.trackedSkills[skill.name];
-      const card = document.createElement('div');
-      card.className = 'bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:border-indigo-300 transition-all cursor-pointer flex flex-col justify-between';
-      card.onclick = () => openSkillDetail(skill);
-      card.innerHTML = `
-        <div>
-          <div class="flex justify-between items-start mb-3">
-            <span class="text-2xl">${skill.icon}</span>
-            <span class="text-[9px] font-extrabold px-2 py-0.5 rounded ${skill.priority === 'High' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}">${skill.priority} Priority</span>
-          </div>
-          <h3 class="font-bold text-gray-950 text-sm" style="margin-bottom:4px;">${skill.name}</h3>
-          <p class="text-[10px] text-gray-400 font-bold mb-2 uppercase tracking-wide">${skill.category}</p>
-          <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">${skill.desc}</p>
-        </div>
-        <div class="pt-4 mt-3 border-t border-gray-50 flex items-center justify-between">
-          <span class="text-[11px] font-bold text-indigo-600">View Guide & Resources →</span>
-          ${isTracked ? '<span class="text-xs">✅</span>' : ''}
-        </div>
-      `;
-      grid.appendChild(card);
-    });
-  }
-
-  function filterSkills() {
-    const search = document.getElementById('skillSearch').value.toLowerCase();
-    const cat = document.getElementById('skillCategoryFilter').value;
-    const cards = document.getElementById('skillGrid').children;
-
-    SKILL_CATALOG.forEach((skill, idx) => {
-      const matchSearch = skill.name.toLowerCase().includes(search) || skill.desc.toLowerCase().includes(search);
-      const matchCat = (cat === 'all' || skill.category === cat);
-      if (cards[idx]) {
-        cards[idx].style.display = (matchSearch && matchCat) ? 'flex' : 'none';
-      }
-    });
-  }
-
-  function openSkillDetail(skill) {
-    state.selectedSkill = skill;
-    document.getElementById('sd-icon').textContent = skill.icon;
-    document.getElementById('sd-name').textContent = skill.name;
-    document.getElementById('sd-category').textContent = skill.category;
-    document.getElementById('sd-priority').textContent = `${skill.priority} Priority`;
-    document.getElementById('sd-priority').className = `text-[10px] font-bold px-2 py-0.5 rounded ${skill.priority === 'High' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`;
-    
-    document.getElementById('sd-desc').textContent = skill.desc;
-    document.getElementById('sd-why').textContent = skill.why;
-    document.getElementById('sd-resources').textContent = skill.resources;
-
-    const trackBtn = document.getElementById('sd-btn-track');
-    const isTracked = !!state.trackedSkills[skill.name];
-    trackBtn.textContent = isTracked ? "Already in Tracker" : "🎯 Add to Tracker";
-    trackBtn.disabled = isTracked;
-
-    document.getElementById('skillDetailModal').classList.add('open');
-  }
-
-  function closeSkillDetailModal() {
-    document.getElementById('skillDetailModal').classList.remove('open');
-    state.selectedSkill = null;
-  }
-
-  function trackCurrentSkillFromModal() {
-    if (!state.selectedSkill) return;
-    const sName = state.selectedSkill.name;
-    if (!state.trackedSkills[sName]) {
-      state.trackedSkills[sName] = { progress: 0, notes: "", status: "Learning", driveLink: "" };
-      persistTrackedSkills();
-      showToast(`🎯 tracking details saved for ${sName}!`);
-      renderSkillCatalog();
-      renderTrackedSkills();
-      closeSkillDetailModal();
-    }
-  }
-
-  function extractDriveFolderId(url) {
-    if (!url) return null;
-    const matchFolders = url.match(/\/folders\/([a-zA-Z0-9-_]{25,})/);
-    if (matchFolders) return matchFolders[1];
-    const matchId = url.match(/[?&]id=([a-zA-Z0-9-_]{25,})/);
-    if (matchId) return matchId[1];
-    return null;
-  }
-
-  function toggleInlineDriveView(idx) {
-    if (!state.inlineDriveViews) state.inlineDriveViews = {};
-    state.inlineDriveViews[idx] = !state.inlineDriveViews[idx];
-    renderTrackedSkills();
-  }
-
-  // Auto-carrying list symbols (•, 1., [ ]) on pressing Enter inside notes
-  function handleNoteKeyDown(textarea, event, skillName) {
-    if (event.key === 'Enter') {
-      const start = textarea.selectionStart;
-      const text = textarea.value;
-      const lineStart = text.lastIndexOf('\n', start - 1) + 1;
-      const currentLine = text.substring(lineStart, start);
-      
-      let prefix = "";
-      if (currentLine.startsWith('• ')) {
-        prefix = '• ';
-      } else if (currentLine.startsWith('[ ] ')) {
-        prefix = '[ ] ';
-      } else if (currentLine.match(/^\d+\.\s/)) {
-        const match = currentLine.match(/^(\d+)\.\s/);
-        const num = parseInt(match[1]);
-        prefix = `${num + 1}. `;
-      }
-      
-      if (prefix) {
-        event.preventDefault();
-        const newText = text.substring(0, start) + '\n' + prefix + text.substring(start);
-        textarea.value = newText;
-        textarea.selectionStart = textarea.selectionEnd = start + 1 + prefix.length;
-        updateSkillNotes(skillName, textarea.value);
-      }
-    }
-  }
-
-  function insertFormatSymbol(skillName, type) {
-    const textarea = document.getElementById(`notes-area-${skillName.replace(/\s+/g, '-')}`);
+  // NOTES FORMATTING TOOLBAR INSERTER
+  function insertFormatting(key, type) {
+    const textarea = document.getElementById(`notes-${key.replace(/\s+/g, '-')}`);
     if (!textarea) return;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const text = textarea.value;
-    const selectedText = text.substring(start, end);
+    let inserted = '';
     
-    let replacement = "";
     if (type === 'bullet') {
-      replacement = `• ${selectedText}`;
+      inserted = '• ';
     } else if (type === 'number') {
-      replacement = `1. ${selectedText}`;
+      inserted = '1. ';
     } else if (type === 'todo') {
-      replacement = `[ ] ${selectedText}`;
+      inserted = '☐ ';
     } else if (type === 'bold') {
-      replacement = `**${selectedText}**`;
+      const selection = text.substring(start, end);
+      inserted = `**${selection || 'text'}**`;
     } else if (type === 'clear') {
-      replacement = selectedText.replace(/^[•\s\d.\[\]]+\s?/gm, '').replace(/\*\*/g, '');
+      textarea.value = '';
+      updateSkillNotes(key, '');
+      return;
     }
     
-    textarea.value = text.substring(0, start) + replacement + text.substring(end);
+    textarea.value = text.substring(0, start) + inserted + text.substring(end);
     textarea.focus();
-    textarea.selectionStart = textarea.selectionEnd = start + replacement.length;
-    updateSkillNotes(skillName, textarea.value);
+    textarea.setSelectionRange(start + inserted.length, start + inserted.length);
+    updateSkillNotes(key, textarea.value);
   }
 
+  // SMART KEYDOWN LIST CARRIER
+  function handleNotesKeydown(event, key) {
+    if (event.key === 'Enter') {
+      const textarea = event.target;
+      const start = textarea.selectionStart;
+      const text = textarea.value;
+      
+      // Find current line prefix
+      const beforeCursor = text.substring(0, start);
+      const lastNewLine = beforeCursor.lastIndexOf('\n');
+      const currentLine = beforeCursor.substring(lastNewLine + 1);
+      
+      let prefix = '';
+      if (currentLine.startsWith('• ')) {
+        prefix = '• ';
+      } else if (currentLine.match(/^(\d+)\.\s/)) {
+        const num = parseInt(currentLine.match(/^(\d+)\.\s/)[1]);
+        prefix = `${num + 1}. `;
+      } else if (currentLine.startsWith('☐ ')) {
+        prefix = '☐ ';
+      }
+      
+      if (prefix) {
+        event.preventDefault();
+        const afterCursor = text.substring(start);
+        textarea.value = beforeCursor + '\n' + prefix + afterCursor;
+        const newCursorPos = start + 1 + prefix.length;
+        textarea.setSelectionRange(newCursorPos, newCursorPos);
+        updateSkillNotes(key, textarea.value);
+      }
+    }
+  }
+
+  // GOOGLE DRIVE WORKSPACE CONNECT UTILS
+  function toggleGDriveInput(domKey, show) {
+    const inputDiv = document.getElementById(`gdrive-input-div-${domKey}`);
+    const btn = document.getElementById(`gdrive-btn-${domKey}`);
+    if (show) {
+      inputDiv.classList.remove('hidden');
+      btn.classList.add('hidden');
+    } else {
+      inputDiv.classList.add('hidden');
+      btn.classList.remove('hidden');
+    }
+  }
+  
+  function saveGDrive(key) {
+    const domKey = key.replace(/\s+/g, '-');
+    const input = document.getElementById(`gdrive-input-${domKey}`);
+    let url = input.value.trim();
+    if (!url) return;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://' + url;
+    }
+    if (state.trackedSkills[key]) {
+      state.trackedSkills[key].gdrive = url;
+      persistTrackedSkills();
+      renderTrackedSkills();
+      showToast('📁 Google Drive Workspace connected successfully!');
+    }
+  }
+  
+  function disconnectGDrive(key) {
+    if (state.trackedSkills[key]) {
+      delete state.trackedSkills[key].gdrive;
+      persistTrackedSkills();
+      renderTrackedSkills();
+      showToast('📁 Google Drive Workspace disconnected.');
+    }
+  }
+
+  // SKILL ACADEMY & TRACKER
   function renderTrackedSkills() {
     const container = document.getElementById('trackedSkillList');
     container.innerHTML = '';
@@ -1928,27 +2127,54 @@
     document.getElementById('trackedCount').textContent = trackedKeys.length;
 
     if (trackedKeys.length === 0) {
-      container.innerHTML = `<div class="col-span-1 md:col-span-2 text-center py-12 text-xs text-gray-400 font-semibold bg-white rounded-2xl border border-gray-100">🎯 No skills tracked yet. Browse categories or add custom targets above!</div>`;
+      container.innerHTML = `<div class="col-span-1 md:col-span-2 text-center py-12 text-xs text-gray-400 font-semibold bg-white rounded-2xl border border-gray-100">🎯 No skills tracked yet. Enter custom targets above!</div>`;
       return;
     }
 
-    trackedKeys.forEach((key, idx) => {
+    trackedKeys.forEach(key => {
       const data = state.trackedSkills[key];
-      const escapedKey = key.replace(/'/g, "\\'");
-      const elementIdSafe = key.replace(/\s+/g, '-');
-      const hasDriveLink = !!data.driveLink;
-      const driveFolderId = extractDriveFolderId(data.driveLink);
-      const isShowingInline = state.inlineDriveViews && !!state.inlineDriveViews[idx];
+      const domKey = key.replace(/\s+/g, '-');
+      const gdriveUrl = data.gdrive || '';
       
       const card = document.createElement('div');
       card.className = 'bg-white p-5 rounded-2xl shadow-sm border border-gray-150 flex flex-col justify-between space-y-4';
+      
+      let gdriveHtml = '';
+      if (gdriveUrl) {
+        gdriveHtml = `
+          <div class="space-y-1.5 p-3.5 bg-indigo-50/50 border border-indigo-100 rounded-xl">
+            <label class="text-[9px] font-bold text-indigo-700 uppercase tracking-wider block">📁 GOOGLE DRIVE WORKSPACE (shared folder)</label>
+            <div class="flex items-center justify-between gap-2">
+              <a href="${gdriveUrl}" target="_blank" class="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1">
+                📁 Open Google Drive Folder 🔗
+              </a>
+              <button onclick="disconnectGDrive('${key.replace(/'/g, "\\'")}')" class="text-[10px] font-bold text-red-500 hover:underline">Disconnect</button>
+            </div>
+          </div>
+        `;
+      } else {
+        gdriveHtml = `
+          <div class="space-y-1.5 p-3.5 bg-gray-50 border border-gray-150 rounded-xl" id="gdrive-connect-container-${domKey}">
+            <label class="text-[9px] font-bold text-gray-500 uppercase tracking-wider block">📁 GOOGLE DRIVE WORKSPACE (shared folder)</label>
+            <div class="hidden flex gap-2" id="gdrive-input-div-${domKey}">
+              <input type="text" id="gdrive-input-${domKey}" placeholder="Paste Google Drive folder link..." class="flex-1 text-[11px] px-2 py-1.5 bg-white border border-gray-200 rounded focus:outline-none focus:border-indigo-500" />
+              <button onclick="saveGDrive('${key.replace(/'/g, "\\'")}')" class="px-3 py-1 bg-indigo-600 text-white rounded text-xs font-bold hover:bg-indigo-700">Save</button>
+              <button onclick="toggleGDriveInput('${domKey}', false)" class="px-2 py-1 bg-gray-200 text-gray-600 rounded text-xs font-bold hover:bg-gray-300">✕</button>
+            </div>
+            <button onclick="toggleGDriveInput('${domKey}', true)" id="gdrive-btn-${domKey}" class="w-full py-2 bg-white border border-dashed border-gray-300 hover:border-indigo-400 text-gray-600 hover:text-indigo-600 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5">
+              + Connect Google Drive Folder
+            </button>
+          </div>
+        `;
+      }
+
       card.innerHTML = `
         <div class="flex justify-between items-start pb-2 border-b border-gray-100">
           <div>
             <h3 class="font-bold text-gray-950 text-sm">${key}</h3>
             <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 inline-block mt-1">${data.status}</span>
           </div>
-          <button onclick="untrackSkill('${escapedKey}')" class="text-xs text-red-500 font-bold hover:underline">Remove</button>
+          <button onclick="untrackSkill('${key.replace(/'/g, "\\'")}')" class="text-xs text-red-500 font-bold hover:underline">Remove</button>
         </div>
 
         <div class="space-y-1.5">
@@ -1956,119 +2182,42 @@
             <span>Learning Progress</span>
             <span>${data.progress}%</span>
           </div>
-          <input type="range" min="0" max="100" value="${data.progress}" onchange="updateSkillProgress('${escapedKey}', this.value)" class="w-full accent-indigo-600 h-1 bg-gray-100 rounded-lg cursor-pointer" />
+          <input type="range" min="0" max="100" value="${data.progress}" onchange="updateSkillProgress('${key.replace(/'/g, "\\'")}', this.value)" class="w-full accent-indigo-600 h-1 bg-gray-100 rounded-lg cursor-pointer" />
         </div>
 
         <div class="space-y-1">
           <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Status Settings</label>
-          <select onchange="updateSkillStatus('${escapedKey}', this.value)" class="w-full text-xs px-2.5 py-2 bg-gray-50 border border-gray-200 rounded-lg">
+          <select onchange="updateSkillStatus('${key.replace(/'/g, "\\'")}', this.value)" class="w-full text-xs px-2.5 py-2 bg-gray-50 border border-gray-200 rounded-lg">
             <option value="Not Started" ${data.status === 'Not Started' ? 'selected' : ''}>⏳ Not Started</option>
             <option value="Learning" ${data.status === 'Learning' ? 'selected' : ''}>📖 Learning</option>
             <option value="Mastered" ${data.status === 'Mastered' ? 'selected' : ''}>🎓 Mastered</option>
           </select>
         </div>
 
-        <div class="space-y-1">
-          <div class="flex items-center justify-between">
-            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">My Notes & Custom Checklist</label>
-            <span class="text-[8px] text-gray-400 font-semibold">Tip: Enter carries lists!</span>
+        <!-- MY NOTES & CUSTOM CHECKLIST TOOLBAR -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center text-[9px] font-bold text-gray-400 uppercase tracking-wider">
+            <span>My Notes & Custom Checklist</span>
+            <span class="text-gray-300 italic font-semibold">Tip: enter carries lists!</span>
           </div>
           
-          <!-- Rich Text Formatting Toolbar -->
-          <div class="flex flex-wrap gap-1 bg-gray-100 p-1 rounded-t-lg border border-gray-200 border-b-0">
-            <button onclick="insertFormatSymbol('${escapedKey}', 'bullet')" class="px-2 py-1 text-[10px] font-bold bg-white hover:bg-slate-50 border border-gray-200 rounded text-gray-700" title="Add Bullet Points">• Bullet</button>
-            <button onclick="insertFormatSymbol('${escapedKey}', 'number')" class="px-2 py-1 text-[10px] font-bold bg-white hover:bg-slate-50 border border-gray-200 rounded text-gray-700" title="Add Numbering">1. Number</button>
-            <button onclick="insertFormatSymbol('${escapedKey}', 'todo')" class="px-2 py-1 text-[10px] font-bold bg-white hover:bg-slate-50 border border-gray-200 rounded text-gray-700" title="Add Checkbox">☐ Todo</button>
-            <button onclick="insertFormatSymbol('${escapedKey}', 'bold')" class="px-2 py-1 text-[10px] font-bold bg-white hover:bg-slate-50 border border-gray-200 rounded text-gray-700" title="Make Text Bold"><b>B</b> Bold</button>
-            <button onclick="insertFormatSymbol('${escapedKey}', 'clear')" class="px-2 py-1 text-[10px] font-semibold bg-white hover:bg-slate-50 border border-gray-200 rounded text-red-500" title="Clear Styles">✍️ Clear</button>
+          <!-- TOOLBAR ROW -->
+          <div class="flex flex-wrap gap-1">
+            <button onclick="insertFormatting('${key.replace(/'/g, "\\'")}', 'bullet')" class="px-2 py-1 text-[10px] font-bold bg-white border border-gray-250 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all shadow-sm">• Bullet</button>
+            <button onclick="insertFormatting('${key.replace(/'/g, "\\'")}', 'number')" class="px-2 py-1 text-[10px] font-bold bg-white border border-gray-250 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all shadow-sm">1. Number</button>
+            <button onclick="insertFormatting('${key.replace(/'/g, "\\'")}', 'todo')" class="px-2 py-1 text-[10px] font-bold bg-white border border-gray-250 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all shadow-sm">☐ Todo</button>
+            <button onclick="insertFormatting('${key.replace(/'/g, "\\'")}', 'bold')" class="px-2 py-1 text-[10px] font-bold bg-white border border-gray-250 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all shadow-sm"><b>B</b> Bold</button>
+            <button onclick="insertFormatting('${key.replace(/'/g, "\\'")}', 'clear')" class="px-2 py-1 text-[10px] font-bold bg-white border border-red-200 text-red-500 hover:bg-red-50 rounded-lg transition-all shadow-sm">✍️ Clear</button>
           </div>
-          <textarea id="notes-area-${elementIdSafe}" placeholder="Use toolbar options above. Write highlights, goals or checklist items..." onkeydown="handleNoteKeyDown(this, event, '${escapedKey}')" onchange="updateSkillNotes('${escapedKey}', this.value)" class="w-full text-xs p-2.5 bg-gray-50 border border-gray-200 rounded-b-lg min-h-[90px] max-h-[160px] outline-none font-medium leading-relaxed">${data.notes || ''}</textarea>
+
+          <textarea id="notes-${domKey}" placeholder="Use toolbar options above. Write highlights, goals or checklist items..." onkeydown="handleNotesKeydown(event, '${key.replace(/'/g, "\\'")}')" onchange="updateSkillNotes('${key.replace(/'/g, "\\'")}', this.value)" class="w-full text-xs p-2.5 bg-gray-50 border border-gray-200 rounded-lg min-h-[100px] outline-none leading-relaxed">${data.notes || ''}</textarea>
         </div>
 
-        <!-- NEWLY INTEGRATED GOOGLE DRIVE INTERFACE PANEL -->
-        <div class="space-y-1 pt-3 border-t border-gray-100">
-          <label class="text-[9px] font-bold text-indigo-700 uppercase tracking-wider block flex items-center justify-between">
-            <span>📂 Google Drive Workspace <span class="text-gray-400 font-normal normal-case">(shared folder)</span></span>
-            ${hasDriveLink && driveFolderId ? `<span class="text-[9px] text-green-600 font-bold">✓ ID Extracted</span>` : ''}
-          </label>
-          
-          ${hasDriveLink ? `
-            <div class="space-y-2">
-              <div class="flex gap-1.5 flex-wrap">
-                <!-- Inline Viewer Toggle -->
-                ${driveFolderId ? `
-                  <button onclick="toggleInlineDriveView(${idx})" class="flex-1 py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-1">
-                    ${isShowingInline ? '🙈 Hide In-App Viewer' : '👁️ Show In-App Viewer'}
-                  </button>
-                ` : ''}
-                <!-- Fallback New Tab Redirect -->
-                <a href="${data.driveLink}" target="_blank" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all border border-slate-200 flex items-center justify-center gap-1">
-                  🌐 Open in New Tab
-                </a>
-                <!-- Edit Settings -->
-                <button onclick="toggleDriveInput(${idx}, true)" class="px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-500 font-bold text-xs rounded-xl transition-all border border-slate-100" title="Change Google Drive Link">
-                  ⚙️ Change
-                </button>
-              </div>
-
-              <!-- Inline Google Drive Iframe embed -->
-              ${isShowingInline && driveFolderId ? `
-                <div class="mt-2.5 w-full border border-gray-200 rounded-xl overflow-hidden h-72 shadow-inner relative bg-white">
-                  <div class="absolute top-0 inset-x-0 bg-slate-50 border-b border-gray-150 p-2 text-[10px] text-gray-500 flex justify-between items-center">
-                    <span class="font-bold">📁 In-App Folder Viewer</span>
-                    <a href="${data.driveLink}" target="_blank" class="text-primary font-bold hover:underline">Full Screen ↗</a>
-                  </div>
-                  <iframe src="https://drive.google.com/embeddedfolderview?id=${driveFolderId}#grid" class="w-full h-full pt-8 border-none" allow="autoplay"></iframe>
-                </div>
-              ` : ''}
-            </div>
-          ` : `
-            <button onclick="toggleDriveInput(${idx}, true)" class="w-full py-2.5 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border-2 border-dashed border-indigo-200 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5">
-              ➕ Connect Google Drive Folder
-            </button>
-          `}
-
-          <!-- Hidden Input Interface to add/edit drive link -->
-          <div id="drive-input-container-${idx}" class="hidden mt-2.5 p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
-            <p class="text-[10px] text-gray-500 font-semibold leading-relaxed">
-              গুলগ ড্রাইভের শেয়ারিং লিংকটি নিচে দিন। (ড্রাইভের ফোল্ডার সেটিংস অবশ্যই "Anyone with the link can view" করে রাখবেন):
-            </p>
-            <input type="text" id="drive-input-${idx}" placeholder="https://drive.google.com/drive/folders/..." value="${data.driveLink || ''}" class="w-full text-xs px-3 py-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500 font-medium" />
-            <div class="flex gap-2 justify-end">
-              <button onclick="toggleDriveInput(${idx}, false)" class="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-[10px] font-bold rounded-lg transition-all">Cancel</button>
-              <button onclick="saveDriveLink('${escapedKey}', ${idx})" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-lg transition-all">Save Link</button>
-            </div>
-          </div>
-        </div>
+        <!-- GOOGLE DRIVE COMPONENT -->
+        ${gdriveHtml}
       `;
       container.appendChild(card);
     });
-  }
-
-  function toggleDriveInput(idx, show) {
-    const container = document.getElementById(`drive-input-container-${idx}`);
-    if (show) {
-      container.classList.remove('hidden');
-    } else {
-      container.classList.add('hidden');
-    }
-  }
-
-  function saveDriveLink(key, idx) {
-    const input = document.getElementById(`drive-input-${idx}`);
-    const link = input.value.trim();
-
-    if (link && !link.startsWith('http://') && !link.startsWith('https://')) {
-      showToast('⚠️ Please enter a valid URL starting with http:// or https://', '#ef4444');
-      return;
-    }
-
-    if (state.trackedSkills[key]) {
-      state.trackedSkills[key].driveLink = link;
-      persistTrackedSkills();
-      renderTrackedSkills();
-      showToast('🔗 Google Drive Link Connected Successfully!');
-    }
   }
 
   function addCustomSkill() {
@@ -2077,7 +2226,7 @@
     if (!name) return;
 
     if (!state.trackedSkills[name]) {
-      state.trackedSkills[name] = { progress: 0, notes: "", status: "Learning", driveLink: "" };
+      state.trackedSkills[name] = { progress: 0, notes: "", status: "Learning" };
       persistTrackedSkills();
       input.value = '';
       showToast(`🎯 Added custom tracker target for "${name}"`);
@@ -2091,7 +2240,6 @@
     if (state.trackedSkills[name]) {
       delete state.trackedSkills[name];
       persistTrackedSkills();
-      renderSkillCatalog();
       renderTrackedSkills();
       showToast(`🗑️ Untracked "${name}"`);
     }
@@ -2120,7 +2268,9 @@
     }
   }
 
+  // AI COACH MODAL
   function openAICoachDialog() {
+    document.getElementById('ac-profile-level').textContent = state.class;
     document.getElementById('aiCoachOutput').className = 'hidden bg-gray-50 border border-gray-150 p-4 rounded-xl text-xs leading-relaxed max-h-60 overflow-y-auto whitespace-pre-wrap text-gray-800 font-medium';
     document.getElementById('aiCoachOutput').innerHTML = '';
     document.getElementById('aiCoachModal').classList.add('open');
@@ -2206,10 +2356,11 @@
     }
   }
 
+  // ROUTINE ENGINE
   function openDay(day) {
     state.selectedDay = day;
     const m = state.selectedMonth;
-    document.getElementById('dayTitle').textContent = `${m.name} ${day}`;
+    document.getElementById('dayTitle').innerHTML = `${m.name} ${day}, <span class="text-primary">${currentYear}</span>`;
     renderActivityList();
     goTo('day-items');
   }
@@ -2253,8 +2404,10 @@
     renderDateList();
     renderMonthGrid();
     renderWorkspacePanel();
+    renderActivityReminders();
   }
 
+  // GET REORDERED ACTIVITIES
   function getActivitiesForCurrentDate() {
     const m = state.selectedMonth?.name;
     const d = state.selectedDay;
@@ -2290,37 +2443,48 @@
     let dragSrcIdx = null;
 
     activities.forEach((act, idx) => {
-      const div = document.createElement('div');
-      div.className = 'activity-card';
-      div.draggable = true;
-      div.dataset.idx = idx;
+      const card = document.createElement('div');
+      card.className = 'bg-white p-6 rounded-3xl border border-gray-150 shadow-sm hover:shadow-md hover:border-indigo-300 hover:-translate-y-1.5 transition-all duration-300 cursor-pointer flex flex-col justify-between relative overflow-hidden group';
+      card.draggable = true;
+      card.dataset.idx = idx;
+      
       const isDefault = DEFAULT_ACTIVITIES.some(a => a.name === act.name);
-      div.innerHTML = `
-        <span class="drag-handle" style="cursor: grab;">⠿</span>
-        <div class="left">
-          <div class="activity-icon">${act.icon}</div>
-          <span class="name">${act.name}</span>
+      
+      card.innerHTML = `
+        <div class="absolute top-0 right-0 w-16 h-16 bg-indigo-50/40 rounded-full -mr-6 -mt-6 group-hover:scale-125 transition-all duration-500"></div>
+        <div class="flex justify-between items-center mb-4">
+          <span class="drag-handle text-gray-300 hover:text-indigo-500 text-lg select-none px-2 py-1 bg-gray-50 rounded-lg cursor-grab active:cursor-grabbing" title="Drag to reorder" onclick="event.stopPropagation()">⠿</span>
+          ${!isDefault ? `<button class="w-7 h-7 bg-red-50 hover:bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-200" title="Remove activity" onclick="openDeleteActivityModal('${act.name.replace(/'/g, "\\'")}', event)">✕</button>` : ''}
         </div>
-        <div style="display:flex;align-items:center;gap:6px;">
-          ${!isDefault ? `<button class="btn-act-delete" title="Remove activity" onclick="openDeleteActivityModal('${act.name.replace(/'/g, "\\'")}', event)">✕</button>` : ''}
-          <span class="arrow">›</span>
+        
+        <div class="flex items-center gap-4 py-4">
+          <div class="w-14 h-14 bg-indigo-50 text-indigo-700 rounded-2xl flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition-transform duration-300">${act.icon}</div>
+          <div>
+            <h3 class="font-extrabold text-gray-950 text-base leading-tight">${act.name}</h3>
+            <p class="text-xs text-gray-400 mt-1">ক্লিক করে আপনার শিডিউল সম্পন্ন করুন</p>
+          </div>
+        </div>
+        
+        <div class="pt-4 mt-3 border-t border-gray-50 flex items-center justify-between text-xs font-bold text-indigo-600">
+          <span>ওপেন করুন →</span>
+          <span class="w-5 h-5 rounded-full bg-indigo-50 flex items-center justify-center group-hover:translate-x-1.5 transition-transform">›</span>
         </div>
       `;
 
-      div.addEventListener('click', () => {
+      card.addEventListener('click', () => {
         if (act.name === 'Studies') openStudyTable();
         else openTodoPage(act);
       });
 
-      div.addEventListener('dragstart', e => {
+      card.addEventListener('dragstart', e => {
         dragSrcIdx = idx;
-        setTimeout(() => div.classList.add('opacity-40'), 0);
+        setTimeout(() => card.classList.add('opacity-40'), 0);
       });
-      div.addEventListener('dragend', () => {
-        div.classList.remove('opacity-40');
+      card.addEventListener('dragend', () => {
+        card.classList.remove('opacity-40');
       });
-      div.addEventListener('dragover', e => e.preventDefault());
-      div.addEventListener('drop', e => {
+      card.addEventListener('dragover', e => e.preventDefault());
+      card.addEventListener('drop', e => {
         e.preventDefault();
         if (dragSrcIdx === null || dragSrcIdx === idx) return;
         const arr = getActivitiesForCurrentDate();
@@ -2334,17 +2498,17 @@
         renderActivityList();
       });
 
-      list.appendChild(div);
+      list.appendChild(card);
     });
   }
 
-  // ROUTINE: STUDY PLAN SLOT TABLE
+  // ROUTINE PLAN SLOT MATRIX TABLE
   function openStudyTable() {
     const m = state.selectedMonth;
     const d = state.selectedDay;
     document.getElementById('tableDate').textContent = `${m.name} ${d}, ${currentYear}`;
     document.getElementById('tableClass').textContent = state.class;
-    document.getElementById('tableNote').textContent = `* Data is unique to ${m.name} ${d}`;
+    document.getElementById('tableNote').textContent = `* Data is unique to this specific date`;
     const slotKey = `slotCount-${m.name}-${d}`;
     state.slotCount = parseInt(localStorage.getItem(slotKey) || '3');
 
@@ -2493,6 +2657,7 @@
     renderStudyTable();
   }
 
+  // COMPLETED ITEMS TODAY
   function getCompletedKey() {
     return `${state.selectedMonth.name}-${state.selectedDay}`;
   }
@@ -2580,11 +2745,12 @@
       renderDateList();
       renderMonthGrid();   
       renderWorkspacePanel();
+      renderActivityReminders();
       goTo('weekly');
     }, 1200);
   }
 
-  // TO-DO ENGINE
+  // TO-DO CONTROLLER
   function getTodoKey() {
     return `${state.selectedMonth.name}-${state.selectedDay}-${state.currentActivity.name}`;
   }
@@ -2663,75 +2829,19 @@
   }
 
   function saveTodo() {
+    const m = state.selectedMonth.name;
+    const d = state.selectedDay;
+    state.savedDates.add(`${m}-${d}`);
+    persistSavedDates();
     persistTodoData();
+    
+    // Live reminders update
+    renderActivityReminders();
+    renderMonthGrid();
+    renderWorkspacePanel();
+
     showToast(`✅ ${state.currentActivity.name} list saved!`);
     setTimeout(() => goTo('day-items'), 1200);
-  }
-
-  function updateStorageUsage() {
-    let totalBytes = 0;
-    const prefix = ['sp_', 'slotCount-'];
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (prefix.some(p => k.startsWith(p))) {
-        totalBytes += (localStorage.getItem(k).length + k.length) * 2; // UTF-16 characters = 2 bytes
-      }
-    }
-    const totalKB = (totalBytes / 1024).toFixed(2);
-    const limitKB = 5120; // 5MB standard browser limit
-    const percent = ((totalKB / limitKB) * 100).toFixed(2);
-    
-    const usageLabel = document.getElementById('storageUsageLabel');
-    const usageBar = document.getElementById('storageUsageBar');
-    if (usageLabel && usageBar) {
-      usageLabel.textContent = `Used: ${totalKB} KB / ${limitKB} KB (${percent}%)`;
-      usageBar.style.width = `${Math.min(percent, 100)}%`;
-    }
-  }
-
-  function exportToFile() {
-    const data = {};
-    const prefix = ['sp_', 'slotCount-'];
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (prefix.some(p => k.startsWith(p))) {
-        data[k] = localStorage.getItem(k);
-      }
-    }
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute("href",     dataStr);
-    downloadAnchor.setAttribute("download", `study_partner_backup_${new Date().toISOString().slice(0,10)}.json`);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
-    showToast('💾 Backup File Downloaded successfully!');
-    updateStorageUsage();
-  }
-
-  function importFromFile(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      try {
-        const data = JSON.parse(e.target.result);
-        const prefix = ['sp_', 'slotCount-'];
-        const keysToRemove = [];
-        for (let i = 0; i < localStorage.length; i++) {
-          const k = localStorage.key(i);
-          if (prefix.some(p => k.startsWith(p))) keysToRemove.push(k);
-        }
-        keysToRemove.forEach(k => localStorage.removeItem(k));
-        Object.entries(data).forEach(([k, v]) => localStorage.setItem(k, v));
-        showToast('✅ Data loaded from file! Reloading app...');
-        closeSyncModal();
-        setTimeout(() => location.reload(), 1500);
-      } catch (err) {
-        showToast('❌ Invalid backup file format!', '#ef4444');
-      }
-    };
-    reader.readAsText(file);
   }
 
   function openSyncModal() {
@@ -2739,8 +2849,6 @@
     document.getElementById('exportCodeBox').value = '';
     document.getElementById('importCodeBox').value = '';
     document.getElementById('btnCopyCode').disabled = true;
-    document.getElementById('backupFileInput').value = ''; // Reset file input
-    updateStorageUsage(); // Update current storage usage status
     document.getElementById('syncModal').classList.add('open');
   }
 
@@ -2757,7 +2865,7 @@
 
   function generateExportCode() {
     const data = {};
-    const prefix = ['sp_', 'slotCount-'];
+    const prefix = ['sp_', 'slotCount-', 'uniRows-'];
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
       if (prefix.some(p => k.startsWith(p))) {
@@ -2784,7 +2892,7 @@
     try {
       const json = decodeURIComponent(escape(atob(code)));
       const data = JSON.parse(json);
-      const prefix = ['sp_', 'slotCount-'];
+      const prefix = ['sp_', 'slotCount-', 'uniRows-'];
       const keysToRemove = [];
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
@@ -2800,15 +2908,13 @@
     }
   }
 
-  // MODAL OVERLAYS AND POPUPS CONTROLLERS
+  // SUBJECT MODALS
   function openSubjectModal() {
-    if (state.selectedLevel === 'university') {
-      showToast('University users manage courses in the study table!', '#6366f1');
-      return;
-    }
-    const subs = SUBJECT_MAP[state.selectedLevel] || [];
+    const mapKey = state.selectedLevel === 'university' ? 'university-' + state.selectedDept : state.selectedLevel;
+    const subs = SUBJECT_MAP[mapKey] || [];
     const container = document.getElementById('subjectModalChips');
     container.innerHTML = '';
+    
     subs.filter(s => s !== 'Others').forEach(sub => {
       const btn = document.createElement('button');
       btn.className = 'chip' + (state.subjects.includes(sub) ? ' selected' : '');
@@ -2817,6 +2923,7 @@
       btn.onclick = () => btn.classList.toggle('selected');
       container.appendChild(btn);
     });
+    
     state.customSubjects.forEach(sub => {
       const btn = document.createElement('button');
       btn.className = 'chip selected';
@@ -2845,6 +2952,7 @@
     persistProfile();
     closeSubjectModal();
     showToast('✅ Subjects updated!');
+    document.getElementById('welcomeSubjects').textContent = state.subjects.join(', ');
   }
 
   function openAddModal() {
@@ -2853,12 +2961,15 @@
     document.getElementById('newActivityInput').value = '';
     document.getElementById('scopeDateLabel').textContent = `${m.name} ${d} only`;
     document.getElementById('scopeMonthLabel').textContent = `All of ${m.name}`;
-    document.getElementById('specificDateSelectorDiv').classList.add('hidden'); // Reset specific date view
+    document.getElementById('specificDateSelectorDiv').classList.add('hidden');
+    
+    state.selectedMultipleDates = [];
+    renderSelectedDatesChips();
     document.getElementById('addModal').classList.add('open');
   }
 
   function closeAddModal() {
-    document.getElementById('addModal').classList.remove('open');
+    document.getElementById('addModal').className = 'modal-overlay';
     document.getElementById('specificDateSelectorDiv').classList.add('hidden');
   }
 
@@ -2875,6 +2986,54 @@
     }
   }
 
+  // AUTO TRIGGER ADD DATE ON PICKING ONE FROM CALENDAR
+  document.getElementById('addSpecificDateInput').addEventListener('change', function() {
+    addDateToMultiList();
+  });
+
+  function addDateToMultiList() {
+    const input = document.getElementById('addSpecificDateInput');
+    const dateVal = input.value;
+    if (!dateVal) return;
+
+    const parsed = new Date(dateVal);
+    if (isNaN(parsed.getTime())) return;
+
+    if (state.selectedMultipleDates.includes(dateVal)) {
+      showToast('⚠️ Date already selected!');
+      return;
+    }
+
+    state.selectedMultipleDates.push(dateVal);
+    renderSelectedDatesChips();
+  }
+
+  function removeDateFromMultiList(dateVal) {
+    state.selectedMultipleDates = state.selectedMultipleDates.filter(d => d !== dateVal);
+    renderSelectedDatesChips();
+  }
+
+  function renderSelectedDatesChips() {
+    const container = document.getElementById('selectedDatesChipsList');
+    container.innerHTML = '';
+
+    if (state.selectedMultipleDates.length === 0) {
+      container.innerHTML = `<span class="text-[10px] text-gray-400 font-semibold p-1">No dates selected. Pick from calendar...</span>`;
+      return;
+    }
+
+    state.selectedMultipleDates.forEach(dateVal => {
+      const parsed = new Date(dateVal);
+      const mName = months[parsed.getMonth()].name;
+      const dNum = parsed.getDate();
+
+      const chip = document.createElement('span');
+      chip.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-indigo-200 text-indigo-700 font-bold text-[10px] rounded-lg shadow-sm';
+      chip.innerHTML = `${mName.slice(0,3)} ${dNum} <button onclick="removeDateFromMultiList('${dateVal}')" class="text-red-500 font-extrabold hover:text-red-700 transition-colors">✕</button>`;
+      container.appendChild(chip);
+    });
+  }
+
   function confirmAddActivity(scope) {
     const val = document.getElementById('newActivityInput').value.trim();
     if (!val) { showToast('⚠️ Please enter an activity name!', '#ef4444'); return; }
@@ -2885,34 +3044,47 @@
     const m = state.selectedMonth.name;
     const d = state.selectedDay;
     
-    let key = '';
     let targetLabel = '';
 
     if (scope === 'date') {
-      key = `${m}-${d}`;
+      const key = `${m}-${d}`;
+      if (!state.customActivities[key]) state.customActivities[key] = [];
+      if (!state.customActivities[key].some(a => a.name === val)) {
+        state.customActivities[key].push(newAct);
+      }
       targetLabel = `${m} ${d} only`;
     } else if (scope === 'month') {
-      key = m;
+      const key = m;
+      if (!state.customActivities[key]) state.customActivities[key] = [];
+      if (!state.customActivities[key].some(a => a.name === val)) {
+        state.customActivities[key].push(newAct);
+      }
       targetLabel = `all of ${m}`;
     } else if (scope === 'specific') {
-      const dateVal = document.getElementById('addSpecificDateInput').value;
-      if (!dateVal) { showToast('⚠️ Please pick a specific date first!', '#ef4444'); return; }
-      const parsed = new Date(dateVal);
-      if (isNaN(parsed.getTime())) { showToast('⚠️ Invalid date format!', '#ef4444'); return; }
-      
-      const monthName = months[parsed.getMonth()].name;
-      const dayNum = parsed.getDate();
-      key = `${monthName}-${dayNum}`;
-      targetLabel = `${monthName} ${dayNum}`;
+      if (state.selectedMultipleDates.length === 0) {
+        showToast('⚠️ Please select at least one specific date!', '#ef4444');
+        return;
+      }
+
+      state.selectedMultipleDates.forEach(dateVal => {
+        const parsed = new Date(dateVal);
+        const monthName = months[parsed.getMonth()].name;
+        const dayNum = parsed.getDate();
+        const key = `${monthName}-${dayNum}`;
+
+        if (!state.customActivities[key]) state.customActivities[key] = [];
+        if (!state.customActivities[key].some(a => a.name === val)) {
+          state.customActivities[key].push(newAct);
+        }
+      });
+
+      targetLabel = `${state.selectedMultipleDates.length} specific dates`;
     }
 
-    if (!state.customActivities[key]) state.customActivities[key] = [];
-    if (!state.customActivities[key].some(a => a.name === val)) {
-      state.customActivities[key].push(newAct);
-    }
     persistCustomActivities();
     renderActivityList();
     closeAddModal();
+    renderActivityReminders();
     showToast(`✅ "${val}" added for ${targetLabel}!`);
   }
 
@@ -2957,9 +3129,11 @@
     persistCustomActivities();
     closeDeleteActModal();
     renderActivityList();
+    renderActivityReminders();
     showToast(`🗑️ "${name}" removed successfully.`);
   }
 
+  // GLOBAL TOAST SIGNALS
   let toastTimer;
   function showToast(msg, bg = '') {
     const t = document.getElementById('toast');
